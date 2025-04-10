@@ -52,7 +52,7 @@ A modern car marketplace built with Laravel, featuring a clean UI and comprehens
 ![Search Interface](screenshots/search.png)
 
 ### Add Car Form
-![Add Car Form](screenshots/add-car.png)
+![Add Car Form](screenshots/addcar.png)
 
 ## 🚀 Installation
 
