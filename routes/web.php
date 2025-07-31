@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CarController;
+use App\Http\Controllers\SparePartController;
 use App\Http\Controllers\DealerController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ProfileController;
@@ -44,7 +45,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/cars/{car}/reorder-images', [CarImageController::class, 'reorder'])->name('cars.reorder-images');
 });
 
-// Dealer routes
+// Spare Parts routes
+Route::get('/spare-parts', [SparePartController::class, 'index'])->name('spare-parts.index');
+Route::post('/spare-parts/request-custom', [SparePartController::class, 'requestCustom'])->name('spare-parts.request-custom');
+
+// Dealer routes (keeping for backward compatibility)
 Route::get('/dealers', [DealerController::class, 'index'])->name('dealers.index');
 Route::get('/dealers/{dealer}', [DealerController::class, 'show'])->name('dealers.show');
 
@@ -67,12 +72,19 @@ Route::middleware('auth')->group(function () {
     Route::get('/my-cars', [ProfileController::class, 'myCars'])->name('profile.my-cars');
     Route::patch('/my-cars/{car}/update-status', [ProfileController::class, 'updateCarStatus'])->name('profile.cars.update-status');
     
+    // Spare Parts Management
+    Route::resource('spare-parts', SparePartController::class)->except(['index']);
+    
     // Unified Car Management
     Route::get('/unified-cars', [UnifiedCarController::class, 'index'])->name('unified-cars.index');
     Route::patch('/unified-cars/{car}/update-status', [UnifiedCarController::class, 'updateStatus'])->name('unified-cars.update-status');
     Route::patch('/unified-cars/{car}/toggle-featured', [UnifiedCarController::class, 'toggleFeatured'])->name('unified-cars.toggle-featured');
     Route::patch('/unified-cars/{car}/approve', [UnifiedCarController::class, 'approve'])->name('unified-cars.approve');
     Route::patch('/unified-cars/{car}/reject', [UnifiedCarController::class, 'reject'])->name('unified-cars.reject');
+    
+    // Spare Parts Management in Unified Panel
+    Route::patch('/unified-cars/spare-parts/{sparePart}/approve', [UnifiedCarController::class, 'approveSparePart'])->name('unified-cars.spare-parts.approve');
+    Route::patch('/unified-cars/spare-parts/{sparePart}/reject', [UnifiedCarController::class, 'rejectSparePart'])->name('unified-cars.spare-parts.reject');
 });
 
 // Admin Routes

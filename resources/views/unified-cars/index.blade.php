@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ $isAdmin ? 'لوحة الإدارة الشاملة للسيارات' : 'سياراتي' }}
+            {{ $isAdmin ? 'لوحة الإدارة الشاملة' : 'إدارة المحتوى' }}
         </h2>
     </x-slot>
 
@@ -29,9 +29,23 @@
                     </div>
                 </div>
             @endif
+
+            <!-- Type Tabs -->
+            <div class="mb-6 bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+                <div class="flex space-x-4 border-b border-gray-200">
+                    <a href="{{ route('unified-cars.index', array_merge(['type' => 'cars'], request()->except('type'))) }}" class="px-4 py-2 text-sm font-medium {{ request('type', 'cars') === 'cars' ? 'text-emerald-600 border-b-2 border-emerald-600' : 'text-gray-500 hover:text-gray-700' }}">
+                        السيارات
+                    </a>
+                    <a href="{{ route('unified-cars.index', array_merge(['type' => 'spare-parts'], request()->except('type'))) }}" class="px-4 py-2 text-sm font-medium {{ request('type') === 'spare-parts' ? 'text-emerald-600 border-b-2 border-emerald-600' : 'text-gray-500 hover:text-gray-700' }}">
+                        قطع الغيار
+                    </a>
+                </div>
+            </div>
+
             <!-- Search and Filter Section -->
             <div class="mb-6 bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                 <form action="{{ route('unified-cars.index') }}" method="GET" class="space-y-4">
+                    <input type="hidden" name="type" value="{{ request('type', 'cars') }}">
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                         <!-- Search Field -->
                         <div>
@@ -67,19 +81,19 @@
                                     class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                                 <option value="all" {{ request('status') == 'all' ? 'selected' : '' }}>جميع حالات السيارة</option>
                                 <option value="available" {{ request('status') == 'available' ? 'selected' : '' }}>
-                                    متوفرة للبيع في اليمن ({{ $statusCounts['available'] }})
+                                    متوفرة للبيع في اليمن ({{ $statusCounts['available'] ?? 0 }})
                                 </option>
                                 <option value="at_customs" {{ request('status') == 'at_customs' ? 'selected' : '' }}>
-                                    متوفرة في المنافذ الجمركية ({{ $statusCounts['at_customs'] }})
+                                    متوفرة في المنافذ الجمركية ({{ $statusCounts['at_customs'] ?? 0 }})
                                 </option>
                                 <option value="in_transit" {{ request('status') == 'in_transit' ? 'selected' : '' }}>
-                                    قيد الشحن إلى اليمن ({{ $statusCounts['in_transit'] }})
+                                    قيد الشحن إلى اليمن ({{ $statusCounts['in_transit'] ?? 0 }})
                                 </option>
                                 <option value="purchased" {{ request('status') == 'purchased' ? 'selected' : '' }}>
-                                    تم شراؤها مؤخراً ({{ $statusCounts['purchased'] }})
+                                    تم شراؤها مؤخراً ({{ $statusCounts['purchased'] ?? 0 }})
                                 </option>
                                 <option value="sold" {{ request('status') == 'sold' ? 'selected' : '' }}>
-                                    تم البيع ({{ $statusCounts['sold'] }})
+                                    تم البيع ({{ $statusCounts['sold'] ?? 0 }})
                                 </option>
                             </select>
                         </div>
@@ -90,11 +104,13 @@
                             <select name="year" id="year" 
                                     class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                                 <option value="">جميع السنوات</option>
-                                @foreach($years as $year)
-                                    <option value="{{ $year }}" {{ request('year') == $year ? 'selected' : '' }}>
-                                        {{ $year }}
-                                    </option>
-                                @endforeach
+                                @if(isset($years))
+                                    @foreach($years as $year)
+                                        <option value="{{ $year }}" {{ request('year') == $year ? 'selected' : '' }}>
+                                            {{ $year }}
+                                        </option>
+                                    @endforeach
+                                @endif
                             </select>
                         </div>
 
@@ -105,11 +121,13 @@
                             <select name="advertiser" id="advertiser" 
                                     class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                                 <option value="">جميع البائعين</option>
-                                @foreach($advertisers as $advertiser)
-                                    <option value="{{ $advertiser->id }}" {{ request('advertiser') == $advertiser->id ? 'selected' : '' }}>
-                                        {{ $advertiser->name }}
-                                    </option>
-                                @endforeach
+                                @if(isset($advertisers))
+                                    @foreach($advertisers as $advertiser)
+                                        <option value="{{ $advertiser->id }}" {{ request('advertiser') == $advertiser->id ? 'selected' : '' }}>
+                                            {{ $advertiser->name }}
+                                        </option>
+                                    @endforeach
+                                @endif
                             </select>
                         </div>
                         @endif
@@ -149,6 +167,7 @@
             </div>
 
             <!-- Results Summary -->
+            @if(request('type', 'cars') === 'cars' && isset($cars))
             <div class="mb-4 flex justify-between items-center">
                 <div class="text-sm text-gray-600">
                     تم العثور على <span class="font-semibold">{{ $cars->total() }}</span> سيارة
@@ -163,8 +182,10 @@
                 </div>
                 @endif
             </div>
+            @endif
 
             <!-- Cars Table -->
+            @if(request('type', 'cars') === 'cars' && isset($cars))
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white">
                     @if($cars->count() > 0)
@@ -343,28 +364,6 @@
                                             
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                                 <div class="flex flex-col space-y-2">
-                                                    <!-- Approval/Rejection Buttons (Admin Only) -->
-                                                    @if($isAdmin && $car->status === 'pending_approval')
-                                                        <div class="flex space-x-2">
-                                                            <form action="{{ route('unified-cars.approve', $car) }}" method="POST" class="inline">
-                                                                @csrf
-                                                                @method('PATCH')
-                                                                <button type="submit" 
-                                                                        class="text-xs px-3 py-1.5 bg-green-100 text-green-800 hover:bg-green-200 rounded-md transition-colors duration-200 font-medium">
-                                                                    ✅ موافقة
-                                                                </button>
-                                                            </form>
-                                                            <form action="{{ route('unified-cars.reject', $car) }}" method="POST" class="inline">
-                                                                @csrf
-                                                                @method('PATCH')
-                                                                <button type="submit" 
-                                                                        class="text-xs px-3 py-1.5 bg-red-100 text-red-800 hover:bg-red-200 rounded-md transition-colors duration-200 font-medium">
-                                                                    ❌ رفض
-                                                                </button>
-                                                            </form>
-                                                        </div>
-                                                    @endif
-                                                    
                                                     <!-- Regular Actions -->
                                                     <div class="flex space-x-2">
                                                         <a href="{{ route('cars.show', $car) }}" 
@@ -427,6 +426,170 @@
                     @endif
                 </div>
             </div>
+            @endif
+
+            <!-- Spare Parts Section -->
+            @if(request('type') === 'spare-parts' && isset($spareParts))
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 bg-white">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        الصورة
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        تفاصيل قطع الغيار
+                                    </th>
+                                    @if($isAdmin)
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        المنشئ
+                                    </th>
+                                    @endif
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        حالة الموافقة
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        تاريخ الإنشاء
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        الإجراءات
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                @forelse($spareParts as $sparePart)
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="h-16 w-24 overflow-hidden rounded">
+                                                <img src="{{ $sparePart->first_image_url }}" 
+                                                     alt="{{ $sparePart->name }}" 
+                                                     class="h-full w-full object-cover">
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="text-sm font-medium text-gray-900 mb-1">
+                                                {{ $sparePart->name }}
+                                            </div>
+                                            @if($sparePart->description)
+                                            <div class="text-sm text-gray-500 line-clamp-2">
+                                                {{ Str::limit($sparePart->description, 100) }}
+                                            </div>
+                                            @endif
+                                        </td>
+                                        @if($isAdmin)
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900">
+                                                {{ $sparePart->creator->name ?? 'غير محدد' }}
+                                            </div>
+                                            <div class="text-sm text-gray-500">
+                                                {{ $sparePart->creator->email ?? '' }}
+                                            </div>
+                                        </td>
+                                        @endif
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex flex-col space-y-2">
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $sparePart->approval_status_badge_class }}">
+                                                    {{ $sparePart->approval_status_display }}
+                                                </span>
+                                                
+                                                @if($isAdmin && $sparePart->approval_status === 'pending')
+                                                <div class="flex space-x-2">
+                                                    <form action="{{ route('unified-cars.spare-parts.approve', $sparePart) }}" method="POST" class="inline">
+                                                        @csrf @method('PATCH')
+                                                        <button type="submit" 
+                                                                class="text-xs px-3 py-1.5 bg-green-100 text-green-800 hover:bg-green-200 rounded-md transition-colors duration-200 font-medium">
+                                                            ✅ موافقة
+                                                        </button>
+                                                    </form>
+                                                    <form action="{{ route('unified-cars.spare-parts.reject', $sparePart) }}" method="POST" class="inline">
+                                                        @csrf @method('PATCH')
+                                                        <button type="submit" 
+                                                                class="text-xs px-3 py-1.5 bg-red-100 text-red-800 hover:bg-red-200 rounded-md transition-colors duration-200 font-medium">
+                                                            ❌ رفض
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                                @endif
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            {{ $sparePart->created_at->format('M d, Y') }}
+                                            <br>
+                                            <span class="text-xs text-gray-400">{{ $sparePart->created_at->format('H:i') }}</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                            <div class="flex space-x-2">
+                                                <a href="{{ route('spare-parts.show', $sparePart) }}" 
+                                                   class="text-indigo-600 hover:text-indigo-900 transition-colors duration-200">
+                                                    عرض
+                                                </a>
+                                                @if($isAdmin || $sparePart->created_by == auth()->id())
+                                                <a href="{{ route('spare-parts.edit', $sparePart) }}" 
+                                                   class="text-green-600 hover:text-green-900 transition-colors duration-200">
+                                                    تعديل
+                                                </a>
+                                                <form action="{{ route('spare-parts.destroy', $sparePart) }}" method="POST" class="inline">
+                                                    @csrf @method('DELETE')
+                                                    <button type="submit" 
+                                                            onclick="return confirm('هل أنت متأكد من حذف قطع الغيار هذه؟')"
+                                                            class="text-red-600 hover:text-red-900 transition-colors duration-200">
+                                                        حذف
+                                                    </button>
+                                                </form>
+                                                @endif
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="{{ $isAdmin ? '6' : '5' }}" class="px-6 py-12 text-center">
+                                            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                                            </svg>
+                                            <h3 class="mt-2 text-sm font-medium text-gray-900">لا توجد قطع غيار</h3>
+                                            <p class="mt-1 text-sm text-gray-500">
+                                                @if(request('search') || request('approval_status') || request('creator'))
+                                                    لا توجد قطع غيار تطابق معايير البحث المحددة.
+                                                @else
+                                                    {{ $isAdmin ? 'لا توجد قطع غيار في النظام.' : 'لم تقم بإضافة أي قطع غيار بعد.' }}
+                                                @endif
+                                            </p>
+                                            <div class="mt-6">
+                                                <a href="{{ route('spare-parts.create') }}" 
+                                                   class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">
+                                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                                    </svg>
+                                                    إضافة قطع غيار جديدة
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    @if(isset($spareParts) && $spareParts->hasPages())
+                    <div class="mt-6">
+                        {{ $spareParts->appends(request()->query())->links() }}
+                    </div>
+                    @endif
+                </div>
+            </div>
+            @endif
         </div>
     </div>
-</x-app-layout> 
+</x-app-layout>
+
+<style>
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+</style> 

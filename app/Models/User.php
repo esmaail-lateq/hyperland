@@ -64,6 +64,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Get all spare parts created by this user.
+     */
+    public function spareParts(): HasMany
+    {
+        return $this->hasMany(SparePart::class, 'created_by');
+    }
+
+    /**
      * Get the cars the user has favorited.
      */
     public function favoriteCars(): BelongsToMany
