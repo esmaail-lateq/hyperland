@@ -6,7 +6,6 @@ use App\Http\Controllers\SparePartController;
 use App\Http\Controllers\DealerController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Admin\AdminCarController;
 use App\Http\Controllers\CarImageController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AboutController;
@@ -69,8 +68,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile/avatar', [AvatarController::class, 'update'])->name('profile.avatar.update');
     Route::delete('/profile/avatar', [AvatarController::class, 'destroy'])->name('profile.avatar.destroy');
     
-    Route::get('/my-cars', [ProfileController::class, 'myCars'])->name('profile.my-cars');
-    Route::patch('/my-cars/{car}/update-status', [ProfileController::class, 'updateCarStatus'])->name('profile.cars.update-status');
+    
     
     // Spare Parts Management
     Route::resource('spare-parts', SparePartController::class)->except(['index']);
@@ -85,16 +83,6 @@ Route::middleware('auth')->group(function () {
     // Spare Parts Management in Unified Panel
     Route::patch('/unified-cars/spare-parts/{sparePart}/approve', [UnifiedCarController::class, 'approveSparePart'])->name('unified-cars.spare-parts.approve');
     Route::patch('/unified-cars/spare-parts/{sparePart}/reject', [UnifiedCarController::class, 'rejectSparePart'])->name('unified-cars.spare-parts.reject');
-});
-
-// Admin Routes
-Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
-    Route::get('/cars', [AdminCarController::class, 'index'])->name('cars.index');
-    Route::patch('/cars/{car}/approve', [AdminCarController::class, 'approve'])->name('cars.approve');
-    Route::patch('/cars/{car}/reject', [AdminCarController::class, 'reject'])->name('cars.reject');
-    Route::patch('/cars/{car}/mark-sold', [AdminCarController::class, 'markAsSold'])->name('cars.mark-sold');
-    Route::patch('/cars/{car}/toggle-featured', [AdminCarController::class, 'toggleFeatured'])->name('cars.toggle-featured');
-    Route::patch('/cars/{car}/update-status', [AdminCarController::class, 'updateStatus'])->name('cars.update-status');
 });
 
 // Language switching

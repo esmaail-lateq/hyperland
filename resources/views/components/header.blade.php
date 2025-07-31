@@ -88,20 +88,6 @@
                     </a>
                 @endauth
 
-                <!-- Admin Link (for admins only) -->
-                @auth
-                    @if(auth()->user()->isAdmin())
-                        <a href="{{ route('admin.cars.index') }}" class="group relative px-4 py-3 rounded-full transition-all duration-300 hover:bg-white/20 dark:hover:bg-slate-800/20 hover:scale-105 backdrop-blur-sm border border-transparent hover:border-white/20 dark:hover:border-slate-600/20 {{ request()->routeIs('admin.cars.*') ? 'bg-white/30 dark:bg-slate-800/30 shadow-lg' : '' }}">
-                            <div class="flex items-center space-x-2">
-                                <svg class="w-5 h-5 lg:w-6 lg:h-6 text-rose-500 dark:text-rose-400 group-hover:text-rose-600 dark:group-hover:text-rose-300 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
-                                </svg>
-                                <span class="text-base lg:text-lg font-medium text-slate-700 dark:text-slate-200 group-hover:text-slate-900 dark:group-hover:text-white transition-colors duration-300">{{ __('navigation.admin') }}</span>
-                            </div>
-                            <div class="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-rose-500 to-pink-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 rounded-full"></div>
-                        </a>
-                    @endif
-                @endauth
             </nav>
 
             <!-- Right Section: Language Switcher & User Menu -->
@@ -171,17 +157,7 @@
                                     </div>
                                 </a>
 
-                                <a href="{{ route('profile.my-cars') }}" class="flex items-center space-x-3 px-3 py-2.5 rounded-full hover:bg-emerald-500/10 dark:hover:bg-emerald-400/10 group transition-all duration-300">
-                                    <div class="w-8 h-8 rounded-full bg-emerald-500/20 dark:bg-emerald-400/20 flex items-center justify-center group-hover:bg-emerald-500/30 dark:group-hover:bg-emerald-400/30 transition-colors duration-300">
-                                        <svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                                        </svg>
-                                    </div>
-                                    <div>
-                                        <span class="font-bold text-slate-800 dark:text-slate-200 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors duration-300">{{ __('navigation.my_cars') }}</span>
-                                        <div class="text-xs text-slate-600 dark:text-slate-400">View your listings</div>
-                                    </div>
-                                </a>
+
 
                                 <a href="{{ route('favorites.index') }}" class="flex items-center space-x-3 px-3 py-2.5 rounded-full hover:bg-purple-500/10 dark:hover:bg-purple-400/10 group transition-all duration-300">
                                     <div class="w-8 h-8 rounded-full bg-purple-500/20 dark:bg-purple-400/20 flex items-center justify-center group-hover:bg-purple-500/30 dark:group-hover:bg-purple-400/30 transition-colors duration-300">
@@ -243,11 +219,11 @@
                     <span class="text-xs font-medium text-slate-700 dark:text-slate-200">{{ __('navigation.cars') }}</span>
                 </a>
                 
-                <a href="{{ route('dealers.index') }}" class="flex-1 flex flex-col items-center px-2 py-2.5 rounded-full transition-all duration-300 hover:bg-white/20 dark:hover:bg-slate-800/20 backdrop-blur-sm {{ request()->routeIs('dealers.index') ? 'bg-white/30 dark:bg-slate-800/30' : '' }}">
+                <a href="{{ route('spare-parts.index') }}" class="flex-1 flex flex-col items-center px-2 py-2.5 rounded-full transition-all duration-300 hover:bg-white/20 dark:hover:bg-slate-800/20 backdrop-blur-sm {{ request()->routeIs('spare-parts.*') ? 'bg-white/30 dark:bg-slate-800/30' : '' }}">
                     <svg class="w-5 h-5 text-amber-500 dark:text-amber-400 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
                     </svg>
-                    <span class="text-xs font-medium text-slate-700 dark:text-slate-200">{{ __('navigation.dealers') }}</span>
+                    <span class="text-xs font-medium text-slate-700 dark:text-slate-200">قطع الغيار</span>
                 </a>
                 
                 <a href="{{ route('about') }}" class="flex-1 flex flex-col items-center px-2 py-2.5 rounded-full transition-all duration-300 hover:bg-white/20 dark:hover:bg-slate-800/20 backdrop-blur-sm {{ request()->routeIs('about') ? 'bg-white/30 dark:bg-slate-800/30' : '' }}">
@@ -259,4 +235,4 @@
             </div>
         </div>
     </div>
-</header>
+</header> 

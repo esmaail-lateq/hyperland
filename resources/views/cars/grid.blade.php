@@ -19,7 +19,7 @@
                             جديد
                         </div>
                         @endif
-
+                    
                         {{-- Car Status Badge --}}
                         <div class="absolute top-3 {{ $car->is_featured ? 'right-16' : 'right-3' }} z-10">
                             <span class="px-3 py-1 text-xs font-semibold rounded-full shadow-lg {{ $car->status_badge_class }}">

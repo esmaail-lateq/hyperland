@@ -182,7 +182,7 @@ class CarController extends Controller
 
         // Set approval_status to pending for new cars
         $approvalStatus = 'pending';
-        
+
         // Create car with user_id set directly
         $car = new Car([
             'title' => $request->title,
