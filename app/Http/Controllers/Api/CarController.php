@@ -11,6 +11,8 @@ class CarController extends Controller
     public function latest(): JsonResponse
     {
         $latestCars = Car::with(['images', 'brand', 'model'])
+            ->where('approval_status', 'approved') // عرض السيارات المعتمدة فقط
+            ->whereIn('status', ['available', 'at_customs', 'in_transit', 'purchased', 'sold']) // عرض السيارات المتوفرة والمباعة
             ->latest()
             ->take(8)
             ->get()

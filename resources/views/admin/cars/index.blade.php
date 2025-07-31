@@ -24,9 +24,14 @@
                 <div>
                     <select name="status" id="status-filter" class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" onchange="window.location.href=this.value">
                         <option value="{{ route('admin.cars.index') }}" {{ request('status') == '' ? 'selected' : '' }}>All Listings</option>
-                        <option value="{{ route('admin.cars.index', ['status' => 'pending']) }}" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending Approval</option>
-                        <option value="{{ route('admin.cars.index', ['status' => 'approved']) }}" {{ request('status') == 'approved' ? 'selected' : '' }}>Approved</option>
-                        <option value="{{ route('admin.cars.index', ['status' => 'rejected']) }}" {{ request('status') == 'rejected' ? 'selected' : '' }}>Rejected</option>
+                        <option value="{{ route('admin.cars.index', ['status' => 'pending_approval']) }}" {{ request('status') == 'pending_approval' ? 'selected' : '' }}>في انتظار الموافقة</option>
+                        <option value="{{ route('admin.cars.index', ['status' => 'admin_approved']) }}" {{ request('status') == 'admin_approved' ? 'selected' : '' }}>تم القبول من الإدارة</option>
+                                                        <option value="{{ route('admin.cars.index', ['status' => 'available']) }}" {{ request('status') == 'available' ? 'selected' : '' }}>متوفرة للبيع في اليمن</option>
+                        <option value="{{ route('admin.cars.index', ['status' => 'at_customs']) }}" {{ request('status') == 'at_customs' ? 'selected' : '' }}>متوفرة في المنافذ الجمركية</option>
+                        <option value="{{ route('admin.cars.index', ['status' => 'in_transit']) }}" {{ request('status') == 'in_transit' ? 'selected' : '' }}>قيد الشحن إلى اليمن</option>
+                        <option value="{{ route('admin.cars.index', ['status' => 'purchased']) }}" {{ request('status') == 'purchased' ? 'selected' : '' }}>تم شراؤها مؤخراً من المزاد</option>
+                        <option value="{{ route('admin.cars.index', ['status' => 'rejected']) }}" {{ request('status') == 'rejected' ? 'selected' : '' }}>مرفوضة</option>
+                        <option value="{{ route('admin.cars.index', ['status' => 'sold']) }}" {{ request('status') == 'sold' ? 'selected' : '' }}>تم البيع</option>
                     </select>
                 </div>
             </div>
@@ -106,9 +111,8 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                                {{ $car->status === 'approved' ? 'bg-green-100 text-green-800' : 
-                                                   ($car->status === 'rejected' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800') }}">
-                                                {{ ucfirst($car->status) }}
+                                                {{ $car->status_badge_class }}">
+                                                {{ $car->status_display }}
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -133,22 +137,73 @@
                                                 <a href="{{ route('cars.show', $car) }}" class="text-indigo-600 hover:text-indigo-900">
                                                     View
                                                 </a>
-                                                @if($car->status === 'pending')
-                                                    <form action="{{ route('admin.cars.approve', $car) }}" method="POST" class="inline">
-                                                        @csrf
-                                                        @method('PATCH')
-                                                        <button type="submit" class="text-green-600 hover:text-green-900">
-                                                            Approve
-                                                        </button>
-                                                    </form>
-                                                    <form action="{{ route('admin.cars.reject', $car) }}" method="POST" class="inline">
-                                                        @csrf
-                                                        @method('PATCH')
-                                                        <button type="submit" class="text-red-600 hover:text-red-900">
-                                                            Reject
-                                                        </button>
-                                                    </form>
-                                                @endif
+                                                
+                                                {{-- Status Update Dropdown --}}
+                                                <div class="relative" x-data="{ open: false }">
+                                                    <button @click="open = !open" class="text-blue-600 hover:text-blue-900">
+                                                        Update Status
+                                                    </button>
+                                                    <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50">
+                                                        <div class="py-1">
+                                                            <form action="{{ route('admin.cars.update-status', $car) }}" method="POST" class="block">
+                                                                @csrf
+                                                                @method('PATCH')
+                                                                <input type="hidden" name="status" value="available">
+                                                                <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                                    متوفرة للبيع في اليمن
+                                                                </button>
+                                                            </form>
+                                                            <form action="{{ route('admin.cars.update-status', $car) }}" method="POST" class="block">
+                                                                @csrf
+                                                                @method('PATCH')
+                                                                <input type="hidden" name="status" value="available_at_customs">
+                                                                <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                                    متوفرة في المنافذ الجمركية
+                                                                </button>
+                                                            </form>
+                                                            <form action="{{ route('admin.cars.update-status', $car) }}" method="POST" class="block">
+                                                                @csrf
+                                                                @method('PATCH')
+                                                                <input type="hidden" name="status" value="shipping_to_yemen">
+                                                                <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                                    قيد الشحن إلى اليمن
+                                                                </button>
+                                                            </form>
+                                                            <form action="{{ route('admin.cars.update-status', $car) }}" method="POST" class="block">
+                                                                @csrf
+                                                                @method('PATCH')
+                                                                <input type="hidden" name="status" value="recently_purchased">
+                                                                <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                                    تم شراؤها مؤخراً من المزاد
+                                                                </button>
+                                                            </form>
+                                                            <form action="{{ route('admin.cars.update-status', $car) }}" method="POST" class="block">
+                                                                @csrf
+                                                                @method('PATCH')
+                                                                <input type="hidden" name="status" value="admin_approved">
+                                                                <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-emerald-600 hover:bg-emerald-50">
+                                                                    تم القبول من الإدارة
+                                                                </button>
+                                                            </form>
+                                                            <form action="{{ route('admin.cars.update-status', $car) }}" method="POST" class="block">
+                                                                @csrf
+                                                                @method('PATCH')
+                                                                <input type="hidden" name="status" value="rejected">
+                                                                <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50">
+                                                                    رفض
+                                                                </button>
+                                                            </form>
+                                                            <form action="{{ route('admin.cars.update-status', $car) }}" method="POST" class="block">
+                                                                @csrf
+                                                                @method('PATCH')
+                                                                <input type="hidden" name="status" value="sold">
+                                                                <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-600 hover:bg-gray-100">
+                                                                    تم البيع
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </td>
                                     </tr>

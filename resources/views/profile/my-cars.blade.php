@@ -12,14 +12,24 @@
                     <a href="{{ route('profile.my-cars') }}" class="inline-flex items-center px-4 py-2 bg-{{ $statusFilter ? 'gray-200' : 'indigo-500' }} border border-transparent rounded-md font-semibold text-xs text-{{ $statusFilter ? 'gray-800' : 'white' }} uppercase tracking-widest hover:bg-{{ $statusFilter ? 'gray-300' : 'indigo-600' }}">
                         All ({{ auth()->user()->cars()->count() }})
                     </a>
-                    <a href="{{ route('profile.my-cars', ['status' => 'pending']) }}" class="inline-flex items-center px-4 py-2 bg-{{ $statusFilter === 'pending' ? 'yellow-500 text-white' : 'gray-200 text-gray-800' }} border border-transparent rounded-md font-semibold text-xs uppercase tracking-widest hover:bg-{{ $statusFilter === 'pending' ? 'yellow-600' : 'gray-300' }}">
-                        Pending ({{ auth()->user()->cars()->where('status', 'pending')->count() }})
+                    <a href="{{ route('profile.my-cars', ['status' => 'pending_approval']) }}" class="inline-flex items-center px-4 py-2 bg-{{ $statusFilter === 'pending_approval' ? 'orange-500 text-white' : 'gray-200 text-gray-800' }} border border-transparent rounded-md font-semibold text-xs uppercase tracking-widest hover:bg-{{ $statusFilter === 'pending_approval' ? 'orange-600' : 'gray-300' }}">
+                        في انتظار الموافقة ({{ auth()->user()->cars()->where('status', 'pending_approval')->count() }})
                     </a>
-                    <a href="{{ route('profile.my-cars', ['status' => 'approved']) }}" class="inline-flex items-center px-4 py-2 bg-{{ $statusFilter === 'approved' ? 'green-500 text-white' : 'gray-200 text-gray-800' }} border border-transparent rounded-md font-semibold text-xs uppercase tracking-widest hover:bg-{{ $statusFilter === 'approved' ? 'green-600' : 'gray-300' }}">
-                        Approved ({{ auth()->user()->cars()->where('status', 'approved')->count() }})
-                    </a>
-                    <a href="{{ route('profile.my-cars', ['status' => 'rejected']) }}" class="inline-flex items-center px-4 py-2 bg-{{ $statusFilter === 'rejected' ? 'red-500 text-white' : 'gray-200 text-gray-800' }} border border-transparent rounded-md font-semibold text-xs uppercase tracking-widest hover:bg-{{ $statusFilter === 'rejected' ? 'red-600' : 'gray-300' }}">
-                        Rejected ({{ auth()->user()->cars()->where('status', 'rejected')->count() }})
+                                            <a href="{{ route('profile.my-cars', ['status' => 'available']) }}" class="inline-flex items-center px-4 py-2 bg-{{ $statusFilter === 'available' ? 'green-500 text-white' : 'gray-200 text-gray-800' }} border border-transparent rounded-md font-semibold text-xs uppercase tracking-widest hover:bg-{{ $statusFilter === 'available' ? 'green-600' : 'gray-300' }}">
+                            متوفرة للبيع في اليمن ({{ auth()->user()->cars()->where('status', 'available')->count() }})
+                        </a>
+                                            <a href="{{ route('profile.my-cars', ['status' => 'at_customs']) }}" class="inline-flex items-center px-4 py-2 bg-{{ $statusFilter === 'at_customs' ? 'blue-500 text-white' : 'gray-200 text-gray-800' }} border border-transparent rounded-md font-semibold text-xs uppercase tracking-widest hover:bg-{{ $statusFilter === 'at_customs' ? 'blue-600' : 'gray-300' }}">
+                            متوفرة في المنافذ الجمركية ({{ auth()->user()->cars()->where('status', 'at_customs')->count() }})
+                        </a>
+                                            <a href="{{ route('profile.my-cars', ['status' => 'in_transit']) }}" class="inline-flex items-center px-4 py-2 bg-{{ $statusFilter === 'in_transit' ? 'yellow-500 text-white' : 'gray-200 text-gray-800' }} border border-transparent rounded-md font-semibold text-xs uppercase tracking-widest hover:bg-{{ $statusFilter === 'in_transit' ? 'yellow-600' : 'gray-300' }}">
+                            قيد الشحن إلى اليمن ({{ auth()->user()->cars()->where('status', 'in_transit')->count() }})
+                        </a>
+                                            <a href="{{ route('profile.my-cars', ['status' => 'purchased']) }}" class="inline-flex items-center px-4 py-2 bg-{{ $statusFilter === 'purchased' ? 'purple-500 text-white' : 'gray-200 text-gray-800' }} border border-transparent rounded-md font-semibold text-xs uppercase tracking-widest hover:bg-{{ $statusFilter === 'purchased' ? 'purple-600' : 'gray-300' }}">
+                            تم شراؤها مؤخراً ({{ auth()->user()->cars()->where('status', 'purchased')->count() }})
+                        </a>
+                    
+                    <a href="{{ route('profile.my-cars', ['status' => 'sold']) }}" class="inline-flex items-center px-4 py-2 bg-{{ $statusFilter === 'sold' ? 'gray-500 text-white' : 'gray-200 text-gray-800' }} border border-transparent rounded-md font-semibold text-xs uppercase tracking-widest hover:bg-{{ $statusFilter === 'sold' ? 'gray-600' : 'gray-300' }}">
+                        تم البيع ({{ auth()->user()->cars()->where('status', 'sold')->count() }})
                     </a>
                 </div>
                 <a href="{{ route('cars.create') }}" class="inline-flex items-center px-4 py-2 bg-indigo-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-600">
@@ -75,9 +85,8 @@
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                                    {{ $car->status === 'approved' ? 'bg-green-100 text-green-800' : 
-                                                       ($car->status === 'rejected' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800') }}">
-                                                    {{ ucfirst($car->status) }}
+                                                    {{ $car->status_badge_class }}">
+                                                    {{ $car->status_display }}
                                                 </span>
                                                 @if($car->is_featured)
                                                     <span class="ml-1 px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
@@ -96,6 +105,66 @@
                                                     <a href="{{ route('cars.edit', $car) }}" class="text-indigo-600 hover:text-indigo-900">
                                                         Edit
                                                     </a>
+                                                    
+                                                    {{-- Status Update Dropdown --}}
+                                                    <div class="relative" x-data="{ open: false }">
+                                                        <button @click="open = !open" class="text-blue-600 hover:text-blue-900">
+                                                            Update Status
+                                                        </button>
+                                                        <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50">
+                                                            <div class="py-1">
+                                                                <form action="{{ route('profile.cars.update-status', $car) }}" method="POST" class="block">
+                                                                    @csrf
+                                                                    @method('PATCH')
+                                                                    <input type="hidden" name="status" value="available">
+                                                                    <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                                        متوفرة للبيع في اليمن
+                                                                    </button>
+                                                                </form>
+                                                                <form action="{{ route('profile.cars.update-status', $car) }}" method="POST" class="block">
+                                                                    @csrf
+                                                                    @method('PATCH')
+                                                                    <input type="hidden" name="status" value="available_at_customs">
+                                                                    <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                                        متوفرة في المنافذ الجمركية
+                                                                    </button>
+                                                                </form>
+                                                                <form action="{{ route('profile.cars.update-status', $car) }}" method="POST" class="block">
+                                                                    @csrf
+                                                                    @method('PATCH')
+                                                                    <input type="hidden" name="status" value="shipping_to_yemen">
+                                                                    <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                                        قيد الشحن إلى اليمن
+                                                                    </button>
+                                                                </form>
+                                                                <form action="{{ route('profile.cars.update-status', $car) }}" method="POST" class="block">
+                                                                    @csrf
+                                                                    @method('PATCH')
+                                                                    <input type="hidden" name="status" value="recently_purchased">
+                                                                    <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                                        تم شراؤها مؤخراً من المزاد
+                                                                    </button>
+                                                                </form>
+                                                                <form action="{{ route('profile.cars.update-status', $car) }}" method="POST" class="block">
+                                                                    @csrf
+                                                                    @method('PATCH')
+                                                                    <input type="hidden" name="status" value="admin_approved">
+                                                                    <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                                        تم القبول من الإدارة
+                                                                    </button>
+                                                                </form>
+                                                                <form action="{{ route('profile.cars.update-status', $car) }}" method="POST" class="block">
+                                                                    @csrf
+                                                                    @method('PATCH')
+                                                                    <input type="hidden" name="status" value="sold">
+                                                                    <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-600 hover:bg-gray-100">
+                                                                        تم البيع
+                                                                    </button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
                                                     <form action="{{ route('cars.destroy', $car) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to delete this listing?');">
                                                         @csrf
                                                         @method('DELETE')

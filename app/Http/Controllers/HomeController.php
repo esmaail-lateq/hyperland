@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Car;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage; // تأكد من وجود هذا الاستخدام إذا لم يكن موجودًا بالفعل
 
 class HomeController extends Controller
 {
@@ -12,22 +13,30 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // Get exactly 4 featured cars for the grid
+        // جلب السيارات المميزة المعتمدة مع صورها (تحميل علاقة الصور لتجنب N+1 Query)
         $featuredCars = Car::with(['images'])
             ->where('is_featured', true)
-            ->approved()
+            ->where('approval_status', 'approved') // عرض السيارات المعتمدة فقط
+            ->whereIn('status', ['available', 'at_customs', 'in_transit', 'purchased', 'sold']) // عرض السيارات المتوفرة والمباعة
             ->latest()
-            ->take(4)
+            ->take(4) // جلب 4 سيارات مميزة
             ->get();
 
-        // Get latest cars for the grid
+        // جلب أحدث السيارات المعتمدة مع صورها
         $latestCars = Car::with(['images'])
-            ->approved()
+            ->where('approval_status', 'approved') // عرض السيارات المعتمدة فقط
+            ->whereIn('status', ['available', 'at_customs', 'in_transit', 'purchased', 'sold']) // عرض السيارات المتوفرة والمباعة
             ->latest()
-            ->take(6)
+            ->take(6) // جلب 6 سيارات حديثة
             ->get();
 
-        return view('home', compact('featuredCars', 'latestCars'));
+        // جلب العدد الإجمالي للسيارات المعتمدة المعروضة
+        $totalCarsCount = Car::where('approval_status', 'approved')
+            ->whereIn('status', ['available', 'at_customs', 'in_transit', 'purchased', 'sold'])
+            ->count();
+
+        // **التعديل هنا: إضافة 'totalCarsCount' إلى compact()**
+        return view('home', compact('featuredCars', 'latestCars', 'totalCarsCount'));
     }
 
     /**
@@ -36,11 +45,16 @@ class HomeController extends Controller
     public function latestCars()
     {
         $cars = Car::with(['images'])
-            ->approved()
+            ->where('approval_status', 'approved') // عرض السيارات المعتمدة فقط
+            ->whereIn('status', ['available', 'at_customs', 'in_transit', 'purchased', 'sold']) // عرض السيارات المتوفرة والمباعة
             ->latest()
             ->take(6)
             ->get()
             ->map(function($car) {
+                // البحث عن الصورة الأساسية أو أول صورة
+                $primaryImage = $car->images->where('is_primary', true)->first() ?? $car->images->first();
+                $imageUrl = $primaryImage ? Storage::url($primaryImage->image_path) : asset('images/default_car.jpg'); // استخدام asset() لمسار الصورة الافتراضية
+
                 return [
                     'id' => $car->id,
                     'title' => $car->title,
@@ -50,10 +64,10 @@ class HomeController extends Controller
                     'price' => $car->price,
                     'mileage' => $car->mileage,
                     'transmission' => ucfirst($car->transmission),
-                    'image' => $car->images->where('is_primary', true)->first()?->image_url ?? '/images/default-car.jpg'
+                    'image' => $imageUrl // استخدام المسار الفعلي أو الافتراضي
                 ];
             });
 
         return response()->json(['cars' => $cars]);
     }
-} 
+}

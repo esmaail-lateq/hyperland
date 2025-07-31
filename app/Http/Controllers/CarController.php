@@ -15,8 +15,9 @@ class CarController extends Controller
      */
     public function index(Request $request)
     {
-        $carsQuery = Car::with('user')
-            ->approved()
+        $carsQuery = Car::with('user', 'images') // تأكد من تحميل الصور هنا
+            ->where('approval_status', 'approved') // عرض السيارات المعتمدة فقط
+            ->whereIn('status', ['available', 'at_customs', 'in_transit', 'purchased', 'sold']) // عرض السيارات المتوفرة والمباعة
             ->latest();
         
         // Apply search filters if provided
@@ -63,6 +64,16 @@ class CarController extends Controller
             $carsQuery->where('condition', $request->condition);
         }
 
+        // Add status filter
+        if ($request->filled('status')) {
+            $carsQuery->where('status', $request->status);
+        }
+
+        // Add cylinders filter
+        if ($request->filled('cylinders')) {
+            $carsQuery->where('cylinders', $request->cylinders);
+        }
+
         // Add feature filters
         $features = [
             'has_air_conditioning',
@@ -86,6 +97,10 @@ class CarController extends Controller
         // If request is JSON, return JSON response
         if ($request->expectsJson() || $request->ajax()) {
             $carsData = $cars->map(function($car) {
+                // **التعديل هنا: جلب الصورة الأساسية أو أول صورة للسيارة وإنشاء مسارها الصحيح**
+                $primaryImage = $car->images->where('is_primary', true)->first() ?? $car->images->first();
+                $imageUrl = $primaryImage ? Storage::url($primaryImage->image_path) : asset('images/default_car.jpg'); // استخدم asset() هنا أيضاً
+
                 return [
                     'id' => $car->id,
                     'make' => $car->make,
@@ -95,8 +110,9 @@ class CarController extends Controller
                     'formattedPrice' => $car->formattedPrice,
                     'mileage' => $car->mileage,
                     'location' => $car->location,
+                    'status' => $car->status,
                     'is_featured' => $car->is_featured,
-                    'imageUrl' => '/test.jpg', // Use test image for all cars
+                    'imageUrl' => $imageUrl, // استخدام المسار الفعلي للصورة
                     'isFavorite' => auth()->check() ? auth()->user()->favoriteCars->contains($car->id) : false
                 ];
             });
@@ -116,7 +132,8 @@ class CarController extends Controller
         }
         
         // Makes list for filter dropdown
-        $makes = Car::approved()
+        $makes = Car::where('approval_status', 'approved')
+            ->whereIn('status', ['available', 'at_customs', 'in_transit', 'purchased', 'sold'])
             ->select('make')
             ->distinct()
             ->orderBy('make')
@@ -148,6 +165,7 @@ class CarController extends Controller
             'fuel_type' => ['required', 'string', 'in:gasoline,diesel,electric,hybrid,lpg,other'],
             'transmission' => ['required', 'string', 'in:manual,automatic,semi-automatic'],
             'condition' => ['required', 'string', 'in:new,used,for_parts'],
+            'status' => ['required', 'string', 'in:available,at_customs,in_transit,purchased,sold'],
             'description' => ['nullable', 'string'],
             'location' => ['required', 'string', 'max:100'],
             'images' => ['required', 'array', 'min:1', 'max:10'],
@@ -162,6 +180,9 @@ class CarController extends Controller
             'has_led_lights' => ['nullable', 'boolean'],
         ]);
 
+        // Set approval_status to pending for new cars
+        $approvalStatus = 'pending';
+        
         // Create car with user_id set directly
         $car = new Car([
             'title' => $request->title,
@@ -172,10 +193,12 @@ class CarController extends Controller
             'mileage' => $request->mileage,
             'fuel_type' => $request->fuel_type,
             'transmission' => $request->transmission,
+            'cylinders' => $request->cylinders,
             'condition' => $request->condition,
+            'status' => $request->status,
+            'approval_status' => $approvalStatus,
             'description' => $request->description,
             'location' => $request->location,
-            'status' => 'pending', // Default to pending for all users
             'has_air_conditioning' => $request->boolean('has_air_conditioning'),
             'has_leather_seats' => $request->boolean('has_leather_seats'),
             'has_navigation' => $request->boolean('has_navigation'),
@@ -242,6 +265,7 @@ class CarController extends Controller
             'fuel_type' => ['required', 'string', 'in:gasoline,diesel,electric,hybrid,lpg,other'],
             'transmission' => ['required', 'string', 'in:manual,automatic,semi-automatic'],
             'condition' => ['required', 'string', 'in:new,used,for_parts'],
+            'status' => ['required', 'string', 'in:available,at_customs,in_transit,purchased,sold'],
             'description' => ['nullable', 'string'],
             'location' => ['required', 'string', 'max:100'],
             'images' => ['nullable', 'array', 'max:10'],
@@ -265,7 +289,9 @@ class CarController extends Controller
             'mileage' => $request->mileage,
             'fuel_type' => $request->fuel_type,
             'transmission' => $request->transmission,
+            'cylinders' => $request->cylinders,
             'condition' => $request->condition,
+            'status' => $request->status,
             'description' => $request->description,
             'location' => $request->location,
             'has_air_conditioning' => $request->boolean('has_air_conditioning'),
@@ -314,4 +340,4 @@ class CarController extends Controller
         return redirect()->route('cars.index')
             ->with('success', 'Your car listing has been deleted successfully!');
     }
-} 
+}

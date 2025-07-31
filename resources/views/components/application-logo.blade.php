@@ -1,1 +1,1 @@
-<img {{ $attributes }} src="{{ asset('images/logo.png') }}" alt="AutoMarket Logo" style="height: 60px; width: 70px;">
+<img {{ $attributes }} src="{{ asset('images/logo.svg') }}" alt="HybridLand Logo" style="height: 60px; width: 70px;">

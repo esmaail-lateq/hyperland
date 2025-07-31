@@ -30,7 +30,8 @@ class CarFactory extends Factory
         $transmissions = ['manual', 'automatic', 'semi-automatic'];
         $fuelTypes = ['gasoline', 'diesel', 'electric', 'hybrid', 'lpg', 'other'];
         $locations = ['Sofia', 'Plovdiv', 'Varna', 'Burgas', 'Ruse', 'Stara Zagora', 'Pleven', 'Sliven'];
-        $statuses = ['approved', 'pending', 'rejected'];
+        $statuses = ['available', 'at_customs', 'in_transit', 'purchased', 'sold'];
+        $approvalStatuses = ['pending', 'approved', 'rejected'];
         
         $year = $this->faker->numberBetween(2015, 2024);
         $mileage = $year === 2024 ? 0 : $this->faker->numberBetween(10000, 150000);
@@ -49,6 +50,7 @@ class CarFactory extends Factory
             'location' => $this->faker->randomElement($locations),
             'user_id' => User::factory(),
             'status' => $this->faker->randomElement($statuses),
+            'approval_status' => $this->faker->randomElement($approvalStatuses),
             'has_air_conditioning' => $this->faker->boolean(80),
             'has_leather_seats' => $this->faker->boolean(60),
             'has_navigation' => $this->faker->boolean(70),

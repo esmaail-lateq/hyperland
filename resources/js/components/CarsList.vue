@@ -2,9 +2,14 @@
   <div class="w-full">
     <div class="w-full mx-auto">
       <div class="car-grid">
-        <div v-for="car in cars" :key="car.id" class="car-item">
+        <div v-for="car in cars" :key="car.id" class="car-item group">
           <a :href="carUrl(car)" class="car-card">
-            <div v-if="car.is_featured" class="car-badge">BEST</div>
+            <div v-if="car.is_featured" class="car-badge">Featured</div>
+            
+            <!-- Car Status Badge -->
+            <div v-if="car.status" class="car-status-badge" :class="getStatusBadgeClass(car.status)">
+              {{ getStatusDisplay(car.status) }}
+            </div>
             
             <div class="car-image-container">
               <img v-if="car.imageStatus === 'success'"
@@ -210,41 +215,74 @@ export default {
       } finally {
         this.loading = false;
       }
+    },
+
+    getStatusDisplay(status) {
+      const statusMap = {
+        'available': 'متوفرة للبيع في اليمن',
+        'at_customs': 'متوفرة في المنافذ الجمركية',
+        'in_transit': 'قيد الشحن إلى اليمن',
+        'purchased': 'تم شراؤها مؤخراً من المزاد',
+        'sold': 'تم البيع'
+      };
+      
+      return statusMap[status] || status;
+    },
+
+    getStatusBadgeClass(status) {
+      const badgeMap = {
+        'available': 'bg-green-100 text-green-800',
+        'at_customs': 'bg-blue-100 text-blue-800',
+        'in_transit': 'bg-yellow-100 text-yellow-800',
+        'purchased': 'bg-purple-100 text-purple-800',
+        'sold': 'bg-gray-100 text-gray-800'
+      };
+      
+      return badgeMap[status] || 'bg-gray-100 text-gray-800';
     }
   }
 }
 </script>
 
 <style scoped>
+/* Grid Layout */
 .car-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  grid-template-columns: repeat(1, 1fr); /* Default for mobile */
+  gap: 1.5rem; /* Gap between cards */
 }
 
-@media (max-width: 1024px) {
-  .car-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (max-width: 768px) {
+@media (min-width: 640px) { /* Small screens */
   .car-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media (max-width: 640px) {
+@media (min-width: 768px) { /* Medium screens */
   .car-grid {
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
+@media (min-width: 1024px) { /* Large screens */
+  .car-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Car Item and Card */
 .car-item {
   width: 100%;
   break-inside: avoid;
   overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 0.75rem; /* More rounded corners */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); /* Softer shadow */
+  transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+}
+
+.car-item:hover {
+  transform: translateY(-0.5rem); /* Lift effect */
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
 }
 
 .car-card {
@@ -252,16 +290,11 @@ export default {
   position: relative;
   height: 220px;
   width: 100%;
-  border-radius: 8px;
+  border-radius: 0.75rem;
   overflow: hidden;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  background-color: #f3f4f6;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.car-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+  background-color: #ffffff; /* White background */
+  display: flex;
+  flex-direction: column;
 }
 
 .car-image-container {
@@ -282,18 +315,11 @@ export default {
   top: 0;
   left: 0;
   z-index: 1;
-  transition: transform 0.5s ease;
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smooth zoom */
 }
 
-.car-card:hover .car-image {
-  transform: scale(1.1);
-}
-
-.car-default-image {
-  width: 80px;
-  height: 80px;
-  opacity: 0.4;
-  z-index: 1;
+.car-item:hover .car-image {
+  transform: scale(1.08); /* Slightly more zoom */
 }
 
 .car-placeholder {
@@ -306,96 +332,133 @@ export default {
   background-color: #f3f4f6;
 }
 
+/* Overlay for text */
 .car-overlay {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.5) 60%, transparent);
+  background: linear-gradient(to top, rgba(17, 24, 39, 0.95), rgba(17, 24, 39, 0.75) 60%, transparent); /* Darker, more solid gradient */
   color: white;
-  padding: 16px;
+  padding: 1rem;
   width: 100%;
   z-index: 2;
+  transition: padding 0.3s ease-out; /* Smooth padding transition */
+}
+
+.car-item:hover .car-overlay {
+  padding-bottom: 1.5rem; /* Slightly expand overlay on hover */
 }
 
 .car-title {
-  font-weight: bold;
-  font-size: 16px;
+  font-weight: 700; /* Bold */
+  font-size: 1.125rem; /* text-lg */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
   display: block;
+  margin-bottom: 0.25rem; /* Space below title */
 }
 
 .car-price {
-  font-weight: bold;
-  font-size: 18px;
-  color: #FFD700;
-  margin-top: 4px;
+  font-weight: 800; /* Extra bold */
+  font-size: 1.5rem; /* text-2xl */
+  color: #fbbf24; /* Tailwind yellow-400 */
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5); /* Slight text shadow for pop */
 }
 
 .car-details {
-  font-size: 12px;
+  font-size: 0.75rem; /* text-xs */
   opacity: 0.9;
-  margin-top: 8px;
+  margin-top: 0.75rem;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end; /* Align items to bottom for a cleaner look */
   width: 100%;
 }
 
 .car-specs {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 0.5rem; /* Gap between spec badges */
 }
 
 .car-year, .car-mileage, .car-location {
   display: inline-flex;
   align-items: center;
-  background-color: rgba(255, 255, 255, 0.15);
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 11px;
+  background-color: rgba(255, 255, 255, 0.2); /* Slightly more opaque background */
+  padding: 0.25rem 0.625rem; /* Tighter padding */
+  border-radius: 0.375rem; /* Rounded corners */
+  font-size: 0.6875rem; /* Slightly smaller font for specs */
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.car-specs svg {
+    margin-right: 0.25rem; /* Adjust icon spacing */
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .car-favorite-btn {
-  background-color: rgba(255, 255, 255, 0.15);
+  background-color: rgba(255, 255, 255, 0.25); /* More prominent background */
   border-radius: 50%;
-  width: 32px;
-  height: 32px;
+  width: 2.25rem; /* Larger button */
+  height: 2.25rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  flex-shrink: 0; /* Prevent shrinking */
+  margin-left: 0.5rem; /* Space from specs */
 }
 
 .car-favorite-btn:hover {
-  background-color: rgba(255, 255, 255, 0.25);
+  background-color: rgba(255, 255, 255, 0.4);
+  transform: scale(1.1); /* Pop effect on hover */
 }
 
+.car-favorite-btn svg {
+    stroke-width: 1.5; /* Slightly thinner stroke */
+}
+
+/* Featured Badge */
 .car-badge {
   position: absolute;
-  top: 12px;
+  top: 0.75rem; /* Adjusted position */
   left: 0;
-  background: #FFD700;
-  color: black;
-  font-weight: bold;
-  font-size: 12px;
-  padding: 4px 8px;
-  border-radius: 0 4px 4px 0;
+  background: #f59e0b; /* Tailwind amber-500 */
+  color: #1a202c; /* Dark text for contrast */
+  font-weight: 700;
+  font-size: 0.75rem; /* text-xs */
+  padding: 0.25rem 0.75rem;
+  border-radius: 0 0.375rem 0.375rem 0; /* More rounded edge */
   z-index: 3;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  letter-spacing: 0.05em; /* Slight letter spacing */
 }
 
+/* Car Status Badge */
+.car-status-badge {
+  position: absolute;
+  top: 0.75rem;
+  right: 0;
+  font-weight: 600;
+  font-size: 0.625rem; /* text-xs */
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem 0 0 0.375rem;
+  z-index: 3;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  letter-spacing: 0.05em;
+}
+
+/* Loading Overlay */
 .loading-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.85); /* Slightly less transparent */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -403,10 +466,10 @@ export default {
 }
 
 .loading-spinner {
-  width: 50px;
-  height: 50px;
-  border: 5px solid #f3f3f3;
-  border-top: 5px solid #3498db;
+  width: 3.5rem; /* Larger spinner */
+  height: 3.5rem;
+  border: 4px solid #e0e7ff; /* Lighter border */
+  border-top: 4px solid #3b82f6; /* Tailwind blue-500 */
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -415,4 +478,4 @@ export default {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
-</style> 
+</style>

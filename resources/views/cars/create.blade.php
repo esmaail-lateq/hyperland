@@ -90,6 +90,22 @@
                                 <x-input-error :messages="$errors->get('transmission')" class="mt-2" />
                             </div>
 
+                            <!-- Cylinders -->
+                            <div>
+                                <x-input-label for="cylinders" :value="__('Cylinders')" />
+                                <select id="cylinders" name="cylinders" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                                    <option value="">Select Cylinders</option>
+                                    <option value="3" {{ old('cylinders') == '3' ? 'selected' : '' }}>3 Cylinders</option>
+                                    <option value="4" {{ old('cylinders') == '4' ? 'selected' : '' }}>4 Cylinders</option>
+                                    <option value="6" {{ old('cylinders') == '6' ? 'selected' : '' }}>6 Cylinders</option>
+                                    <option value="8" {{ old('cylinders') == '8' ? 'selected' : '' }}>8 Cylinders</option>
+                                    <option value="10" {{ old('cylinders') == '10' ? 'selected' : '' }}>10 Cylinders</option>
+                                    <option value="12" {{ old('cylinders') == '12' ? 'selected' : '' }}>12 Cylinders</option>
+                                    <option value="16" {{ old('cylinders') == '16' ? 'selected' : '' }}>16 Cylinders</option>
+                                </select>
+                                <x-input-error :messages="$errors->get('cylinders')" class="mt-2" />
+                            </div>
+
                             <!-- Location -->
                             <div>
                                 <x-input-label for="location" :value="__('Location')" />
@@ -106,6 +122,18 @@
                                     <option value="for_parts" {{ old('condition') == 'for_parts' ? 'selected' : '' }}>For Parts</option>
                                 </select>
                                 <x-input-error :messages="$errors->get('condition')" class="mt-2" />
+                            </div>
+
+                            <!-- Car Status -->
+                            <div>
+                                <x-input-label for="status" :value="__('Car Status')" />
+                                <select id="status" name="status" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                                    <option value="available" {{ old('status', 'available') == 'available' ? 'selected' : '' }}>متوفرة للبيع في صنعاء أو أي محافظة أخرى</option>
+                                    <option value="at_customs" {{ old('status') == 'at_customs' ? 'selected' : '' }}>متوفرة في المنافذ الجمركية</option>
+                                    <option value="in_transit" {{ old('status') == 'in_transit' ? 'selected' : '' }}>قيد الشحن إلى اليمن</option>
+                                    <option value="purchased" {{ old('status') == 'purchased' ? 'selected' : '' }}>تم شراؤها مؤخرًا من المزاد</option>
+                                </select>
+                                <x-input-error :messages="$errors->get('status')" class="mt-2" />
                             </div>
 
                             <!-- Number of Owners -->

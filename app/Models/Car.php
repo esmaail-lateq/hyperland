@@ -26,11 +26,13 @@ class Car extends Model
         'mileage',
         'price',
         'transmission',
+        'cylinders',
         'fuel_type',
         'condition',
         'location',
         'user_id',
         'status',
+        'approval_status',
         'is_featured',
         'has_air_conditioning',
         'has_leather_seats',
@@ -51,6 +53,7 @@ class Car extends Model
         'year' => 'integer',
         'mileage' => 'integer',
         'price' => 'decimal:2',
+        'cylinders' => 'integer',
         'is_featured' => 'boolean',
         'has_air_conditioning' => 'boolean',
         'has_leather_seats' => 'boolean',
@@ -92,7 +95,7 @@ class Car extends Model
      */
     public function scopeApproved($query)
     {
-        return $query->where('status', 'approved');
+        return $query->where('approval_status', 'approved');
     }
 
     /**
@@ -100,7 +103,7 @@ class Car extends Model
      */
     public function scopePending($query)
     {
-        return $query->where('status', 'pending');
+        return $query->where('approval_status', 'pending');
     }
 
     /**
@@ -108,15 +111,131 @@ class Car extends Model
      */
     public function scopeRejected($query)
     {
-        return $query->where('status', 'rejected');
+        return $query->where('approval_status', 'rejected');
     }
 
     /**
-     * Scope a query to only include featured cars.
+     * Scope a query to only include sold cars.
      */
-    public function scopeFeatured($query)
+    public function scopeSold($query)
     {
-        return $query->where('is_featured', true);
+        return $query->where('status', 'sold');
+    }
+
+    /**
+     * Scope a query to only include available cars (not sold).
+     */
+    public function scopeAvailable($query)
+    {
+        return $query->whereIn('status', ['available', 'at_customs', 'in_transit', 'purchased']);
+    }
+
+    /**
+     * Scope a query to only include cars available in Yemen.
+     */
+    public function scopeAvailableInYemen($query)
+    {
+        return $query->where('status', 'available');
+    }
+
+    /**
+     * Scope a query to only include cars available at customs.
+     */
+    public function scopeAvailableAtCustoms($query)
+    {
+        return $query->where('status', 'at_customs');
+    }
+
+    /**
+     * Scope a query to only include cars shipping to Yemen.
+     */
+    public function scopeShippingToYemen($query)
+    {
+        return $query->where('status', 'in_transit');
+    }
+
+    /**
+     * Scope a query to only include recently purchased cars.
+     */
+    public function scopeRecentlyPurchased($query)
+    {
+        return $query->where('status', 'purchased');
+    }
+
+    /**
+     * Get the status display text.
+     */
+    public function getStatusDisplayAttribute()
+    {
+        $statusMap = [
+            'available' => 'متوفرة للبيع في اليمن',
+            'at_customs' => 'متوفرة في المنافذ الجمركية',
+            'in_transit' => 'قيد الشحن إلى اليمن',
+            'purchased' => 'تم شراؤها مؤخراً من المزاد',
+            'sold' => 'تم البيع'
+        ];
+
+        return $statusMap[$this->status] ?? $this->status;
+    }
+
+    /**
+     * Get the status badge color class.
+     */
+    public function getStatusBadgeClassAttribute()
+    {
+        $badgeMap = [
+            'available' => 'bg-green-100 text-green-800',
+            'at_customs' => 'bg-blue-100 text-blue-800',
+            'in_transit' => 'bg-yellow-100 text-yellow-800',
+            'purchased' => 'bg-purple-100 text-purple-800',
+            'sold' => 'bg-gray-100 text-gray-800'
+        ];
+
+        return $badgeMap[$this->status] ?? 'bg-gray-100 text-gray-800';
+    }
+
+    /**
+     * Get the status icon.
+     */
+    public function getStatusIconAttribute()
+    {
+        $iconMap = [
+            'available' => 'M5 13l4 4L19 7',
+            'at_customs' => 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
+            'in_transit' => 'M13 10V3L4 14h7v7l9-11h-7z',
+            'purchased' => 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z',
+            'sold' => 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'
+        ];
+
+        return $iconMap[$this->status] ?? 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z';
+    }
+
+    /**
+     * Get the approval status display text.
+     */
+    public function getApprovalStatusDisplayAttribute()
+    {
+        $approvalMap = [
+            'pending' => 'في انتظار الموافقة',
+            'approved' => 'تمت الموافقة',
+            'rejected' => 'مرفوضة'
+        ];
+
+        return $approvalMap[$this->approval_status] ?? $this->approval_status;
+    }
+
+    /**
+     * Get the approval status badge color class.
+     */
+    public function getApprovalStatusBadgeClassAttribute()
+    {
+        $approvalBadgeMap = [
+            'pending' => 'bg-orange-100 text-orange-800',
+            'approved' => 'bg-green-100 text-green-800',
+            'rejected' => 'bg-red-100 text-red-800'
+        ];
+
+        return $approvalBadgeMap[$this->approval_status] ?? 'bg-gray-100 text-gray-800';
     }
 
     /**
@@ -149,5 +268,21 @@ class Car extends Model
     public function getFormattedPriceAttribute()
     {
         return number_format($this->price, 0) . ' €';
+    }
+
+    /**
+     * Get the advertisement number for the car.
+     */
+    public function getAdNumberAttribute()
+    {
+        return 'AD-' . str_pad($this->id, 6, '0', STR_PAD_LEFT);
+    }
+
+    /**
+     * Check if the car is new (less than 7 days old).
+     */
+    public function getIsNewAttribute()
+    {
+        return $this->created_at->diffInDays(now()) <= 7;
     }
 } 

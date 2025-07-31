@@ -26,14 +26,29 @@ class AdminCarController extends Controller
         $status = $request->get('status', 'all');
         
         $cars = Car::with(['user', 'images'])
-            ->when($status === 'pending', function ($query) {
-                return $query->where('status', 'pending');
+            ->when($status === 'pending_approval', function ($query) {
+                return $query->where('status', 'pending_approval');
             })
-            ->when($status === 'approved', function ($query) {
-                return $query->where('status', 'approved');
+            ->when($status === 'available_in_yemen', function ($query) {
+                return $query->where('status', 'available_in_yemen');
+            })
+            ->when($status === 'available_at_customs', function ($query) {
+                return $query->where('status', 'available_at_customs');
+            })
+            ->when($status === 'shipping_to_yemen', function ($query) {
+                return $query->where('status', 'shipping_to_yemen');
+            })
+            ->when($status === 'recently_purchased', function ($query) {
+                return $query->where('status', 'recently_purchased');
+            })
+            ->when($status === 'admin_approved', function ($query) {
+                return $query->where('status', 'admin_approved');
             })
             ->when($status === 'rejected', function ($query) {
                 return $query->where('status', 'rejected');
+            })
+            ->when($status === 'sold', function ($query) {
+                return $query->where('status', 'sold');
             })
             ->when($status === 'featured', function ($query) {
                 return $query->where('is_featured', true);
@@ -89,6 +104,24 @@ class AdminCarController extends Controller
         $car->update(['is_featured' => !$car->is_featured]);
         
         return back()->with('success', 'Car featured status updated successfully!');
+    }
+
+    /**
+     * Update the status of a car.
+     */
+    public function updateStatus(Request $request, Car $car)
+    {
+        if (!Gate::allows('admin')) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $request->validate([
+            'status' => ['required', 'string', 'in:available_in_yemen,available_at_customs,shipping_to_yemen,recently_purchased,pending_approval,admin_approved,rejected,sold']
+        ]);
+
+        $car->update(['status' => $request->status]);
+        
+        return back()->with('success', 'Car status updated successfully!');
     }
 
     /**

@@ -5,10 +5,12 @@ use App\Http\Controllers\CarController;
 use App\Http\Controllers\DealerController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Admin\CarController as AdminCarController;
+use App\Http\Controllers\Admin\AdminCarController;
 use App\Http\Controllers\CarImageController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AboutController;
 use App\Http\Controllers\Profile\AvatarController;
+use App\Http\Controllers\UnifiedCarController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +25,14 @@ use App\Http\Controllers\Profile\AvatarController;
 
 // Home page
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// Dashboard route
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+
+// About page
+Route::get('/about', [AboutController::class, 'index'])->name('about');
 
 // Cars routes
 Route::resource('cars', CarController::class);
@@ -55,6 +65,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile/avatar', [AvatarController::class, 'destroy'])->name('profile.avatar.destroy');
     
     Route::get('/my-cars', [ProfileController::class, 'myCars'])->name('profile.my-cars');
+    Route::patch('/my-cars/{car}/update-status', [ProfileController::class, 'updateCarStatus'])->name('profile.cars.update-status');
+    
+    // Unified Car Management
+    Route::get('/unified-cars', [UnifiedCarController::class, 'index'])->name('unified-cars.index');
+    Route::patch('/unified-cars/{car}/update-status', [UnifiedCarController::class, 'updateStatus'])->name('unified-cars.update-status');
+    Route::patch('/unified-cars/{car}/toggle-featured', [UnifiedCarController::class, 'toggleFeatured'])->name('unified-cars.toggle-featured');
+    Route::patch('/unified-cars/{car}/approve', [UnifiedCarController::class, 'approve'])->name('unified-cars.approve');
+    Route::patch('/unified-cars/{car}/reject', [UnifiedCarController::class, 'reject'])->name('unified-cars.reject');
 });
 
 // Admin Routes
@@ -62,7 +80,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::get('/cars', [AdminCarController::class, 'index'])->name('cars.index');
     Route::patch('/cars/{car}/approve', [AdminCarController::class, 'approve'])->name('cars.approve');
     Route::patch('/cars/{car}/reject', [AdminCarController::class, 'reject'])->name('cars.reject');
+    Route::patch('/cars/{car}/mark-sold', [AdminCarController::class, 'markAsSold'])->name('cars.mark-sold');
     Route::patch('/cars/{car}/toggle-featured', [AdminCarController::class, 'toggleFeatured'])->name('cars.toggle-featured');
+    Route::patch('/cars/{car}/update-status', [AdminCarController::class, 'updateStatus'])->name('cars.update-status');
 });
+
+// Language switching
+Route::get('language/{locale}', [App\Http\Controllers\LanguageController::class, 'switchLanguage'])->name('language.switch');
 
 require __DIR__.'/auth.php';
