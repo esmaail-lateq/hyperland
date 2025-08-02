@@ -14,6 +14,7 @@ use App\Http\Controllers\Profile\AvatarController;
 use App\Http\Controllers\UnifiedCarController;
 use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,7 +44,6 @@ Route::post('/shipping/track', [ShippingController::class, 'track'])->name('ship
 
 // Cars routes - browsing for everyone, management for admins/sub-admins only
 Route::get('/cars', [CarController::class, 'index'])->name('cars.index');
-Route::get('/cars/{car}', [CarController::class, 'show'])->name('cars.show');
 
 // Car management routes (admin/sub-admin only)
 Route::middleware(['auth', 'content.management'])->group(function () {
@@ -54,6 +54,9 @@ Route::middleware(['auth', 'content.management'])->group(function () {
     Route::delete('/cars/{car}', [CarController::class, 'destroy'])->name('cars.destroy');
 });
 
+// Car show route (must come after create route)
+Route::get('/cars/{car}', [CarController::class, 'show'])->name('cars.show');
+
 // Car images routes
 Route::middleware('auth')->group(function () {
     Route::delete('/car-images/{image}', [CarImageController::class, 'destroy'])->name('car-images.destroy');
@@ -63,7 +66,6 @@ Route::middleware('auth')->group(function () {
 
 // Spare Parts routes - browsing for everyone, management for admins/sub-admins only
 Route::get('/spare-parts', [SparePartController::class, 'index'])->name('spare-parts.index');
-Route::get('/spare-parts/{sparePart}', [SparePartController::class, 'show'])->name('spare-parts.show');
 Route::post('/spare-parts/request-custom', [SparePartController::class, 'requestCustom'])->name('spare-parts.request-custom');
 
 
@@ -96,6 +98,9 @@ Route::middleware('auth')->group(function () {
         Route::delete('/spare-parts/{sparePart}', [SparePartController::class, 'destroy'])->name('spare-parts.destroy');
     });
     
+    // Spare Part show route (must come after create route)
+    Route::get('/spare-parts/{sparePart}', [SparePartController::class, 'show'])->name('spare-parts.show');
+    
     // Unified Car Management (admin/sub-admin only)
     Route::middleware('content.management')->group(function () {
         Route::get('/unified-cars', [UnifiedCarController::class, 'index'])->name('unified-cars.index');
@@ -115,6 +120,16 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::resource('users', UserManagementController::class);
     Route::patch('/users/{user}/toggle-status', [UserManagementController::class, 'toggleStatus'])->name('users.toggle-status');
     Route::get('/users/statistics', [UserManagementController::class, 'statistics'])->name('users.statistics');
+});
+
+// Notification routes (authenticated users only)
+Route::middleware('auth')->group(function () {
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::patch('/notifications/{notification}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
+    Route::patch('/notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.read-all');
+    Route::delete('/notifications/{notification}', [NotificationController::class, 'destroy'])->name('notifications.destroy');
+    Route::get('/notifications/unread-count', [NotificationController::class, 'getUnreadCount'])->name('notifications.unread-count');
+    Route::get('/notifications/recent', [NotificationController::class, 'getRecent'])->name('notifications.recent');
 });
 
 // Language routes

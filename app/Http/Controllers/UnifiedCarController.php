@@ -177,6 +177,13 @@ class UnifiedCarController extends Controller
         
         $car->update(['approval_status' => 'approved']);
         
+        // Send notification to car owner
+        try {
+            $car->user->notify(new \App\Notifications\CarApprovalNotification($car, auth()->user()));
+        } catch (\Exception $e) {
+            \Log::error('Failed to send car approval notification: ' . $e->getMessage());
+        }
+        
         return back()->with('success', 'تم الموافقة على السيارة بنجاح!');
     }
     
@@ -194,6 +201,13 @@ class UnifiedCarController extends Controller
         }
         
         $car->update(['approval_status' => 'rejected']);
+        
+        // Send notification to car owner
+        try {
+            $car->user->notify(new \App\Notifications\CarRejectionNotification($car, auth()->user()));
+        } catch (\Exception $e) {
+            \Log::error('Failed to send car rejection notification: ' . $e->getMessage());
+        }
         
         return back()->with('success', 'تم رفض السيارة بنجاح!');
     }
@@ -280,6 +294,13 @@ class UnifiedCarController extends Controller
         
         $sparePart->update(['approval_status' => 'approved']);
         
+        // Send notification to spare part creator
+        try {
+            $sparePart->creator->notify(new \App\Notifications\SparePartApprovalNotification($sparePart, auth()->user()));
+        } catch (\Exception $e) {
+            \Log::error('Failed to send spare part approval notification: ' . $e->getMessage());
+        }
+        
         return back()->with('success', 'تم الموافقة على قطع الغيار بنجاح!');
     }
     
@@ -296,6 +317,13 @@ class UnifiedCarController extends Controller
             return back()->with('error', 'يمكن رفض قطع الغيار في انتظار الموافقة فقط.');
         }
         $sparePart->update(['approval_status' => 'rejected']);
+        
+        // Send notification to spare part creator
+        try {
+            $sparePart->creator->notify(new \App\Notifications\SparePartRejectionNotification($sparePart, auth()->user()));
+        } catch (\Exception $e) {
+            \Log::error('Failed to send spare part rejection notification: ' . $e->getMessage());
+        }
         
         return back()->with('success', 'تم رفض قطع الغيار بنجاح!');
     }

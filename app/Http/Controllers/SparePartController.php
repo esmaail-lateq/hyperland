@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SparePart;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -57,6 +58,18 @@ class SparePartController extends Controller
             'approval_status' => 'pending',
             'created_by' => Auth::id()
         ]);
+
+        // Send notification to main admin if spare part is added by sub-admin
+        if (Auth::user()->isSubAdmin()) {
+            try {
+                $mainAdmins = User::where('role', 'admin')->where('status', 'active')->get();
+                foreach ($mainAdmins as $admin) {
+                    $admin->notify(new \App\Notifications\SparePartAddedNotification($sparePart, Auth::user()));
+                }
+            } catch (\Exception $e) {
+                \Log::error('Failed to send spare part added notification: ' . $e->getMessage());
+            }
+        }
 
         return redirect()->route('spare-parts.show', $sparePart)
             ->with('success', 'تم إرسال طلب قطع الغيار بنجاح! سيتم مراجعته من قبل الإدارة.');

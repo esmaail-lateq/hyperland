@@ -5,9 +5,9 @@
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Header -->
         <div class="text-center mb-8">
-            <h1 class="text-3xl font-bold text-gray-900 mb-2">تعديل قطع الغيار</h1>
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ __('spare_parts.edit_spare_part') }}</h1>
             <p class="text-gray-600">
-                قم بتحديث معلومات قطع الغيار.
+                {{ __('spare_parts.update_spare_part_description') }}
             </p>
         </div>
 
@@ -19,14 +19,14 @@
                 <!-- Name -->
                 <div class="mb-6">
                     <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
-                        اسم قطع الغيار <span class="text-red-500">*</span>
+                        {{ __('spare_parts.spare_part_name') }} <span class="text-red-500">*</span>
                     </label>
                     <input type="text" 
                            id="name" 
                            name="name" 
                            value="{{ old('name', $sparePart->name) }}"
                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                           placeholder="مثال: فرامل أمامية لسيارة تويوتا"
+                           placeholder="{{ __('spare_parts.name_placeholder') }}"
                            required>
                     @error('name')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -36,14 +36,14 @@
                 <!-- Description -->
                 <div class="mb-6">
                     <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
-                        الوصف
+                        {{ __('spare_parts.description') }}
                     </label>
                     <textarea 
                         id="description" 
                         name="description" 
                         rows="4" 
                         class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="اكتب وصفاً مفصلاً لقطع الغيار..."
+                        placeholder="{{ __('spare_parts.description_placeholder') }}"
                     >{{ old('description', $sparePart->description) }}</textarea>
                     @error('description')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -54,7 +54,7 @@
                 @if($sparePart->images && count($sparePart->images) > 0)
                 <div class="mb-6">
                     <label class="block text-sm font-medium text-gray-700 mb-2">
-                        الصور الحالية
+                        {{ __('spare_parts.current_images') }}
                     </label>
                     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                         @foreach($sparePart->image_urls as $index => $imageUrl)
@@ -71,7 +71,7 @@
                         @endforeach
                     </div>
                     <p class="mt-2 text-sm text-gray-500">
-                        لاستبدال الصور، اختر صوراً جديدة أدناه.
+                        {{ __('spare_parts.replace_images_description') }}
                     </p>
                 </div>
                 @endif
@@ -79,7 +79,7 @@
                 <!-- New Images -->
                 <div class="mb-6">
                     <label for="images" class="block text-sm font-medium text-gray-700 mb-2">
-                        صور جديدة (اختياري)
+                        {{ __('spare_parts.new_images') }}
                     </label>
                     <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
                         <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
@@ -88,10 +88,10 @@
                         <div class="mt-4">
                             <label for="images" class="cursor-pointer">
                                 <span class="mt-2 block text-sm font-medium text-gray-900">
-                                    اختر الصور
+                                    {{ __('spare_parts.choose_images') }}
                                 </span>
                                 <span class="mt-1 block text-xs text-gray-500">
-                                    PNG, JPG, GIF حتى 2MB لكل صورة
+                                    {{ __('spare_parts.image_format_info') }}
                                 </span>
                             </label>
                             <input id="images" 
@@ -117,11 +117,11 @@
                 <div class="flex justify-end space-x-4">
                     <a href="{{ route('spare-parts.show', $sparePart) }}" 
                        class="px-6 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors duration-200">
-                        إلغاء
+                        {{ __('spare_parts.cancel') }}
                     </a>
                     <button type="submit" 
                             class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200">
-                        حفظ التغييرات
+                        {{ __('spare_parts.save_changes') }}
                     </button>
                 </div>
             </form>

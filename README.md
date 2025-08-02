@@ -24,6 +24,7 @@ A modern car marketplace built with Laravel, featuring a clean UI and comprehens
 - ⭐ Featured listings management
 - 👥 User management
 - 📊 Advanced statistics
+- 🔔 Real-time notification system
 
 ## 🛠️ Tech Stack
 
@@ -110,6 +111,7 @@ npm run dev
 3. Save favorite listings
 4. Contact sellers
 5. Create your own listings
+6. Receive notifications for approval/rejection of listings
 
 ### For Admins
 1. Access admin panel through /admin
@@ -117,6 +119,37 @@ npm run dev
 3. Manage users
 4. View statistics
 5. Mark listings as featured
+6. Receive notifications when new content is added
+7. Manage notifications through the notification center
+
+## 🔔 Notification System
+
+The application includes a comprehensive notification system that provides real-time updates for:
+
+### Notification Types
+- **Car Added**: Notifies main admins when sub-admins add new cars
+- **Spare Part Added**: Notifies main admins when sub-admins add new spare parts
+- **Car Approval**: Notifies car owners when their cars are approved
+- **Car Rejection**: Notifies car owners when their cars are rejected
+- **Spare Part Approval**: Notifies spare part creators when their items are approved
+- **Spare Part Rejection**: Notifies spare part creators when their items are rejected
+
+### Features
+- Real-time notification display in header
+- Comprehensive notification management page
+- Filter notifications by type and read status
+- Mark notifications as read/unread
+- Delete notifications
+- Multi-language support (Arabic/English)
+- Email notifications
+- Database storage
+- Broadcast support for real-time updates
+
+### Accessing Notifications
+- Click the notification bell icon in the header to view recent notifications
+- Click "View All Notifications" to access the full notification center
+- Use filters to find specific notifications
+- Mark notifications as read or delete them as needed
 
 ## 🤝 Contributing
 

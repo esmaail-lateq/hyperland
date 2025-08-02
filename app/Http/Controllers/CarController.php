@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Car;
 use App\Models\CarImage;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -221,6 +222,18 @@ class CarController extends Controller
                     'is_primary' => $index === 0,
                     'display_order' => $index,
                 ]);
+            }
+        }
+
+        // Send notification to main admin if car is added by sub-admin
+        if (auth()->user()->isSubAdmin()) {
+            try {
+                $mainAdmins = User::where('role', 'admin')->where('status', 'active')->get();
+                foreach ($mainAdmins as $admin) {
+                    $admin->notify(new \App\Notifications\CarAddedNotification($car, auth()->user()));
+                }
+            } catch (\Exception $e) {
+                \Log::error('Failed to send car added notification: ' . $e->getMessage());
             }
         }
 

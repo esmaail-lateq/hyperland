@@ -80,4 +80,27 @@ return [
     'user_not_found' => 'المستخدم غير موجود.',
     'car_not_found' => 'السيارة غير موجودة.',
     'insufficient_permissions' => 'ليس لديك صلاحيات كافية لتنفيذ هذا الإجراء.',
+    
+    // Dashboard
+    'comprehensive_dashboard' => 'لوحة الإدارة الشاملة',
+    'content_management' => 'إدارة المحتوى',
+    'unified_management' => 'الإدارة الموحدة',
+    'system_overview' => 'نظرة عامة على النظام',
+    
+    // Statistics
+    'total_listings' => 'إجمالي الإعلانات',
+    'pending_approvals' => 'الموافقات المعلقة',
+    'featured_items' => 'العناصر المميزة',
+    'recent_activities' => 'الأنشطة الأخيرة',
+    
+    // Actions
+    'approve_all' => 'الموافقة على الكل',
+    'reject_all' => 'رفض الكل',
+    'feature_all' => 'تمييز الكل',
+    'unfeature_all' => 'إلغاء تمييز الكل',
+    
+    // Messages
+    'bulk_action_success' => 'تم تنفيذ الإجراء الجماعي بنجاح.',
+    'bulk_action_error' => 'حدث خطأ أثناء الإجراء الجماعي.',
+    'no_items_selected' => 'لم يتم تحديد عناصر للإجراء.',
 ]; 

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ $isAdmin ? 'لوحة الإدارة الشاملة' : 'إدارة المحتوى' }}
+            {{ $isAdmin ? __('admin.comprehensive_dashboard') : __('admin.content_management') }}
         </h2>
     </x-slot>
 
@@ -37,7 +37,7 @@
                         السيارات
                     </a>
                     <a href="{{ route('unified-cars.index', array_merge(['type' => 'spare-parts'], request()->except('type'))) }}" class="px-4 py-2 text-sm font-medium {{ request('type') === 'spare-parts' ? 'text-emerald-600 border-b-2 border-emerald-600' : 'text-gray-500 hover:text-gray-700' }}">
-                        قطع الغيار
+                        {{ __('navigation.spare_parts') }}
                     </a>
                 </div>
             </div>
@@ -442,7 +442,7 @@
                                         الصورة
                                     </th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        تفاصيل قطع الغيار
+                                        {{ __('navigation.spare_part_details') }}
                                     </th>
                                     @if($isAdmin)
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -535,7 +535,7 @@
                                                 <form action="{{ route('spare-parts.destroy', $sparePart) }}" method="POST" class="inline">
                                                     @csrf @method('DELETE')
                                                     <button type="submit" 
-                                                            onclick="return confirm('هل أنت متأكد من حذف قطع الغيار هذه؟')"
+                                                            onclick="return confirm('{{ __('spare_parts.delete_confirmation') }}')"
                                                             class="text-red-600 hover:text-red-900 transition-colors duration-200">
                                                         حذف
                                                     </button>

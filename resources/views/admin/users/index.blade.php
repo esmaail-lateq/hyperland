@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'إدارة المستخدمين')
+@section('title', __('navigation.user_management'))
 
 @section('content')
 <div class="min-h-screen bg-gray-50 py-8">
@@ -10,7 +10,7 @@
         <div class="mb-8">
             <div class="flex justify-between items-center">
                 <div>
-                    <h1 class="text-3xl font-bold text-gray-900">إدارة المستخدمين</h1>
+                    <h1 class="text-3xl font-bold text-gray-900">{{ __('navigation.user_management') }}</h1>
                     <p class="mt-2 text-gray-600">إدارة حسابات المستخدمين وأدوارهم في النظام</p>
                 </div>
                 <a href="{{ route('admin.users.create') }}" 

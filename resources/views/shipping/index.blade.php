@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'خدمات الشحن - تتبع الحاويات')
+@section('title', __('shipping.shipping_services') . ' - ' . __('shipping.container_tracking'))
 
 @section('content')
 <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8">
@@ -12,10 +12,10 @@
                 <svg class="inline-block w-8 h-8 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
                 </svg>
-                خدمات الشحن
+                {{ __('shipping.shipping_services') }}
             </h1>
             <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-                تتبع شحناتك وحاوياتك بسهولة عبر Maersk مع معلومات محدثة في الوقت الفعلي
+                {{ __('shipping.shipping_description') }}
             </p>
         </div>
 
@@ -23,7 +23,7 @@
         <div class="bg-white rounded-2xl shadow-xl p-8 mb-8">
             <div class="max-w-3xl mx-auto">
                 <h2 class="text-2xl font-semibold text-gray-900 mb-6 text-center">
-                    تتبع الشحنة
+                    {{ __('shipping.track_shipment') }}
                 </h2>
 
                 <!-- Search Form -->
@@ -34,18 +34,18 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="space-y-2">
                             <label class="block text-sm font-medium text-gray-700 mb-2">
-                                نوع التتبع
+                                {{ __('shipping.tracking_type') }}
                             </label>
                             <div class="flex space-x-4">
                                 <label class="flex items-center">
                                     <input type="radio" name="tracking_type" value="container" checked
                                            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
-                                    <span class="ml-2 text-sm text-gray-700">رقم الحاوية</span>
+                                    <span class="ml-2 text-sm text-gray-700">{{ __('shipping.container_number') }}</span>
                                 </label>
                                 <label class="flex items-center">
                                     <input type="radio" name="tracking_type" value="booking"
                                            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
-                                    <span class="ml-2 text-sm text-gray-700">رقم الحجز</span>
+                                    <span class="ml-2 text-sm text-gray-700">{{ __('shipping.booking_number') }}</span>
                                 </label>
                             </div>
                         </div>
@@ -54,12 +54,12 @@
                     <!-- Tracking Number Input -->
                     <div>
                         <label for="tracking_number" class="block text-sm font-medium text-gray-700 mb-2">
-                            رقم التتبع
+                            {{ __('shipping.tracking_number') }}
                         </label>
                         <div class="relative">
                             <input type="text" id="tracking_number" name="tracking_number" required
                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg"
-                                   placeholder="أدخل رقم الحاوية أو الحجز"
+                                   placeholder="{{ __('shipping.tracking_number_placeholder') }}"
                                    maxlength="50">
                             <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
                                 <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -76,7 +76,7 @@
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
-                            تتبع الشحنة
+                            {{ __('shipping.track_shipment') }}
                         </button>
                     </div>
                 </form>
@@ -91,7 +91,7 @@
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
-                    جاري البحث عن الشحنة...
+                    {{ __('shipping.searching_shipment') }}
                 </div>
             </div>
         </div>
@@ -102,8 +102,8 @@
                 <svg class="mx-auto h-12 w-12 text-red-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
                 </svg>
-                <h3 class="text-lg font-medium text-red-800 mb-2" id="errorTitle">حدث خطأ</h3>
-                <p class="text-red-600" id="errorMessage">لم يتم العثور على الشحنة</p>
+                <h3 class="text-lg font-medium text-red-800 mb-2" id="errorTitle">{{ __('shipping.error_title') }}</h3>
+                <p class="text-red-600" id="errorMessage">{{ __('shipping.error_message') }}</p>
             </div>
         </div>
 
@@ -113,28 +113,28 @@
             <!-- Main Info Card -->
             <div class="bg-white rounded-2xl shadow-xl p-8">
                 <div class="flex items-center justify-between mb-6">
-                    <h3 class="text-2xl font-semibold text-gray-900">معلومات الشحنة</h3>
+                    <h3 class="text-2xl font-semibold text-gray-900">{{ __('shipping.shipment_info') }}</h3>
                     <div id="statusBadge" class="px-4 py-2 rounded-full text-sm font-medium"></div>
                 </div>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     <div class="bg-gray-50 rounded-lg p-4">
-                        <div class="text-sm font-medium text-gray-500 mb-1">رقم التتبع</div>
+                        <div class="text-sm font-medium text-gray-500 mb-1">{{ __('shipping.tracking_number_label') }}</div>
                         <div id="trackingNumber" class="text-lg font-semibold text-gray-900"></div>
                     </div>
                     
                     <div class="bg-gray-50 rounded-lg p-4">
-                        <div class="text-sm font-medium text-gray-500 mb-1">الموقع الحالي</div>
+                        <div class="text-sm font-medium text-gray-500 mb-1">{{ __('shipping.current_location_label') }}</div>
                         <div id="currentLocation" class="text-lg font-semibold text-gray-900"></div>
                     </div>
                     
                     <div class="bg-gray-50 rounded-lg p-4">
-                        <div class="text-sm font-medium text-gray-500 mb-1">تاريخ الوصول المتوقع</div>
+                        <div class="text-sm font-medium text-gray-500 mb-1">{{ __('shipping.expected_arrival_label') }}</div>
                         <div id="expectedArrival" class="text-lg font-semibold text-gray-900"></div>
                     </div>
                     
                     <div class="bg-gray-50 rounded-lg p-4">
-                        <div class="text-sm font-medium text-gray-500 mb-1">آخر تحديث</div>
+                        <div class="text-sm font-medium text-gray-500 mb-1">{{ __('shipping.last_update_label') }}</div>
                         <div id="lastUpdate" class="text-lg font-semibold text-gray-900"></div>
                     </div>
                 </div>
@@ -142,7 +142,7 @@
 
             <!-- Movement History -->
             <div class="bg-white rounded-2xl shadow-xl p-8">
-                <h3 class="text-2xl font-semibold text-gray-900 mb-6">سجل الحركة</h3>
+                <h3 class="text-2xl font-semibold text-gray-900 mb-6">{{ __('shipping.movement_history') }}</h3>
                 
                 <div id="movementHistory" class="space-y-4">
                     <!-- Movement items will be populated here -->
@@ -151,7 +151,7 @@
 
             <!-- Container Info (if available) -->
             <div id="containerInfoSection" class="hidden bg-white rounded-2xl shadow-xl p-8">
-                <h3 class="text-2xl font-semibold text-gray-900 mb-6">معلومات الحاوية</h3>
+                <h3 class="text-2xl font-semibold text-gray-900 mb-6">{{ __('shipping.container_info') }}</h3>
                 
                 <div id="containerInfo" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <!-- Container info will be populated here -->
@@ -162,11 +162,11 @@
         <!-- Help Section -->
         <div class="bg-blue-50 rounded-2xl p-8 mt-8">
             <div class="max-w-4xl mx-auto">
-                <h3 class="text-xl font-semibold text-blue-900 mb-4">كيفية استخدام خدمة التتبع</h3>
+                <h3 class="text-xl font-semibold text-blue-900 mb-4">{{ __('shipping.how_to_use') }}</h3>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="space-y-3">
-                        <h4 class="font-medium text-blue-800">رقم الحاوية</h4>
+                        <h4 class="font-medium text-blue-800">{{ __('shipping.container_number_info') }}</h4>
                         <ul class="text-sm text-blue-700 space-y-1">
                             <li>• يتكون من 11 حرف (مثال: ABCD1234567)</li>
                             <li>• موجود على الحاوية نفسها</li>
@@ -175,7 +175,7 @@
                     </div>
                     
                     <div class="space-y-3">
-                        <h4 class="font-medium text-blue-800">رقم الحجز</h4>
+                        <h4 class="font-medium text-blue-800">{{ __('shipping.booking_number_info') }}</h4>
                         <ul class="text-sm text-blue-700 space-y-1">
                             <li>• يتكون من 9 أرقام (مثال: 123456789)</li>
                             <li>• موجود في وثائق الشحن</li>

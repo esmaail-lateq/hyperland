@@ -201,4 +201,12 @@ class User extends Authenticatable
         
         return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&color=7F9CF5&background=EBF4FF';
     }
+
+    /**
+     * Get recent notifications for the user.
+     */
+    public function getRecentNotifications($limit = 5)
+    {
+        return $this->notifications()->latest()->take($limit)->get();
+    }
 }

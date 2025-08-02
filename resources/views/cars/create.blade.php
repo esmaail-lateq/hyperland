@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Post New Car Listing') }}
+            {{ __('cars.post_new_car_listing') }}
         </h2>
     </x-slot>
 
@@ -15,16 +15,16 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <!-- Title -->
                             <div class="col-span-1 md:col-span-2">
-                                <x-input-label for="title" :value="__('Listing Title')" />
+                                <x-input-label for="title" :value="__('cars.listing_title')" />
                                 <x-text-input id="title" class="block mt-1 w-full" type="text" name="title" :value="old('title')" required autofocus />
                                 <x-input-error :messages="$errors->get('title')" class="mt-2" />
                             </div>
 
                             <!-- Make -->
                             <div>
-                                <x-input-label for="make" :value="__('Cars')" />
+                                <x-input-label for="make" :value="__('cars.car_make')" />
                                 <select id="make" name="make" x-model="make" @change="updateModels()" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-                                    <option value="">All Cars</option>
+                                    <option value="">{{ __('cars.all_cars') }}</option>
                                     <template x-for="makeOption in makes" :key="makeOption">
                                         <option x-text="makeOption" :value="makeOption" :selected="makeOption === '{{ old('make') }}'"></option>
                                     </template>
@@ -34,9 +34,9 @@
 
                             <!-- Model -->
                             <div>
-                                <x-input-label for="model" :value="__('Model')" />
+                                <x-input-label for="model" :value="__('cars.car_model')" />
                                 <select id="model" name="model" x-model="model" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-                                    <option value="">Select Model</option>
+                                    <option value="">{{ __('cars.select_model') }}</option>
                                     <template x-for="modelOption in availableModels" :key="modelOption">
                                         <option x-text="modelOption" :value="modelOption" :selected="modelOption === '{{ old('model') }}'"></option>
                                     </template>
@@ -46,80 +46,80 @@
 
                             <!-- Year -->
                             <div>
-                                <x-input-label for="year" :value="__('Year')" />
+                                <x-input-label for="year" :value="__('cars.car_year')" />
                                 <x-text-input id="year" class="block mt-1 w-full" type="number" name="year" :value="old('year')" min="1900" max="{{ date('Y') + 1 }}" required />
                                 <x-input-error :messages="$errors->get('year')" class="mt-2" />
                             </div>
 
                             <!-- Price -->
                             <div>
-                                <x-input-label for="price" :value="__('Price (€)')" />
+                                <x-input-label for="price" :value="__('cars.price')" />
                                 <x-text-input id="price" class="block mt-1 w-full" type="number" name="price" :value="old('price')" min="0" step="0.01" required />
                                 <x-input-error :messages="$errors->get('price')" class="mt-2" />
                             </div>
 
                             <!-- Mileage -->
                             <div>
-                                <x-input-label for="mileage" :value="__('Mileage (km)')" />
+                                <x-input-label for="mileage" :value="__('cars.mileage')" />
                                 <x-text-input id="mileage" class="block mt-1 w-full" type="number" name="mileage" :value="old('mileage')" min="0" required />
                                 <x-input-error :messages="$errors->get('mileage')" class="mt-2" />
                             </div>
 
                             <!-- Fuel Type -->
                             <div>
-                                <x-input-label for="fuel_type" :value="__('Fuel Type')" />
+                                <x-input-label for="fuel_type" :value="__('cars.fuel_type')" />
                                 <select id="fuel_type" name="fuel_type" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-                                    <option value="gasoline" {{ old('fuel_type') == 'gasoline' ? 'selected' : '' }}>Gasoline</option>
-                                    <option value="diesel" {{ old('fuel_type') == 'diesel' ? 'selected' : '' }}>Diesel</option>
-                                    <option value="electric" {{ old('fuel_type') == 'electric' ? 'selected' : '' }}>Electric</option>
-                                    <option value="hybrid" {{ old('fuel_type') == 'hybrid' ? 'selected' : '' }}>Hybrid</option>
-                                    <option value="lpg" {{ old('fuel_type') == 'lpg' ? 'selected' : '' }}>LPG</option>
-                                    <option value="other" {{ old('fuel_type') == 'other' ? 'selected' : '' }}>Other</option>
+                                    <option value="gasoline" {{ old('fuel_type') == 'gasoline' ? 'selected' : '' }}>{{ __('cars.gasoline') }}</option>
+                                    <option value="diesel" {{ old('fuel_type') == 'diesel' ? 'selected' : '' }}>{{ __('cars.diesel') }}</option>
+                                    <option value="electric" {{ old('fuel_type') == 'electric' ? 'selected' : '' }}>{{ __('cars.electric') }}</option>
+                                    <option value="hybrid" {{ old('fuel_type') == 'hybrid' ? 'selected' : '' }}>{{ __('cars.hybrid') }}</option>
+                                    <option value="lpg" {{ old('fuel_type') == 'lpg' ? 'selected' : '' }}>{{ __('cars.lpg') }}</option>
+                                    <option value="other" {{ old('fuel_type') == 'other' ? 'selected' : '' }}>{{ __('cars.other') }}</option>
                                 </select>
                                 <x-input-error :messages="$errors->get('fuel_type')" class="mt-2" />
                             </div>
 
                             <!-- Transmission -->
                             <div>
-                                <x-input-label for="transmission" :value="__('Transmission')" />
+                                <x-input-label for="transmission" :value="__('cars.transmission')" />
                                 <select id="transmission" name="transmission" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-                                    <option value="manual" {{ old('transmission') == 'manual' ? 'selected' : '' }}>Manual</option>
-                                    <option value="automatic" {{ old('transmission') == 'automatic' ? 'selected' : '' }}>Automatic</option>
-                                    <option value="semi-automatic" {{ old('transmission') == 'semi-automatic' ? 'selected' : '' }}>Semi-Automatic</option>
+                                    <option value="manual" {{ old('transmission') == 'manual' ? 'selected' : '' }}>{{ __('cars.manual') }}</option>
+                                    <option value="automatic" {{ old('transmission') == 'automatic' ? 'selected' : '' }}>{{ __('cars.automatic') }}</option>
+                                    <option value="semi-automatic" {{ old('transmission') == 'semi-automatic' ? 'selected' : '' }}>{{ __('cars.semi_automatic') }}</option>
                                 </select>
                                 <x-input-error :messages="$errors->get('transmission')" class="mt-2" />
                             </div>
 
                             <!-- Cylinders -->
                             <div>
-                                <x-input-label for="cylinders" :value="__('Cylinders')" />
+                                <x-input-label for="cylinders" :value="__('cars.cylinders')" />
                                 <select id="cylinders" name="cylinders" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-                                    <option value="">Select Cylinders</option>
-                                    <option value="3" {{ old('cylinders') == '3' ? 'selected' : '' }}>3 Cylinders</option>
-                                    <option value="4" {{ old('cylinders') == '4' ? 'selected' : '' }}>4 Cylinders</option>
-                                    <option value="6" {{ old('cylinders') == '6' ? 'selected' : '' }}>6 Cylinders</option>
-                                    <option value="8" {{ old('cylinders') == '8' ? 'selected' : '' }}>8 Cylinders</option>
-                                    <option value="10" {{ old('cylinders') == '10' ? 'selected' : '' }}>10 Cylinders</option>
-                                    <option value="12" {{ old('cylinders') == '12' ? 'selected' : '' }}>12 Cylinders</option>
-                                    <option value="16" {{ old('cylinders') == '16' ? 'selected' : '' }}>16 Cylinders</option>
+                                    <option value="">{{ __('cars.select_cylinders') }}</option>
+                                    <option value="3" {{ old('cylinders') == '3' ? 'selected' : '' }}>3 {{ __('cars.cylinders') }}</option>
+                                    <option value="4" {{ old('cylinders') == '4' ? 'selected' : '' }}>4 {{ __('cars.cylinders') }}</option>
+                                    <option value="6" {{ old('cylinders') == '6' ? 'selected' : '' }}>6 {{ __('cars.cylinders') }}</option>
+                                    <option value="8" {{ old('cylinders') == '8' ? 'selected' : '' }}>8 {{ __('cars.cylinders') }}</option>
+                                    <option value="10" {{ old('cylinders') == '10' ? 'selected' : '' }}>10 {{ __('cars.cylinders') }}</option>
+                                    <option value="12" {{ old('cylinders') == '12' ? 'selected' : '' }}>12 {{ __('cars.cylinders') }}</option>
+                                    <option value="16" {{ old('cylinders') == '16' ? 'selected' : '' }}>16 {{ __('cars.cylinders') }}</option>
                                 </select>
                                 <x-input-error :messages="$errors->get('cylinders')" class="mt-2" />
                             </div>
 
                             <!-- Location -->
                             <div>
-                                <x-input-label for="location" :value="__('Location')" />
+                                <x-input-label for="location" :value="__('cars.location')" />
                                 <x-text-input id="location" class="block mt-1 w-full" type="text" name="location" :value="old('location')" required />
                                 <x-input-error :messages="$errors->get('location')" class="mt-2" />
                             </div>
 
                             <!-- Condition -->
                             <div>
-                                <x-input-label for="condition" :value="__('Condition')" />
+                                <x-input-label for="condition" :value="__('cars.condition')" />
                                 <select id="condition" name="condition" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-                                    <option value="new" {{ old('condition') == 'new' ? 'selected' : '' }}>New</option>
-                                    <option value="used" {{ old('condition') == 'used' ? 'selected' : '' }}>Used</option>
-                                    <option value="for_parts" {{ old('condition') == 'for_parts' ? 'selected' : '' }}>For Parts</option>
+                                    <option value="new" {{ old('condition') == 'new' ? 'selected' : '' }}>{{ __('cars.new') }}</option>
+                                    <option value="used" {{ old('condition') == 'used' ? 'selected' : '' }}>{{ __('cars.used') }}</option>
+                                    <option value="for_parts" {{ old('condition') == 'for_parts' ? 'selected' : '' }}>{{ __('cars.for_parts') }}</option>
                                 </select>
                                 <x-input-error :messages="$errors->get('condition')" class="mt-2" />
                             </div>

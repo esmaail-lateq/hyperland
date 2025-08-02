@@ -57,7 +57,7 @@
                         <svg class="w-5 h-5 lg:w-6 lg:h-6 text-amber-500 dark:text-amber-400 group-hover:text-amber-600 dark:group-hover:text-amber-300 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
                         </svg>
-                        <span class="text-base lg:text-lg font-medium text-slate-700 dark:text-slate-200 group-hover:text-slate-900 dark:group-hover:text-white transition-colors duration-300">قطع الغيار</span>
+                        <span class="text-base lg:text-lg font-medium text-slate-700 dark:text-slate-200 group-hover:text-slate-900 dark:group-hover:text-white transition-colors duration-300">{{ __('navigation.spare_parts') }}</span>
                     </div>
                     <div class="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-amber-500 to-orange-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 rounded-full"></div>
                 </a>
@@ -68,7 +68,7 @@
                         <svg class="w-5 h-5 lg:w-6 lg:h-6 text-blue-500 dark:text-blue-400 group-hover:text-blue-600 dark:group-hover:text-blue-300 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
                         </svg>
-                        <span class="text-base lg:text-lg font-medium text-slate-700 dark:text-slate-200 group-hover:text-slate-900 dark:group-hover:text-white transition-colors duration-300">خدمات الشحن</span>
+                        <span class="text-base lg:text-lg font-medium text-slate-700 dark:text-slate-200 group-hover:text-slate-900 dark:group-hover:text-white transition-colors duration-300">{{ __('navigation.shipping_services') }}</span>
                     </div>
                     <div class="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-blue-500 to-cyan-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 rounded-full"></div>
                 </a>
@@ -93,7 +93,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
                                 </svg>
                                 <span class="text-base lg:text-lg font-medium text-slate-700 dark:text-slate-200 group-hover:text-slate-900 dark:group-hover:text-white transition-colors duration-300">
-                                    {{ auth()->user()->isAdmin() ? 'لوحة الإدارة' : 'إدارة المحتوى' }}
+                                    {{ auth()->user()->isAdmin() ? __('navigation.admin_dashboard') : __('navigation.content_management') }}
                                 </span>
                             </div>
                             <div class="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-emerald-500 to-teal-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 rounded-full"></div>
@@ -103,7 +103,7 @@
 
             </nav>
 
-            <!-- Right Section: Language Switcher & User Menu -->
+            <!-- Right Section: Language Switcher, Notifications & User Menu -->
             <div class="flex items-center space-x-3 lg:space-x-4">
                 
                 <!-- Glassmorphism Language Switcher - Fully Rounded -->
@@ -123,6 +123,17 @@
                         </a>
                     @endforeach
                 </div>
+
+                <!-- Glassmorphism Notification Dropdown - Fully Rounded -->
+                @auth
+                    @php
+                        $user = auth()->user();
+                        $recentNotifications = $user->getRecentNotifications(5);
+                        $unreadCount = $user->unreadNotifications()->count();
+                    @endphp
+                    
+                    <x-notification-dropdown :notifications="$recentNotifications" :unreadCount="$unreadCount" />
+                @endauth
 
                 <!-- Glassmorphism User Menu - Fully Rounded -->
                 @auth
@@ -184,6 +195,8 @@
                                     </div>
                                 </a>
 
+
+
                                 @if(auth()->user()->canManageUsers())
                                 <a href="{{ route('admin.users.index') }}" class="flex items-center space-x-3 px-3 py-2.5 rounded-full hover:bg-red-500/10 dark:hover:bg-red-400/10 group transition-all duration-300">
                                     <div class="w-8 h-8 rounded-full bg-red-500/20 dark:bg-red-400/20 flex items-center justify-center group-hover:bg-red-500/30 dark:group-hover:bg-red-400/30 transition-colors duration-300">
@@ -192,7 +205,7 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <span class="font-bold text-slate-800 dark:text-slate-200 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors duration-300">إدارة المستخدمين</span>
+                                        <span class="font-bold text-slate-800 dark:text-slate-200 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors duration-300">{{ __('navigation.user_management') }}</span>
                                         <div class="text-xs text-slate-600 dark:text-slate-400">{{ __('components.manage_users_roles') }}</div>
                                     </div>
                                 </a>
@@ -250,14 +263,14 @@
                     <svg class="w-5 h-5 text-amber-500 dark:text-amber-400 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
                     </svg>
-                    <span class="text-xs font-medium text-slate-700 dark:text-slate-200">قطع الغيار</span>
+                    <span class="text-xs font-medium text-slate-700 dark:text-slate-200">{{ __('navigation.spare_parts') }}</span>
                 </a>
                 
                 <a href="{{ route('shipping.index') }}" class="flex-1 flex flex-col items-center px-2 py-2.5 rounded-full transition-all duration-300 hover:bg-white/20 dark:hover:bg-slate-800/20 backdrop-blur-sm {{ request()->routeIs('shipping.*') ? 'bg-white/30 dark:bg-slate-800/30' : '' }}">
                     <svg class="w-5 h-5 text-blue-500 dark:text-blue-400 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
                     </svg>
-                    <span class="text-xs font-medium text-slate-700 dark:text-slate-200">خدمات الشحن</span>
+                    <span class="text-xs font-medium text-slate-700 dark:text-slate-200">{{ __('navigation.shipping_services') }}</span>
                 </a>
                 
                 <a href="{{ route('about') }}" class="flex-1 flex flex-col items-center px-2 py-2.5 rounded-full transition-all duration-300 hover:bg-white/20 dark:hover:bg-slate-800/20 backdrop-blur-sm {{ request()->routeIs('about') ? 'bg-white/30 dark:bg-slate-800/30' : '' }}">

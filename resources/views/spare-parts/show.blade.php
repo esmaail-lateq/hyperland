@@ -8,7 +8,7 @@
             <ol class="inline-flex items-center space-x-1 md:space-x-3">
                 <li class="inline-flex items-center">
                     <a href="{{ route('spare-parts.index') }}" class="text-gray-700 hover:text-blue-600">
-                        قطع الغيار
+                        {{ __('spare_parts.spare_parts') }}
                     </a>
                 </li>
                 <li>
@@ -29,7 +29,7 @@
                     <div>
                         <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ $sparePart->name }}</h1>
                         <div class="flex items-center space-x-4 text-sm text-gray-500">
-                            <span>بواسطة: {{ $sparePart->creator->name ?? 'غير محدد' }}</span>
+                            <span>{{ __('spare_parts.by') }}: {{ $sparePart->creator->name ?? __('spare_parts.not_specified') }}</span>
                             <span>{{ $sparePart->created_at->format('d/m/Y') }}</span>
                             <span class="px-2 py-1 rounded-full text-xs font-medium {{ $sparePart->approval_status_badge_class }}">
                                 {{ $sparePart->approval_status_display }}
@@ -44,12 +44,12 @@
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                             </svg>
-                            تعديل
+                            {{ __('spare_parts.edit') }}
                         </a>
                         
                         @can('delete', $sparePart)
                         <form action="{{ route('spare-parts.destroy', $sparePart) }}" method="POST" class="inline" 
-                              onsubmit="return confirm('هل أنت متأكد من حذف قطع الغيار هذه؟')">
+                              onsubmit="return confirm('{{ __('spare_parts.delete_confirmation') }}')">
                             @csrf
                             @method('DELETE')
                             <button type="submit" 
@@ -57,7 +57,7 @@
                                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                                 </svg>
-                                حذف
+                                {{ __('spare_parts.delete') }}
                             </button>
                         </form>
                         @endcan
@@ -101,7 +101,7 @@
                                 <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                 </svg>
-                                <p class="mt-2 text-sm text-gray-500">لا توجد صور متاحة</p>
+                                <p class="mt-2 text-sm text-gray-500">{{ __('spare_parts.no_images_available') }}</p>
                             </div>
                         </div>
                         @endif
@@ -111,7 +111,7 @@
                     <div>
                         @if($sparePart->description)
                         <div class="mb-6">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-3">الوصف</h3>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-3">{{ __('spare_parts.description') }}</h3>
                             <div class="prose max-w-none">
                                 <p class="text-gray-700 leading-relaxed">{{ $sparePart->description }}</p>
                             </div>
@@ -120,10 +120,10 @@
 
                         <!-- Additional Info -->
                         <div class="bg-gray-50 rounded-lg p-4">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-3">معلومات إضافية</h3>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-3">{{ __('spare_parts.additional_info') }}</h3>
                             <dl class="space-y-2">
                                 <div class="flex justify-between">
-                                    <dt class="text-sm font-medium text-gray-500">الحالة:</dt>
+                                    <dt class="text-sm font-medium text-gray-500">{{ __('spare_parts.status') }}:</dt>
                                     <dd class="text-sm text-gray-900">
                                         <span class="px-2 py-1 rounded-full text-xs font-medium {{ $sparePart->approval_status_badge_class }}">
                                             {{ $sparePart->approval_status_display }}
@@ -131,12 +131,12 @@
                                     </dd>
                                 </div>
                                 <div class="flex justify-between">
-                                    <dt class="text-sm font-medium text-gray-500">تاريخ الإضافة:</dt>
+                                    <dt class="text-sm font-medium text-gray-500">{{ __('spare_parts.date_added') }}:</dt>
                                     <dd class="text-sm text-gray-900">{{ $sparePart->created_at->format('d/m/Y H:i') }}</dd>
                                 </div>
                                 @if($sparePart->updated_at != $sparePart->created_at)
                                 <div class="flex justify-between">
-                                    <dt class="text-sm font-medium text-gray-500">آخر تحديث:</dt>
+                                    <dt class="text-sm font-medium text-gray-500">{{ __('spare_parts.last_updated') }}:</dt>
                                     <dd class="text-sm text-gray-900">{{ $sparePart->updated_at->format('d/m/Y H:i') }}</dd>
                                 </div>
                                 @endif
@@ -146,17 +146,17 @@
                         <!-- Contact Info -->
                         @if($sparePart->creator)
                         <div class="mt-6 bg-blue-50 rounded-lg p-4">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-3">معلومات التواصل</h3>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-3">{{ __('spare_parts.contact_info') }}</h3>
                             <div class="space-y-2">
                                 <p class="text-sm text-gray-700">
-                                    <span class="font-medium">الاسم:</span> {{ $sparePart->creator->name }}
+                                    <span class="font-medium">{{ __('spare_parts.name') }}:</span> {{ $sparePart->creator->name }}
                                 </p>
                                 <p class="text-sm text-gray-700">
-                                    <span class="font-medium">البريد الإلكتروني:</span> {{ $sparePart->creator->email }}
+                                    <span class="font-medium">{{ __('spare_parts.email') }}:</span> {{ $sparePart->creator->email }}
                                 </p>
                                 @if($sparePart->creator->phone)
                                 <p class="text-sm text-gray-700">
-                                    <span class="font-medium">الهاتف:</span> {{ $sparePart->creator->phone }}
+                                    <span class="font-medium">{{ __('spare_parts.phone') }}:</span> {{ $sparePart->creator->phone }}
                                 </p>
                                 @endif
                             </div>
@@ -174,7 +174,7 @@
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                 </svg>
-                العودة إلى قطع الغيار
+                {{ __('spare_parts.back_to_spare_parts') }}
             </a>
         </div>
     </div>

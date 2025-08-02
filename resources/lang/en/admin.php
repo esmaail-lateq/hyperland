@@ -80,4 +80,27 @@ return [
     'user_not_found' => 'User not found.',
     'car_not_found' => 'Car not found.',
     'insufficient_permissions' => 'You do not have sufficient permissions to perform this action.',
+    
+    // Dashboard
+    'comprehensive_dashboard' => 'Comprehensive Dashboard',
+    'content_management' => 'Content Management',
+    'unified_management' => 'Unified Management',
+    'system_overview' => 'System Overview',
+    
+    // Statistics
+    'total_listings' => 'Total Listings',
+    'pending_approvals' => 'Pending Approvals',
+    'featured_items' => 'Featured Items',
+    'recent_activities' => 'Recent Activities',
+    
+    // Actions
+    'approve_all' => 'Approve All',
+    'reject_all' => 'Reject All',
+    'feature_all' => 'Feature All',
+    'unfeature_all' => 'Unfeature All',
+    
+    // Messages
+    'bulk_action_success' => 'Bulk action completed successfully.',
+    'bulk_action_error' => 'Error occurred during bulk action.',
+    'no_items_selected' => 'No items selected for action.',
 ]; 

@@ -5,9 +5,9 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Header -->
         <div class="text-center mb-12">
-            <h1 class="text-4xl font-bold text-gray-900 mb-4">قطع الغيار</h1>
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">{{ __('spare_parts.spare_parts') }}</h1>
             <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-                اكتشف مجموعة واسعة من قطع الغيار عالية الجودة للسيارات. جميع القطع معتمدة ومختبرة.
+                {{ __('spare_parts.spare_parts_description') }}
             </p>
         </div>
 
@@ -20,7 +20,7 @@
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                     </svg>
-                    إضافة قطع غيار جديدة
+                    {{ __('spare_parts.add_spare_part') }}
                 </a>
             </div>
             @endif
@@ -52,14 +52,14 @@
                     
                     <!-- Creator Info -->
                     <div class="flex items-center justify-between text-sm text-gray-500 mb-3">
-                        <span>بواسطة: {{ $sparePart->creator->name ?? 'غير محدد' }}</span>
+                        <span>{{ __('spare_parts.by') }}: {{ $sparePart->creator->name ?? __('spare_parts.not_specified') }}</span>
                         <span>{{ $sparePart->created_at->diffForHumans() }}</span>
                     </div>
                     
                     <!-- Action Button -->
                     <a href="{{ route('spare-parts.show', $sparePart) }}" 
                        class="block w-full text-center bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors duration-200">
-                        عرض التفاصيل
+                        {{ __('spare_parts.view_details') }}
                     </a>
                 </div>
             </div>
@@ -75,14 +75,14 @@
             <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
             </svg>
-            <h3 class="mt-2 text-sm font-medium text-gray-900">لا توجد قطع غيار متاحة</h3>
-            <p class="mt-1 text-sm text-gray-500">ابدأ بإضافة أول قطع غيار.</p>
+            <h3 class="mt-2 text-sm font-medium text-gray-900">{{ __('spare_parts.no_spare_parts_available') }}</h3>
+            <p class="mt-1 text-sm text-gray-500">{{ __('spare_parts.no_spare_parts_description') }}</p>
             @auth
                 @if(auth()->user()->isAdmin() || auth()->user()->isSubAdmin())
                 <div class="mt-6">
                     <a href="{{ route('spare-parts.create') }}" 
                        class="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700">
-                        إضافة قطع غيار
+                        {{ __('spare_parts.add_spare_part_button') }}
                     </a>
                 </div>
                 @endif
@@ -93,9 +93,9 @@
         <!-- Request Custom Spare Part Section -->
         <div class="bg-white rounded-lg shadow-md p-6 mt-12">
             <div class="text-center mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-2">طلب قطع غيار مخصص</h2>
+                <h2 class="text-2xl font-bold text-gray-900 mb-2">{{ __('spare_parts.custom_spare_part_request') }}</h2>
                 <p class="text-gray-600">
-                    لا تجد ما تبحث عنه؟ أرسل لنا طلبك وسنحاول مساعدتك في العثور على قطع الغيار المطلوبة.
+                    {{ __('spare_parts.custom_request_description') }}
                 </p>
             </div>
 
@@ -104,14 +104,14 @@
                 @csrf
                 <div class="mb-4">
                     <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
-                        وصف قطع الغيار المطلوبة
+                        {{ __('spare_parts.custom_request_label') }}
                     </label>
                     <textarea 
                         id="description" 
                         name="description" 
                         rows="4" 
                         class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="اكتب وصفاً مفصلاً لقطع الغيار التي تحتاجها..."
+                        placeholder="{{ __('spare_parts.custom_request_placeholder') }}"
                         required
                     >{{ old('description') }}</textarea>
                     @error('description')
@@ -125,16 +125,16 @@
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
                         </svg>
-                        إرسال الطلب
+                        {{ __('spare_parts.send_request') }}
                     </button>
                 </div>
             </form>
             @else
             <div class="text-center">
-                <p class="text-gray-600 mb-4">يجب تسجيل الدخول لإرسال طلب قطع غيار مخصص.</p>
+                <p class="text-gray-600 mb-4">{{ __('spare_parts.login_to_request') }}</p>
                 <a href="{{ route('login') }}" 
                    class="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors duration-200">
-                    تسجيل الدخول
+                    {{ __('spare_parts.login') }}
                 </a>
             </div>
             @endauth
