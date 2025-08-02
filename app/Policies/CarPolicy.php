@@ -45,7 +45,8 @@ class CarPolicy
      */
     public function create(User $user): bool
     {
-        return true; // Any authenticated user can create listings
+        // Only admins and sub-admins can create cars
+        return $user->isAdmin() || $user->isSubAdmin();
     }
 
     /**
@@ -58,8 +59,8 @@ class CarPolicy
             return true;
         }
         
-        // Admins can update any car
-        if (Gate::allows('admin')) {
+        // Admins and sub-admins can update any car
+        if ($user->isAdmin() || $user->isSubAdmin()) {
             return true;
         }
         
@@ -76,8 +77,8 @@ class CarPolicy
             return true;
         }
         
-        // Admins can delete any car
-        if (Gate::allows('admin')) {
+        // Admins and sub-admins can delete any car
+        if ($user->isAdmin() || $user->isSubAdmin()) {
             return true;
         }
         

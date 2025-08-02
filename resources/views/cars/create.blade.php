@@ -152,60 +152,60 @@
 
                             <!-- Features -->
                             <div class="col-span-1 md:col-span-2">
-                                <x-input-label :value="__('Features')" class="mb-3" />
+                                <x-input-label :value="__('common.features')" class="mb-3" />
                                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                                     <div class="flex items-center">
                                         <input id="has_air_conditioning" type="checkbox" name="has_air_conditioning" value="1" {{ old('has_air_conditioning') ? 'checked' : '' }} class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
-                                        <label for="has_air_conditioning" class="ml-2 block text-sm text-gray-900">Air Conditioning</label>
+                                        <label for="has_air_conditioning" class="ml-2 block text-sm text-gray-900">{{ __('cars.air_conditioning') }}</label>
                                     </div>
                                     
                                     <div class="flex items-center">
                                         <input id="has_leather_seats" type="checkbox" name="has_leather_seats" value="1" {{ old('has_leather_seats') ? 'checked' : '' }} class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
-                                        <label for="has_leather_seats" class="ml-2 block text-sm text-gray-900">Leather Seats</label>
+                                        <label for="has_leather_seats" class="ml-2 block text-sm text-gray-900">{{ __('cars.leather_seats') }}</label>
                                     </div>
                                     
                                     <div class="flex items-center">
                                         <input id="has_navigation" type="checkbox" name="has_navigation" value="1" {{ old('has_navigation') ? 'checked' : '' }} class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
-                                        <label for="has_navigation" class="ml-2 block text-sm text-gray-900">Navigation</label>
+                                        <label for="has_navigation" class="ml-2 block text-sm text-gray-900">{{ __('cars.navigation') }}</label>
                                     </div>
                                     
                                     <div class="flex items-center">
                                         <input id="has_parking_sensors" type="checkbox" name="has_parking_sensors" value="1" {{ old('has_parking_sensors') ? 'checked' : '' }} class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
-                                        <label for="has_parking_sensors" class="ml-2 block text-sm text-gray-900">Parking Sensors</label>
+                                        <label for="has_parking_sensors" class="ml-2 block text-sm text-gray-900">{{ __('cars.parking_sensors') }}</label>
                                     </div>
                                     
                                     <div class="flex items-center">
                                         <input id="has_parking_camera" type="checkbox" name="has_parking_camera" value="1" {{ old('has_parking_camera') ? 'checked' : '' }} class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
-                                        <label for="has_parking_camera" class="ml-2 block text-sm text-gray-900">Parking Camera</label>
+                                        <label for="has_parking_camera" class="ml-2 block text-sm text-gray-900">{{ __('cars.parking_camera') }}</label>
                                     </div>
                                     
                                     <div class="flex items-center">
                                         <input id="has_heated_seats" type="checkbox" name="has_heated_seats" value="1" {{ old('has_heated_seats') ? 'checked' : '' }} class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
-                                        <label for="has_heated_seats" class="ml-2 block text-sm text-gray-900">Heated Seats</label>
+                                        <label for="has_heated_seats" class="ml-2 block text-sm text-gray-900">{{ __('cars.heated_seats') }}</label>
                                     </div>
                                     
                                     <div class="flex items-center">
                                         <input id="has_bluetooth" type="checkbox" name="has_bluetooth" value="1" {{ old('has_bluetooth') ? 'checked' : '' }} class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
-                                        <label for="has_bluetooth" class="ml-2 block text-sm text-gray-900">Bluetooth</label>
+                                        <label for="has_bluetooth" class="ml-2 block text-sm text-gray-900">{{ __('cars.bluetooth') }}</label>
                                     </div>
                                     
                                     <div class="flex items-center">
                                         <input id="has_led_lights" type="checkbox" name="has_led_lights" value="1" {{ old('has_led_lights') ? 'checked' : '' }} class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
-                                        <label for="has_led_lights" class="ml-2 block text-sm text-gray-900">LED Lights</label>
+                                        <label for="has_led_lights" class="ml-2 block text-sm text-gray-900">{{ __('cars.led_lights') }}</label>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Description -->
                             <div class="col-span-1 md:col-span-2">
-                                <x-input-label for="description" :value="__('Description')" />
+                                <x-input-label for="description" :value="__('common.description')" />
                                 <textarea id="description" name="description" rows="6" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">{{ old('description') }}</textarea>
                                 <x-input-error :messages="$errors->get('description')" class="mt-2" />
                             </div>
 
                             <!-- Images -->
                             <div class="col-span-1 md:col-span-2">
-                                <x-input-label for="images" :value="__('Images (1-10 images)')" />
+                                <x-input-label for="images" :value="__('common.images_with_count')" />
                                 <div
                                     class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md"
                                     x-on:dragover.prevent="$el.classList.add('border-indigo-500')"
@@ -218,22 +218,22 @@
                                         </svg>
                                         <div class="flex text-sm text-gray-600 justify-center">
                                             <label for="images" class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
-                                                <span>Upload files</span>
+                                                <span>{{ __('common.upload_files') }}</span>
                                                 <input id="images" name="images[]" type="file" class="sr-only" accept="image/jpeg,image/png,image/jpg" multiple @change="previewImages">
                                             </label>
-                                            <p class="pl-1">or drag and drop</p>
+                                            <p class="pl-1">{{ __('common.or_drag_drop') }}</p>
                                         </div>
                                         <p class="text-xs text-gray-500">
-                                            PNG, JPG, JPEG up to 2MB
+                                            {{ __('common.file_types_limit') }}
                                         </p>
                                     </div>
                                 </div>
                                 <div class="mt-2 text-sm text-gray-500" x-show="imageFiles.length === 0">
-                                    <p>At least one image is required. The first image will be the primary image displayed in listings.</p>
+                                    <p>{{ __('common.at_least_one_image') }}</p>
                                 </div>
                                 
                                 <div class="mt-2 text-sm text-gray-500" x-show="imageFiles.length > 0">
-                                    <p>You've selected <span x-text="imageFiles.length"></span> images. The first image will be the primary image.</p>
+                                    <p>{{ __('common.you_selected_images', ['count' => '<span x-text="imageFiles.length"></span>']) }}</p>
                                 </div>
                                 
                                 <x-input-error :messages="$errors->get('images')" class="mt-2" />

@@ -17,7 +17,7 @@
             </div>
             
             <h1 class="text-5xl sm:text-6xl md:text-7xl font-black mb-8 leading-tight drop-shadow-2xl animate-fade-in-up">
-                About <span class="bg-gradient-to-r from-yellow-300 to-orange-400 bg-clip-text text-transparent">HybridLand</span>
+                About <span class="bg-gradient-to-r from-yellow-300 to-orange-400 bg-clip-text text-transparent">{{ __('about.hybridland') }}</span>
             </h1>
             <p class="text-xl md:text-2xl text-white/90 max-w-4xl mx-auto leading-relaxed animate-fade-in-up delay-100 font-light">
                 Revolutionizing the car marketplace with innovation, trust, and excellence. 
@@ -38,7 +38,7 @@
                         Our Story
                     </div>
                     <h2 class="text-4xl md:text-5xl font-black text-gray-900 leading-tight">
-                        Building the Future of <span class="text-indigo-600">Car Commerce</span>
+                        Building the Future of <span class="text-indigo-600">{{ __('about.car_commerce') }}</span>
                     </h2>
                     <p class="text-xl text-gray-600 leading-relaxed">
                         Founded in 2024, HybridLand emerged from a simple vision: to create the most trusted and efficient platform for car enthusiasts and buyers. We recognized that the traditional car buying and selling process was fragmented, time-consuming, and often frustrating.
@@ -49,15 +49,15 @@
                     <div class="flex items-center space-x-6 pt-4">
                         <div class="text-center">
                             <div class="text-3xl font-bold text-indigo-600">{{ $totalCarsCount ?? '1000' }}+</div>
-                            <div class="text-gray-600">Cars Listed</div>
+                            <div class="text-gray-600">{{ __('about.cars_listed') }}</div>
                         </div>
                         <div class="text-center">
                             <div class="text-3xl font-bold text-indigo-600">500+</div>
-                            <div class="text-gray-600">Happy Users</div>
+                            <div class="text-gray-600">{{ __('about.happy_users') }}</div>
                         </div>
                         <div class="text-center">
                             <div class="text-3xl font-bold text-indigo-600">50+</div>
-                            <div class="text-gray-600">Cities Served</div>
+                            <div class="text-gray-600">{{ __('about.cities_served') }}</div>
                         </div>
                     </div>
                 </div>
@@ -71,7 +71,7 @@
                                     </svg>
                                 </div>
                                 <h3 class="font-bold text-gray-900 mb-2">Fast & Efficient</h3>
-                                <p class="text-gray-600 text-sm">Quick listing and instant search results</p>
+                                <p class="text-gray-600 text-sm">{{ __('about.quick_listing') }}</p>
                             </div>
                             <div class="bg-white rounded-2xl p-6 shadow-lg transform hover:scale-105 transition-transform duration-300">
                                 <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-4">
@@ -79,8 +79,8 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
                                 </div>
-                                <h3 class="font-bold text-gray-900 mb-2">Verified Listings</h3>
-                                <p class="text-gray-600 text-sm">All cars are thoroughly verified</p>
+                                                    <h3 class="font-bold text-gray-900 mb-2">{{ __('about.verified_listings') }}</h3>
+                    <p class="text-gray-600 text-sm">{{ __('about.verified_listings_desc') }}</p>
                             </div>
                             <div class="bg-white rounded-2xl p-6 shadow-lg transform hover:scale-105 transition-transform duration-300">
                                 <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mb-4">
@@ -88,8 +88,8 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v3h8z" />
                                     </svg>
                                 </div>
-                                <h3 class="font-bold text-gray-900 mb-2">Secure Platform</h3>
-                                <p class="text-gray-600 text-sm">Your data and transactions are safe</p>
+                                                    <h3 class="font-bold text-gray-900 mb-2">{{ __('about.secure_platform') }}</h3>
+                    <p class="text-gray-600 text-sm">{{ __('about.secure_platform_desc') }}</p>
                             </div>
                             <div class="bg-white rounded-2xl p-6 shadow-lg transform hover:scale-105 transition-transform duration-300">
                                 <div class="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center mb-4">
@@ -97,8 +97,8 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                                     </svg>
                                 </div>
-                                <h3 class="font-bold text-gray-900 mb-2">User Friendly</h3>
-                                <p class="text-gray-600 text-sm">Intuitive design for everyone</p>
+                                                    <h3 class="font-bold text-gray-900 mb-2">{{ __('about.user_friendly') }}</h3>
+                    <p class="text-gray-600 text-sm">{{ __('about.user_friendly_desc') }}</p>
                             </div>
                         </div>
                     </div>
@@ -123,7 +123,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                         </svg>
                     </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Our Mission</h3>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">{{ __('about.our_mission') }}</h3>
                     <p class="text-gray-600 leading-relaxed mb-6">
                         To revolutionize the car buying and selling experience by providing a transparent, efficient, and trustworthy platform that connects car enthusiasts with their perfect vehicles.
                     </p>
@@ -157,7 +157,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                         </svg>
                     </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Our Vision</h3>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">{{ __('about.our_vision') }}</h3>
                     <p class="text-gray-600 leading-relaxed mb-6">
                         To become the leading global platform for automotive commerce, setting industry standards for innovation, customer satisfaction, and market transparency.
                     </p>
@@ -190,7 +190,7 @@
     <div class="py-24 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-6">Our Core Values</h2>
+                <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-6">{{ __('about.our_core_values') }}</h2>
                 <p class="text-xl text-gray-600 max-w-3xl mx-auto">The principles that guide everything we do at HybridLand.</p>
             </div>
             
@@ -202,7 +202,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Trust</h3>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">{{ __('about.trust') }}</h3>
                     <p class="text-gray-600 leading-relaxed">
                         We build lasting relationships through transparency, honesty, and reliability in every interaction.
                     </p>
@@ -215,7 +215,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                         </svg>
                     </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Innovation</h3>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">{{ __('about.innovation') }}</h3>
                     <p class="text-gray-600 leading-relaxed">
                         We continuously push boundaries to create better solutions for our users and the industry.
                     </p>
@@ -228,7 +228,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                         </svg>
                     </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Excellence</h3>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">{{ __('about.excellence') }}</h3>
                     <p class="text-gray-600 leading-relaxed">
                         We strive for excellence in every aspect of our service, from technology to customer support.
                     </p>
@@ -241,7 +241,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                         </svg>
                     </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Community</h3>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">{{ __('about.community') }}</h3>
                     <p class="text-gray-600 leading-relaxed">
                         We foster a vibrant community of car enthusiasts, dealers, and buyers who share our passion.
                     </p>
@@ -254,7 +254,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                         </svg>
                     </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Sustainability</h3>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">{{ __('about.sustainability') }}</h3>
                     <p class="text-gray-600 leading-relaxed">
                         We promote sustainable practices and support eco-friendly automotive solutions.
                     </p>
@@ -267,7 +267,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
                     </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Customer First</h3>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">{{ __('about.customer_first') }}</h3>
                     <p class="text-gray-600 leading-relaxed">
                         Every decision we make is guided by what's best for our customers and their experience.
                     </p>
@@ -280,7 +280,7 @@
     <div class="py-24 bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-black text-white mb-6">Meet Our Team</h2>
+                <h2 class="text-4xl md:text-5xl font-black text-white mb-6">{{ __('about.meet_our_team') }}</h2>
                 <p class="text-xl text-gray-300 max-w-3xl mx-auto">The passionate individuals behind HybridLand's success.</p>
             </div>
             
@@ -288,9 +288,9 @@
                 {{-- Team Member 1 --}}
                 <div class="text-center">
                     <div class="w-32 h-32 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full mx-auto mb-6 flex items-center justify-center">
-                        <span class="text-3xl font-bold text-white">JD</span>
+                        <span class="text-3xl font-bold text-white">{{ __('about.jd') }}</span>
                     </div>
-                    <h3 class="text-2xl font-bold text-white mb-2">John Doe</h3>
+                    <h3 class="text-2xl font-bold text-white mb-2">{{ __('about.john_doe') }}</h3>
                     <p class="text-indigo-300 mb-4">Founder & CEO</p>
                     <p class="text-gray-400 leading-relaxed">
                         Automotive enthusiast with 15+ years of experience in digital platforms and marketplaces.

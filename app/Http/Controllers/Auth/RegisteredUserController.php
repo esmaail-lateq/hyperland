@@ -36,8 +36,6 @@ class RegisteredUserController extends Controller
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'phone' => ['nullable', 'string', 'max:20'],
-            'type' => ['required', 'string', 'in:user,dealer'],
-            'dealer_name' => ['nullable', 'string', 'max:100', 'required_if:type,dealer'],
         ]);
 
         $userData = [
@@ -45,14 +43,8 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'phone' => $request->phone,
-            'type' => $request->type,
+            'role' => 'public_user', // Default role for new registrations
         ];
-        
-        // If the user is a dealer, add dealer-specific data
-        if ($request->type === 'dealer' && $request->filled('dealer_name')) {
-            $userData['dealer_name'] = $request->dealer_name;
-            $userData['slug'] = Str::slug($request->dealer_name);
-        }
 
         $user = User::create($userData);
 

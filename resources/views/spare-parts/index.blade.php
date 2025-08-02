@@ -11,17 +11,19 @@
             </p>
         </div>
 
-        <!-- Add Spare Part Button -->
+        <!-- Add Spare Part Button (Admin/Sub-admin only) -->
         @auth
-        <div class="text-center mb-8">
-            <a href="{{ route('spare-parts.create') }}" 
-               class="inline-flex items-center px-6 py-3 bg-emerald-600 text-white font-semibold rounded-lg hover:bg-emerald-700 transition-colors duration-200">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-                </svg>
-                إضافة قطع غيار جديدة
-            </a>
-        </div>
+            @if(auth()->user()->isAdmin() || auth()->user()->isSubAdmin())
+            <div class="text-center mb-8">
+                <a href="{{ route('spare-parts.create') }}" 
+                   class="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                    </svg>
+                    إضافة قطع غيار جديدة
+                </a>
+            </div>
+            @endif
         @endauth
 
         <!-- Spare Parts Grid -->
@@ -56,7 +58,7 @@
                     
                     <!-- Action Button -->
                     <a href="{{ route('spare-parts.show', $sparePart) }}" 
-                       class="block w-full text-center bg-emerald-600 text-white py-2 px-4 rounded-md hover:bg-emerald-700 transition-colors duration-200">
+                       class="block w-full text-center bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors duration-200">
                         عرض التفاصيل
                     </a>
                 </div>
@@ -76,12 +78,14 @@
             <h3 class="mt-2 text-sm font-medium text-gray-900">لا توجد قطع غيار متاحة</h3>
             <p class="mt-1 text-sm text-gray-500">ابدأ بإضافة أول قطع غيار.</p>
             @auth
-            <div class="mt-6">
-                <a href="{{ route('spare-parts.create') }}" 
-                   class="inline-flex items-center px-4 py-2 bg-emerald-600 text-white text-sm font-medium rounded-md hover:bg-emerald-700">
-                    إضافة قطع غيار
-                </a>
-            </div>
+                @if(auth()->user()->isAdmin() || auth()->user()->isSubAdmin())
+                <div class="mt-6">
+                    <a href="{{ route('spare-parts.create') }}" 
+                       class="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700">
+                        إضافة قطع غيار
+                    </a>
+                </div>
+                @endif
             @endauth
         </div>
         @endif
@@ -106,7 +110,7 @@
                         id="description" 
                         name="description" 
                         rows="4" 
-                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="اكتب وصفاً مفصلاً لقطع الغيار التي تحتاجها..."
                         required
                     >{{ old('description') }}</textarea>
@@ -129,7 +133,7 @@
             <div class="text-center">
                 <p class="text-gray-600 mb-4">يجب تسجيل الدخول لإرسال طلب قطع غيار مخصص.</p>
                 <a href="{{ route('login') }}" 
-                   class="inline-flex items-center px-4 py-2 bg-emerald-600 text-white font-semibold rounded-lg hover:bg-emerald-700 transition-colors duration-200">
+                   class="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors duration-200">
                     تسجيل الدخول
                 </a>
             </div>

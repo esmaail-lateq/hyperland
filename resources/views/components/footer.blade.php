@@ -16,7 +16,7 @@
                 <div class="lg:col-span-1">
                     <div class="flex items-center space-x-3 mb-6">
                         <x-application-logo class="block h-10 w-auto" />
-                        <span class="text-2xl font-bold text-white">HybridLand</span>
+                        <span class="text-2xl font-bold text-white">{{ __('components.hybridland') }}</span>
                     </div>
                     <p class="text-gray-400 mb-6 leading-relaxed">
                         Your trusted destination for finding and selling premium vehicles. Experience the future of car shopping with our innovative platform.
@@ -47,7 +47,7 @@
 
                 {{-- Quick Links --}}
                 <div>
-                    <h3 class="text-lg font-semibold mb-6 text-white">Quick Links</h3>
+                    <h3 class="text-lg font-semibold mb-6 text-white">{{ __('components.quick_links') }}</h3>
                     <ul class="space-y-3">
                         <li>
                             <a href="{{ route('home') }}" class="text-gray-400 hover:text-white transition-colors duration-300 flex items-center">
@@ -73,14 +73,7 @@
                                 Sell Your Car
                             </a>
                         </li>
-                        <li>
-                            <a href="{{ route('dealers.index') }}" class="text-gray-400 hover:text-white transition-colors duration-300 flex items-center">
-                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                                </svg>
-                                Dealers
-                            </a>
-                        </li>
+
                         <li>
                             <a href="{{ route('about') }}" class="text-gray-400 hover:text-white transition-colors duration-300 flex items-center">
                                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -104,7 +97,7 @@
 
                 {{-- Support --}}
                 <div>
-                    <h3 class="text-lg font-semibold mb-6 text-white">Support</h3>
+                    <h3 class="text-lg font-semibold mb-6 text-white">{{ __('components.support') }}</h3>
                     <ul class="space-y-3">
                         <li>
                             <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300 flex items-center">
@@ -151,7 +144,7 @@
 
                 {{-- Newsletter --}}
                 <div>
-                    <h3 class="text-lg font-semibold mb-6 text-white">Stay Updated</h3>
+                    <h3 class="text-lg font-semibold mb-6 text-white">{{ __('components.stay_updated') }}</h3>
                     <p class="text-gray-400 mb-4">Get the latest car deals and updates delivered to your inbox.</p>
                     <form class="space-y-3">
                         <div>
@@ -191,10 +184,10 @@
                         © {{ date('Y') }} HybridLand. All rights reserved. Made with ❤️ for car enthusiasts.
                     </div>
                     <div class="flex space-x-6">
-                        <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors duration-300">Terms</a>
-                        <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors duration-300">Privacy</a>
-                        <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors duration-300">Cookies</a>
-                        <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors duration-300">Sitemap</a>
+                        <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors duration-300">{{ __('components.terms') }}</a>
+                        <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors duration-300">{{ __('components.privacy') }}</a>
+                        <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors duration-300">{{ __('components.cookies') }}</a>
+                        <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors duration-300">{{ __('components.sitemap') }}</a>
                     </div>
                 </div>
             </div>

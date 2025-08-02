@@ -77,13 +77,7 @@
                             <div class="text-sm">
                                 <span class="text-gray-600">Added by: </span>
                                 <span class="font-medium">
-                                    @if($car->user->isDealer())
-                                        <a href="{{ route('dealers.show', $car->user) }}" class="text-blue-600 hover:text-blue-800">
-                                            {{ $car->user->dealer_name }}
-                                        </a>
-                                    @else
-                                        {{ $car->user->name }}
-                                    @endif
+                                                                                {{ $car->user->name }}
                                 </span>
                             </div>
                             

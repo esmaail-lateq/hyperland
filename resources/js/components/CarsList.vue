@@ -4,11 +4,12 @@
       <div class="car-grid">
         <div v-for="car in cars" :key="car.id" class="car-item group">
           <a :href="carUrl(car)" class="car-card">
-            <div v-if="car.is_featured" class="car-badge">Featured</div>
+            <!-- New Badge (top-right corner of card) -->
+            <div v-if="car.isNew" class="car-new-badge-card">New</div>
             
-            <!-- Car Status Badge -->
-            <div v-if="car.status" class="car-status-badge" :class="getStatusBadgeClass(car.status)">
-              {{ getStatusDisplay(car.status) }}
+            <!-- Featured Badge (keep on image) -->
+            <div class="car-badge-container-left">
+              <div v-if="car.is_featured" class="car-badge">Featured</div>
             </div>
             
             <div class="car-image-container">
@@ -26,6 +27,13 @@
             </div>
             
             <div class="car-overlay">
+              <!-- Status Label -->
+              <div class="car-status-labels">
+                <div v-if="car.status" class="car-status-badge" :class="getStatusBadgeClass(car.status)">
+                  {{ getStatusDisplay(car.status) }}
+                </div>
+              </div>
+              
               <div class="car-title">{{ car.make }} {{ car.model }}</div>
               <div class="car-price">{{ car.formattedPrice }}</div>
               <div class="car-details">
@@ -421,33 +429,57 @@ export default {
     stroke-width: 1.5; /* Slightly thinner stroke */
 }
 
+/* Badge Containers */
+.car-badge-container-left {
+  position: absolute;
+  top: 0.75rem;
+  left: 0;
+  z-index: 20;
+}
+
+/* Status Labels in Overlay */
+.car-status-labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
 /* Featured Badge */
 .car-badge {
-  position: absolute;
-  top: 0.75rem; /* Adjusted position */
-  left: 0;
   background: #f59e0b; /* Tailwind amber-500 */
   color: #1a202c; /* Dark text for contrast */
   font-weight: 700;
   font-size: 0.75rem; /* text-xs */
   padding: 0.25rem 0.75rem;
   border-radius: 0 0.375rem 0.375rem 0; /* More rounded edge */
-  z-index: 3;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   letter-spacing: 0.05em; /* Slight letter spacing */
 }
 
+/* New Badge Card */
+.car-new-badge-card {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: #e5e7eb; /* Tailwind gray-200 - light gray */
+  color: #1f2937; /* Tailwind gray-800 - dark gray text */
+  font-weight: 700;
+  font-size: 0.75rem; /* text-xs */
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.375rem;
+  letter-spacing: 0.05em;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
+  z-index: 10;
+}
+
 /* Car Status Badge */
 .car-status-badge {
-  position: absolute;
-  top: 0.75rem;
-  right: 0;
   font-weight: 600;
   font-size: 0.625rem; /* text-xs */
   padding: 0.25rem 0.5rem;
-  border-radius: 0.375rem 0 0 0.375rem;
-  z-index: 3;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 0.375rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   letter-spacing: 0.05em;
 }
 

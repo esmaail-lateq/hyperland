@@ -6,8 +6,10 @@ namespace App\Providers;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use App\Models\Car;
+use App\Models\SparePart;
 use App\Models\User;
 use App\Policies\CarPolicy;
+use App\Policies\SparePartPolicy;
 use App\Policies\UserPolicy;
 
 class AuthServiceProvider extends ServiceProvider
@@ -19,6 +21,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         Car::class => CarPolicy::class,
+        SparePart::class => SparePartPolicy::class,
         User::class => UserPolicy::class,
     ];
 

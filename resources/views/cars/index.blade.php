@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mx-auto px-4 py-8">
-    <h1 class="text-4xl font-extrabold mb-10 text-gray-900 text-center leading-tight">Find Your Perfect Car Here</h1>
+    <h1 class="text-4xl font-extrabold mb-10 text-gray-900 text-center leading-tight">{{ __('cars.find_perfect_car') }}</h1>
     
     <div class="bg-white rounded-xl shadow-2xl p-6 md:p-8 mb-10 border-t-4 border-blue-600">
         <form action="{{ route('cars.index') }}" method="GET" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-end">
@@ -11,11 +11,11 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                     </svg>
-                    Car Make
+                    {{ __('cars.car_make') }}
                 </label>
                 <div class="relative">
                     <select id="make" name="make" class="block w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-800 appearance-none shadow-sm">
-                        <option value="All Cars">All Cars</option>
+                        <option value="All Cars">{{ __('cars.all_cars') }}</option>
                         @foreach($makes as $make)
                             <option value="{{ $make }}" {{ request('make') == $make ? 'selected' : '' }}>{{ $make }}</option>
                         @endforeach
@@ -31,7 +31,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    Min Price (€)
+                    {{ __('cars.min_price') }}
                 </label>
                 <div class="relative">
                     <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500 text-lg">€</span>
@@ -44,7 +44,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    Max Price (€)
+                    {{ __('cars.max_price') }}
                 </label>
                 <div class="relative">
                     <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500 text-lg">€</span>
@@ -57,13 +57,13 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
-                    SEARCH CARS
+                    {{ __('cars.search_cars') }}
                 </button>
             </div>
             
             <div class="md:col-span-2 lg:col-span-4 mt-2 text-center">
                 <button id="advancedSearchBtn" type="button" class="text-blue-600 hover:text-blue-800 font-bold flex items-center justify-center mx-auto group transition-all text-base focus:outline-none">
-                    <span class="text-base">Advanced Search Options</span>
+                    <span class="text-base">{{ __('cars.advanced_search_options') }}</span>
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 group-hover:ml-3 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                     </svg>
@@ -75,12 +75,12 @@
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
-                            Status
+                            {{ __('cars.car_status') }}
                         </label>
                         <select id="status" name="status" class="block w-full p-3 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-800 shadow-sm">
-                            <option value="">All Status</option>
-                            <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Available</option>
-                            <option value="sold" {{ request('status') == 'sold' ? 'selected' : '' }}>Sold</option>
+                            <option value="">{{ __('cars.all_status') }}</option>
+                            <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>{{ __('cars.car_available') }}</option>
+                            <option value="sold" {{ request('status') == 'sold' ? 'selected' : '' }}>{{ __('cars.car_sold') }}</option>
                         </select>
                     </div>
                     <div class="search-field">
@@ -88,7 +88,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
-                            Min Year
+                            {{ __('cars.min_year') }}
                         </label>
                         <input type="number" id="min_year" name="min_year" value="{{ request('min_year') }}" class="block w-full p-3 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-800 shadow-sm" placeholder="e.g., 2010">
                     </div>
@@ -98,7 +98,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
-                            Max Year
+                            {{ __('cars.max_year') }}
                         </label>
                         <input type="number" id="max_year" name="max_year" value="{{ request('max_year') }}" class="block w-full p-3 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-800 shadow-sm" placeholder="e.g., 2023">
                     </div>
@@ -109,14 +109,14 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
-                            Transmission
+                            {{ __('cars.car_transmission') }}
                         </label>
                         <div class="relative">
                             <select id="transmission" name="transmission" class="block w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-800 appearance-none shadow-sm">
-                                <option value="">Any Transmission</option>
-                                <option value="automatic" {{ request('transmission') == 'automatic' ? 'selected' : '' }}>Automatic</option>
-                                <option value="manual" {{ request('transmission') == 'manual' ? 'selected' : '' }}>Manual</option>
-                                <option value="semi-automatic" {{ request('transmission') == 'semi-automatic' ? 'selected' : '' }}>Semi-Automatic</option>
+                                <option value="">{{ __('cars.any_transmission') }}</option>
+                                <option value="automatic" {{ request('transmission') == 'automatic' ? 'selected' : '' }}>{{ __('cars.car_automatic') }}</option>
+                                <option value="manual" {{ request('transmission') == 'manual' ? 'selected' : '' }}>{{ __('cars.car_manual') }}</option>
+                                <option value="semi-automatic" {{ request('transmission') == 'semi-automatic' ? 'selected' : '' }}>{{ __('cars.car_semi_automatic') }}</option>
                             </select>
                             <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-700">
                                 <svg class="fill-current h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
@@ -129,16 +129,16 @@
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                             </svg>
-                            Fuel Type
+                            {{ __('cars.car_fuel_type') }}
                         </label>
                         <div class="relative">
                             <select id="fuel_type" name="fuel_type" class="block w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-800 appearance-none shadow-sm">
-                                <option value="">Any Fuel Type</option>
-                                <option value="gasoline" {{ request('fuel_type') == 'gasoline' ? 'selected' : '' }}>Gasoline</option>
-                                <option value="diesel" {{ request('fuel_type') == 'diesel' ? 'selected' : '' }}>Diesel</option>
-                                <option value="electric" {{ request('fuel_type') == 'electric' ? 'selected' : '' }}>Electric</option>
-                                <option value="hybrid" {{ request('fuel_type') == 'hybrid' ? 'selected' : '' }}>Hybrid</option>
-                                <option value="lpg" {{ request('fuel_type') == 'lpg' ? 'selected' : '' }}>LPG</option>
+                                <option value="">{{ __('cars.any_fuel_type') }}</option>
+                                <option value="gasoline" {{ request('fuel_type') == 'gasoline' ? 'selected' : '' }}>{{ __('cars.car_gasoline') }}</option>
+                                <option value="diesel" {{ request('fuel_type') == 'diesel' ? 'selected' : '' }}>{{ __('cars.car_diesel') }}</option>
+                                <option value="electric" {{ request('fuel_type') == 'electric' ? 'selected' : '' }}>{{ __('cars.car_electric') }}</option>
+                                <option value="hybrid" {{ request('fuel_type') == 'hybrid' ? 'selected' : '' }}>{{ __('cars.car_hybrid') }}</option>
+                                <option value="lpg" {{ request('fuel_type') == 'lpg' ? 'selected' : '' }}>{{ __('cars.car_lpg') }}</option>
                             </select>
                             <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-700">
                                 <svg class="fill-current h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
@@ -151,13 +151,13 @@
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
-                            Condition
+                            {{ __('cars.car_condition') }}
                         </label>
                         <div class="relative">
                             <select id="condition" name="condition" class="block w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-800 appearance-none shadow-sm">
-                                <option value="">Any Condition</option>
-                                <option value="new" {{ request('condition') == 'new' ? 'selected' : '' }}>New</option>
-                                <option value="used" {{ request('condition') == 'used' ? 'selected' : '' }}>Used</option>
+                                <option value="">{{ __('cars.any_condition') }}</option>
+                                <option value="new" {{ request('condition') == 'new' ? 'selected' : '' }}>{{ __('cars.car_new') }}</option>
+                                <option value="used" {{ request('condition') == 'used' ? 'selected' : '' }}>{{ __('cars.car_used') }}</option>
                             </select>
                             <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-700">
                                 <svg class="fill-current h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
@@ -170,11 +170,11 @@
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                             </svg>
-                            Cylinders
+                            {{ __('cars.car_cylinders') }}
                         </label>
                         <div class="relative">
                             <select id="cylinders" name="cylinders" class="block w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-800 appearance-none shadow-sm">
-                                <option value="">Any Cylinders</option>
+                                <option value="">{{ __('cars.any_cylinders') }}</option>
                                 <option value="3" {{ request('cylinders') == '3' ? 'selected' : '' }}>3 Cylinders</option>
                                 <option value="4" {{ request('cylinders') == '4' ? 'selected' : '' }}>4 Cylinders</option>
                                 <option value="6" {{ request('cylinders') == '6' ? 'selected' : '' }}>6 Cylinders</option>
@@ -190,39 +190,39 @@
                     </div>
 
                     <div class="col-span-full mt-4">
-                        <p class="text-base font-bold text-gray-800 mb-3 border-b pb-2">Additional Features</p>
+                        <p class="text-base font-bold text-gray-800 mb-3 border-b pb-2">{{ __('cars.additional_features') }}</p>
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                             <label class="inline-flex items-center text-gray-700 hover:text-blue-700 transition-colors cursor-pointer group">
                                 <input type="checkbox" name="has_air_conditioning" value="1" {{ request('has_air_conditioning') ? 'checked' : '' }} class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
-                                <span class="ml-2 text-sm font-medium group-hover:text-blue-700">Air Conditioning</span>
+                                <span class="ml-2 text-sm font-medium group-hover:text-blue-700">{{ __('cars.air_conditioning') }}</span>
                             </label>
                             <label class="inline-flex items-center text-gray-700 hover:text-blue-700 transition-colors cursor-pointer group">
                                 <input type="checkbox" name="has_leather_seats" value="1" {{ request('has_leather_seats') ? 'checked' : '' }} class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
-                                <span class="ml-2 text-sm font-medium group-hover:text-blue-700">Leather Seats</span>
+                                <span class="ml-2 text-sm font-medium group-hover:text-blue-700">{{ __('cars.leather_seats') }}</span>
                             </label>
                             <label class="inline-flex items-center text-gray-700 hover:text-blue-700 transition-colors cursor-pointer group">
                                 <input type="checkbox" name="has_navigation" value="1" {{ request('has_navigation') ? 'checked' : '' }} class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
-                                <span class="ml-2 text-sm font-medium group-hover:text-blue-700">Navigation</span>
+                                <span class="ml-2 text-sm font-medium group-hover:text-blue-700">{{ __('cars.navigation') }}</span>
                             </label>
                             <label class="inline-flex items-center text-gray-700 hover:text-blue-700 transition-colors cursor-pointer group">
                                 <input type="checkbox" name="has_parking_sensors" value="1" {{ request('has_parking_sensors') ? 'checked' : '' }} class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
-                                <span class="ml-2 text-sm font-medium group-hover:text-blue-700">Parking Sensors</span>
+                                <span class="ml-2 text-sm font-medium group-hover:text-blue-700">{{ __('cars.parking_sensors') }}</span>
                             </label>
                             <label class="inline-flex items-center text-gray-700 hover:text-blue-700 transition-colors cursor-pointer group">
                                 <input type="checkbox" name="has_parking_camera" value="1" {{ request('has_parking_camera') ? 'checked' : '' }} class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
-                                <span class="ml-2 text-sm font-medium group-hover:text-blue-700">Parking Camera</span>
+                                <span class="ml-2 text-sm font-medium group-hover:text-blue-700">{{ __('cars.parking_camera') }}</span>
                             </label>
                             <label class="inline-flex items-center text-gray-700 hover:text-blue-700 transition-colors cursor-pointer group">
                                 <input type="checkbox" name="has_heated_seats" value="1" {{ request('has_heated_seats') ? 'checked' : '' }} class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
-                                <span class="ml-2 text-sm font-medium">Heated Seats</span>
+                                <span class="ml-2 text-sm font-medium">{{ __('cars.heated_seats') }}</span>
                             </label>
                             <label class="inline-flex items-center text-gray-700 hover:text-blue-700 transition-colors cursor-pointer group">
                                 <input type="checkbox" name="has_bluetooth" value="1" {{ request('has_bluetooth') ? 'checked' : '' }} class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
-                                <span class="ml-2 text-sm font-medium group-hover:text-blue-700">Bluetooth</span>
+                                <span class="ml-2 text-sm font-medium group-hover:text-blue-700">{{ __('cars.bluetooth') }}</span>
                             </label>
                             <label class="inline-flex items-center text-gray-700 hover:text-blue-700 transition-colors cursor-pointer group">
                                 <input type="checkbox" name="has_led_lights" value="1" {{ request('has_led_lights') ? 'checked' : '' }} class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
-                                <span class="ml-2 text-sm font-medium group-hover:text-blue-700">LED Lights</span>
+                                <span class="ml-2 text-sm font-medium group-hover:text-blue-700">{{ __('cars.led_lights') }}</span>
                             </label>
                         </div>
                     </div>
@@ -239,33 +239,33 @@
                     <div class="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
                     <div class="text-sm">
                         <div class="font-bold text-green-800">{{ $cars->where('status', 'approved')->count() }}</div>
-                        <div class="text-green-600">Available</div>
+                        <div class="text-green-600">{{ __('cars.available_cars') }}</div>
                     </div>
                 </div>
                 <div class="flex items-center bg-purple-50 px-3 py-2 rounded-lg">
                     <div class="w-3 h-3 bg-purple-500 rounded-full mr-2"></div>
                     <div class="text-sm">
                         <div class="font-bold text-purple-800">{{ $cars->where('status', 'sold')->count() }}</div>
-                        <div class="text-purple-600">Sold</div>
+                        <div class="text-purple-600">{{ __('cars.sold_cars') }}</div>
                     </div>
                 </div>
                 <div class="flex items-center bg-yellow-50 px-3 py-2 rounded-lg">
                     <div class="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
                     <div class="text-sm">
                         <div class="font-bold text-yellow-800">{{ $cars->where('status', 'pending')->count() }}</div>
-                        <div class="text-yellow-600">Pending</div>
+                        <div class="text-yellow-600">{{ __('cars.pending_cars') }}</div>
                     </div>
                 </div>
                 <div class="flex items-center bg-blue-50 px-3 py-2 rounded-lg">
                     <div class="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
                     <div class="text-sm">
                         <div class="font-bold text-blue-800">{{ $cars->whereNotNull('cylinders')->count() }}</div>
-                        <div class="text-blue-600">With Cylinders</div>
+                        <div class="text-blue-600">{{ __('cars.with_cylinders') }}</div>
                     </div>
                 </div>
             </div>
             <div class="text-sm text-gray-500 bg-gray-50 px-3 py-2 rounded-lg">
-                Total: <span class="font-bold text-gray-700">{{ $cars->total() }}</span> cars
+                {{ __('cars.total_cars') }}: <span class="font-bold text-gray-700">{{ $cars->total() }}</span> {{ __('cars.cars') }}
             </div>
         </div>
     </div>

@@ -23,22 +23,7 @@
             <x-input-error :messages="$errors->get('phone')" class="mt-2" />
         </div>
 
-        <!-- User Type -->
-        <div class="mt-4">
-            <x-input-label for="type" :value="__('Account Type')" />
-            <select id="type" name="type" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-                <option value="user" {{ old('type') == 'user' ? 'selected' : '' }}>Regular User</option>
-                <option value="dealer" {{ old('type') == 'dealer' ? 'selected' : '' }}>Car Dealership</option>
-            </select>
-            <x-input-error :messages="$errors->get('type')" class="mt-2" />
-        </div>
 
-        <!-- Dealer Name (conditionally shown) -->
-        <div id="dealer-fields" class="mt-4 hidden">
-            <x-input-label for="dealer_name" :value="__('Dealership Name')" />
-            <x-text-input id="dealer_name" class="block mt-1 w-full" type="text" name="dealer_name" :value="old('dealer_name')" />
-            <x-input-error :messages="$errors->get('dealer_name')" class="mt-2" />
-        </div>
 
         <!-- Password -->
         <div class="mt-4">
@@ -74,21 +59,5 @@
         </div>
     </form>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const typeSelect = document.getElementById('type');
-            const dealerFields = document.getElementById('dealer-fields');
-            
-            function toggleDealerFields() {
-                if (typeSelect.value === 'dealer') {
-                    dealerFields.classList.remove('hidden');
-                } else {
-                    dealerFields.classList.add('hidden');
-                }
-            }
-            
-            toggleDealerFields(); // Run on page load
-            typeSelect.addEventListener('change', toggleDealerFields);
-        });
-    </script>
+
 </x-guest-layout>

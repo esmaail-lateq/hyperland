@@ -13,11 +13,6 @@ class UserPolicy
      */
     public function view(?User $user, User $model): bool
     {
-        // If the user is a dealer, anyone can view their profile
-        if ($model->isDealer()) {
-            return true;
-        }
-        
         // Only the user themselves or admins can view the profile
         return $user && ($user->id === $model->id || Gate::allows('admin'));
     }

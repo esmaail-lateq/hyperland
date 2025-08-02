@@ -7,7 +7,7 @@
         <nav class="flex mb-8" aria-label="Breadcrumb">
             <ol class="inline-flex items-center space-x-1 md:space-x-3">
                 <li class="inline-flex items-center">
-                    <a href="{{ route('spare-parts.index') }}" class="text-gray-700 hover:text-emerald-600">
+                    <a href="{{ route('spare-parts.index') }}" class="text-gray-700 hover:text-blue-600">
                         قطع الغيار
                     </a>
                 </li>
@@ -37,17 +37,17 @@
                         </div>
                     </div>
                     
-                    @auth
-                    @if(Auth::id() === $sparePart->created_by || Auth::user()->isAdmin())
+                    @can('update', $sparePart)
                     <div class="flex space-x-2">
                         <a href="{{ route('spare-parts.edit', $sparePart) }}" 
-                           class="inline-flex items-center px-4 py-2 bg-emerald-600 text-white text-sm font-medium rounded-md hover:bg-emerald-700 transition-colors duration-200">
+                           class="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors duration-200">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                             </svg>
                             تعديل
                         </a>
                         
+                        @can('delete', $sparePart)
                         <form action="{{ route('spare-parts.destroy', $sparePart) }}" method="POST" class="inline" 
                               onsubmit="return confirm('هل أنت متأكد من حذف قطع الغيار هذه؟')">
                             @csrf
@@ -60,9 +60,9 @@
                                 حذف
                             </button>
                         </form>
+                        @endcan
                     </div>
-                    @endif
-                    @endauth
+                    @endcan
                 </div>
             </div>
 

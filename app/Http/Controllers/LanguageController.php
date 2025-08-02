@@ -3,23 +3,25 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Helpers\LanguageHelper;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\App;
 
 class LanguageController extends Controller
 {
-    public function switchLanguage($locale)
+    public function switch($locale)
     {
-        // Validate locale
-        $availableLocales = ['en', 'ar'];
+        // التحقق من أن اللغة مدعومة
+        $supportedLocales = ['en', 'ar'];
         
-        if (!in_array($locale, $availableLocales)) {
-            $locale = 'ar'; // Default to Arabic
+        if (in_array($locale, $supportedLocales)) {
+            Session::put('locale', $locale);
+            App::setLocale($locale);
+            
+            // إضافة رسالة نجاح
+            $message = $locale === 'ar' ? 'تم تغيير اللغة إلى العربية' : 'Language changed to English';
+            Session::flash('success', $message);
         }
-        
-        // Set the locale
-        LanguageHelper::setLanguage($locale);
-        
-        // Redirect back to previous page
+
         return redirect()->back();
     }
 }

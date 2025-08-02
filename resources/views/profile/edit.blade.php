@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Profile') }}
+            {{ __('profile.title') }}
         </h2>
     </x-slot>
 
@@ -12,10 +12,10 @@
                     <section>
                         <header>
                             <h2 class="text-lg font-medium text-gray-900">
-                                {{ __('Profile Picture') }}
+                                {{ __('profile.picture') }}
                             </h2>
                             <p class="mt-1 text-sm text-gray-600">
-                                {{ __('Update your profile picture. Maximum size: 1MB') }}
+                                {{ __('profile.avatar_description') }}
                             </p>
                         </header>
 
@@ -52,7 +52,7 @@
                                                       hover:file:bg-blue-100"
                                                accept="image/*"
                                                required>
-                                        <x-primary-button>{{ __('Update') }}</x-primary-button>
+                                        <x-primary-button>{{ __('profile.update') }}</x-primary-button>
                                     </div>
                                     @error('avatar')
                                         <p class="mt-2 text-sm text-red-600">{{ $message }}</p>

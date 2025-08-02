@@ -38,6 +38,6 @@ class FavoriteController extends Controller
             ]);
         }
         
-        return back()->with('success', 'Favorite status updated!');
+        return back()->with('success', __('favorites.status_updated'));
     }
 } 

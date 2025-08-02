@@ -4,26 +4,19 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use App\Helpers\LanguageHelper;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Session;
 
 class SetLocale
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
-     */
     public function handle(Request $request, Closure $next)
     {
-        // Check if locale is set in session
-        if (session()->has('locale')) {
-            app()->setLocale(session()->get('locale'));
+        // التحقق من وجود لغة محفوظة في الجلسة
+        if (Session::has('locale')) {
+            App::setLocale(Session::get('locale'));
         } else {
-            // Set default locale
-            app()->setLocale('ar');
-            session()->put('locale', 'ar');
+            // استخدام اللغة الافتراضية
+            App::setLocale('en');
         }
 
         return $next($request);

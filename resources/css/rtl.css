@@ -1,8 +1,14 @@
-/* RTL Support for Arabic Language */
+/* RTL Support for Arabic Language - Optimized */
 
+/* Performance optimizations */
 [dir="rtl"] {
     /* Text alignment */
     text-align: right;
+    /* Optimize font rendering */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Improve text rendering */
+    text-rendering: optimizeLegibility;
 }
 
 [dir="rtl"] .text-left {

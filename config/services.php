@@ -31,4 +31,10 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'maersk' => [
+        'api_key' => env('MAERSK_API_KEY'),
+        'base_url' => env('MAERSK_BASE_URL', 'https://api.maersk.com'),
+        'timeout' => env('MAERSK_TIMEOUT', 30),
+    ],
+
 ];

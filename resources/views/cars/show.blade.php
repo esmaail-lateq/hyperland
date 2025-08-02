@@ -47,8 +47,8 @@
                                             @if($car->status === 'sold')
                                                 <div class="absolute inset-0 bg-red-700/90 flex items-center justify-center z-20">
                                                     <div class="text-white text-center">
-                                                        <div class="text-6xl font-black mb-4 text-red-100">SOLD</div>
-                                                        <div class="text-xl font-medium text-red-200">This car has been sold</div>
+                                                                                            <div class="text-6xl font-black mb-4 text-red-100">{{ __('components.sold') }}</div>
+                                    <div class="text-xl font-medium text-red-200">{{ __('components.this_car_has_been_sold') }}</div>
                                                     </div>
                                                 </div>
                                             @endif
@@ -120,14 +120,14 @@
 
                             {{-- Key Specifications Section --}}
                             <div class="bg-white rounded-xl shadow-md border border-gray-200 p-6 mb-8">
-                                <h4 class="text-2xl font-bold text-gray-900 mb-6 pb-3 border-b border-gray-200">Key Specifications</h4>
+                                <h4 class="text-2xl font-bold text-gray-900 mb-6 pb-3 border-b border-gray-200">{{ __('cars.key_specifications') }}</h4>
                                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                                     <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-5 rounded-xl flex items-center shadow-sm border border-blue-200 hover:bg-blue-200 transition-colors duration-200">
                                         <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
                                             <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
                                         </div>
                                         <div>
-                                            <p class="text-sm font-medium text-blue-600">Make</p>
+                                            <p class="text-sm font-medium text-blue-600">{{ __('cars.make') }}</p>
                                             <p class="text-lg font-bold text-gray-900">{{ $car->make }}</p>
                                         </div>
                                     </div>
@@ -136,7 +136,7 @@
                                             <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14v6m-3-3h6m-9-11H6a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2h-1.5a1.5 1.5 0 01-1.5-1.5V3a1.5 1.5 0 00-1.5-1.5H9.75a1.5 1.5 0 00-1.5 1.5v2.25z" /></svg>
                                         </div>
                                         <div>
-                                            <p class="text-sm font-medium text-green-600">Model</p>
+                                            <p class="text-sm font-medium text-green-600">{{ __('cars.model') }}</p>
                                             <p class="text-lg font-bold text-gray-900">{{ $car->model }}</p>
                                         </div>
                                     </div>
@@ -145,7 +145,7 @@
                                             <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                                         </div>
                                         <div>
-                                            <p class="text-sm font-medium text-purple-600">Year</p>
+                                            <p class="text-sm font-medium text-purple-600">{{ __('cars.year') }}</p>
                                             <p class="text-lg font-bold text-gray-900">{{ $car->year }}</p>
                                         </div>
                                     </div>
@@ -154,7 +154,7 @@
                                             <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M3 19l12 3V6L3 3v13z" /></svg>
                                         </div>
                                         <div>
-                                            <p class="text-sm font-medium text-orange-600">Mileage</p>
+                                            <p class="text-sm font-medium text-orange-600">{{ __('cars.mileage') }}</p>
                                             <p class="text-lg font-bold text-gray-900">{{ number_format($car->mileage) }} km</p>
                                         </div>
                                     </div>
@@ -163,7 +163,7 @@
                                             <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
                                         </div>
                                         <div>
-                                            <p class="text-sm font-medium text-red-600">Fuel Type</p>
+                                            <p class="text-sm font-medium text-red-600">{{ __('cars.fuel_type') }}</p>
                                             <p class="text-lg font-bold text-gray-900">{{ ucfirst($car->fuel_type) }}</p>
                                         </div>
                                     </div>
@@ -172,7 +172,7 @@
                                             <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                                         </div>
                                         <div>
-                                            <p class="text-sm font-medium text-indigo-600">Transmission</p>
+                                            <p class="text-sm font-medium text-indigo-600">{{ __('cars.transmission') }}</p>
                                             <p class="text-lg font-bold text-gray-900">{{ ucfirst($car->transmission) }}</p>
                                         </div>
                                     </div>
@@ -182,7 +182,7 @@
                                             <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
                                         </div>
                                         <div>
-                                            <p class="text-sm font-medium text-teal-600">Cylinders</p>
+                                            <p class="text-sm font-medium text-teal-600">{{ __('cars.cylinders') }}</p>
                                             <p class="text-lg font-bold text-gray-900">{{ $car->cylinders }} Cylinders</p>
                                         </div>
                                     </div>
@@ -192,7 +192,7 @@
                                             <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                                         </div>
                                         <div>
-                                            <p class="text-sm font-medium {{ $car->status === 'sold' ? 'text-red-600' : ($car->status === 'approved' ? 'text-green-600' : 'text-yellow-600') }}">Status</p>
+                                            <p class="text-sm font-medium {{ $car->status === 'sold' ? 'text-red-600' : ($car->status === 'approved' ? 'text-green-600' : 'text-yellow-600') }}">{{ __('cars.status') }}</p>
                                             <p class="text-lg font-bold {{ $car->status === 'sold' ? 'text-red-600' : ($car->status === 'approved' ? 'text-green-600' : 'text-yellow-600') }}">{{ ucfirst($car->status) }}</p>
                                         </div>
                                     </div>
@@ -206,7 +206,7 @@
                                     <div class="bg-gray-50 p-4 rounded-lg flex items-center shadow-sm border border-gray-100 hover:bg-gray-100 transition-colors duration-200">
                                         <svg class="h-6 w-6 text-blue-600 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                                         <div>
-                                            <p class="text-sm font-medium text-gray-500">Condition</p>
+                                            <p class="text-sm font-medium text-gray-500">{{ __('cars.condition') }}</p>
                                             <p class="text-base font-semibold text-gray-900">{{ ucfirst($car->condition) }}</p>
                                         </div>
                                         </div>
@@ -216,14 +216,14 @@
                                         $car->has_parking_sensors || $car->has_parking_camera || $car->has_heated_seats || 
                                         $car->has_bluetooth || $car->has_led_lights)
                                     <div class="mt-6">
-                                            <p class="text-lg font-bold text-gray-800 mb-4">Additional Features</p>
+                                            <p class="text-lg font-bold text-gray-800 mb-4">{{ __('cars.additional_features') }}</p>
                                         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
                                                 @if($car->has_air_conditioning)
                                                     <div class="flex items-center bg-blue-50 px-4 py-3 rounded-lg shadow-sm border border-blue-100 group hover:bg-blue-100 transition-colors duration-200">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600 mr-2 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
                                                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                                                         </svg>
-                                                        <span class="text-blue-800 font-medium text-sm">Air Conditioning</span>
+                                                        <span class="text-blue-800 font-medium text-sm">{{ __('cars.air_conditioning') }}</span>
                                                     </div>
                                                 @endif
                                                 @if($car->has_leather_seats)
@@ -231,7 +231,7 @@
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600 mr-2 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
                                                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                                                         </svg>
-                                                        <span class="text-blue-800 font-medium text-sm">Leather Seats</span>
+                                                        <span class="text-blue-800 font-medium text-sm">{{ __('cars.leather_seats') }}</span>
                                                     </div>
                                                 @endif
                                                 @if($car->has_navigation)
@@ -239,7 +239,7 @@
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600 mr-2 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
                                                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                                                         </svg>
-                                                        <span class="text-blue-800 font-medium text-sm">Navigation</span>
+                                                        <span class="text-blue-800 font-medium text-sm">{{ __('cars.navigation') }}</span>
                                                     </div>
                                                 @endif
                                                 @if($car->has_parking_sensors)
@@ -247,7 +247,7 @@
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600 mr-2 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
                                                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                                                         </svg>
-                                                        <span class="text-blue-800 font-medium text-sm">Parking Sensors</span>
+                                                        <span class="text-blue-800 font-medium text-sm">{{ __('cars.parking_sensors') }}</span>
                                                     </div>
                                                 @endif
                                                 @if($car->has_parking_camera)
@@ -255,7 +255,7 @@
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600 mr-2 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
                                                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                                                         </svg>
-                                                        <span class="text-blue-800 font-medium text-sm">Parking Camera</span>
+                                                        <span class="text-blue-800 font-medium text-sm">{{ __('cars.parking_camera') }}</span>
                                                     </div>
                                                 @endif
                                                 @if($car->has_heated_seats)
@@ -263,7 +263,7 @@
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600 mr-2 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
                                                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                                                         </svg>
-                                                        <span class="text-blue-800 font-medium text-sm">Heated Seats</span>
+                                                        <span class="text-blue-800 font-medium text-sm">{{ __('cars.heated_seats') }}</span>
                                                     </div>
                                                 @endif
                                                 @if($car->has_bluetooth)
@@ -271,7 +271,7 @@
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600 mr-2 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
                                                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                                                         </svg>
-                                                        <span class="text-blue-800 font-medium text-sm">Bluetooth</span>
+                                                        <span class="text-blue-800 font-medium text-sm">{{ __('cars.bluetooth') }}</span>
                                                     </div>
                                                 @endif
                                                 @if($car->has_led_lights)
@@ -279,7 +279,7 @@
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600 mr-2 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
                                                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                                                         </svg>
-                                                        <span class="text-blue-800 font-medium text-sm">LED Lights</span>
+                                                        <span class="text-blue-800 font-medium text-sm">{{ __('cars.led_lights') }}</span>
                                                     </div>
                                                 @endif
                                             </div>
@@ -290,7 +290,7 @@
                             {{-- Description Section --}}
                             @if($car->description)
                             <div class="bg-white rounded-xl shadow-md border border-gray-200 p-6 mb-8">
-                                <h4 class="text-2xl font-bold text-gray-900 mb-6 pb-3 border-b border-gray-200">Description</h4>
+                                <h4 class="text-2xl font-bold text-gray-900 mb-6 pb-3 border-b border-gray-200">{{ __('common.description') }}</h4>
                                 <div class="prose max-w-none text-gray-700 leading-relaxed">
                                     {{ $car->description }}
                                 </div>
@@ -299,7 +299,7 @@
 
                             {{-- Location Section --}}
                             <div class="bg-white rounded-xl shadow-md border border-gray-200 p-6">
-                                <h4 class="text-2xl font-bold text-gray-900 mb-6 pb-3 border-b border-gray-200">Location</h4>
+                                <h4 class="text-2xl font-bold text-gray-900 mb-6 pb-3 border-b border-gray-200">{{ __('cars.car_location') }}</h4>
                                 <p class="text-gray-700 flex items-center">
                                     <svg class="h-5 w-5 text-blue-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -328,7 +328,7 @@
                                 </div>
                                 
                                 <div class="mt-4 border-t pt-4 border-gray-200">
-                                    <h4 class="font-bold text-gray-900 text-xl mb-4">Seller Information</h4>
+                                    <h4 class="font-bold text-gray-900 text-xl mb-4">{{ __('cars.seller_information') }}</h4>
                                     <div class="mt-3 flex items-center mb-4">
                                         @if($car->user->avatar)
                                             <img src="{{ asset('storage/' . $car->user->avatar) }}" alt="{{ $car->user->name }}" class="h-16 w-16 object-cover rounded-full border-2 border-blue-400 mr-4 shadow-md">
@@ -340,17 +340,9 @@
                                         
                                         <div>
                                             <p class="font-bold text-lg text-gray-900">
-                                                @if($car->user->isDealer())
-                                                    <a href="{{ route('dealers.show', $car->user) }}" class="text-blue-600 hover:text-blue-800 transition-colors">
-                                                        {{ $car->user->dealer_name }} <span class="text-blue-500 text-xs">(Dealer)</span>
-                                                    </a>
-                                                @else
-                                                    {{ $car->user->name }}
-                                                @endif
+                                                {{ $car->user->name }}
                                             </p>
-                                            @if($car->user->isDealer() && $car->user->dealer_description)
-                                                <p class="mt-1 text-xs text-gray-600 leading-snug">{{ Str::limit($car->user->dealer_description, 80) }}</p>
-                                            @endif
+                                        </div>
                                         </div>
                                     </div>
                                     
@@ -386,19 +378,13 @@
                                             @endif
                                         @else
                                             <div class="mt-6">
-                                                <a href="{{ route('login') }}" class="block w-full text-center text-blue-600 hover:text-blue-800 font-semibold text-sm transition-colors">Login to contact this seller</a>
+                                                <a href="{{ route('login') }}" class="block w-full text-center text-blue-600 hover:text-blue-800 font-semibold text-sm transition-colors">{{ __('cars.login_to_contact_seller') }}</a>
                                             </div>
                                         @endauth
                                     </div>
                                 </div>
                                 
-                                @if($car->user->isDealer())
-                                    <div class="mt-6 pt-6 border-t border-gray-200">
-                                        <a href="{{ route('dealers.show', $car->user) }}" class="block w-full text-center bg-blue-100 text-blue-800 py-3 px-4 rounded-lg font-bold hover:bg-blue-200 transition-colors shadow-sm">
-                                            View all listings from this dealer
-                                        </a>
-                                    </div>
-                                @endif
+
                             </div>
                         </div>
                     </div>

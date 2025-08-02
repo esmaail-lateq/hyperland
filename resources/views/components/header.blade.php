@@ -62,6 +62,17 @@
                     <div class="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-amber-500 to-orange-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 rounded-full"></div>
                 </a>
 
+                <!-- Shipping Services Link -->
+                <a href="{{ route('shipping.index') }}" class="group relative px-4 py-3 rounded-full transition-all duration-300 hover:bg-white/20 dark:hover:bg-slate-800/20 hover:scale-105 backdrop-blur-sm border border-transparent hover:border-white/20 dark:hover:border-slate-600/20 {{ request()->routeIs('shipping.*') ? 'bg-white/30 dark:bg-slate-800/30 shadow-lg' : '' }}">
+                    <div class="flex items-center space-x-2">
+                        <svg class="w-5 h-5 lg:w-6 lg:h-6 text-blue-500 dark:text-blue-400 group-hover:text-blue-600 dark:group-hover:text-blue-300 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                        </svg>
+                        <span class="text-base lg:text-lg font-medium text-slate-700 dark:text-slate-200 group-hover:text-slate-900 dark:group-hover:text-white transition-colors duration-300">خدمات الشحن</span>
+                    </div>
+                    <div class="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-blue-500 to-cyan-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 rounded-full"></div>
+                </a>
+
                 <!-- About Link -->
                 <a href="{{ route('about') }}" class="group relative px-4 py-3 rounded-full transition-all duration-300 hover:bg-white/20 dark:hover:bg-slate-800/20 hover:scale-105 backdrop-blur-sm border border-transparent hover:border-white/20 dark:hover:border-slate-600/20 {{ request()->routeIs('about') ? 'bg-white/30 dark:bg-slate-800/30 shadow-lg' : '' }}">
                     <div class="flex items-center space-x-2">
@@ -73,19 +84,21 @@
                     <div class="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-indigo-500 to-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 rounded-full"></div>
                 </a>
 
-                <!-- Unified Car Management Link (for authenticated users) -->
+                <!-- Unified Car Management Link (for admins and sub-admins only) -->
                 @auth
-                    <a href="{{ route('unified-cars.index') }}" class="group relative px-4 py-3 rounded-full transition-all duration-300 hover:bg-white/20 dark:hover:bg-slate-800/20 hover:scale-105 backdrop-blur-sm border border-transparent hover:border-white/20 dark:hover:border-slate-600/20 {{ request()->routeIs('unified-cars.*') ? 'bg-white/30 dark:bg-slate-800/30 shadow-lg' : '' }}">
-                        <div class="flex items-center space-x-2">
-                            <svg class="w-5 h-5 lg:w-6 lg:h-6 text-emerald-500 dark:text-emerald-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-300 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-                            </svg>
-                            <span class="text-base lg:text-lg font-medium text-slate-700 dark:text-slate-200 group-hover:text-slate-900 dark:group-hover:text-white transition-colors duration-300">
-                                {{ auth()->user()->isAdmin() ? 'لوحة الإدارة' : 'سياراتي' }}
-                            </span>
-                        </div>
-                        <div class="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-emerald-500 to-teal-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 rounded-full"></div>
-                    </a>
+                    @if(auth()->user()->isAdmin() || auth()->user()->isSubAdmin())
+                        <a href="{{ route('unified-cars.index') }}" class="group relative px-4 py-3 rounded-full transition-all duration-300 hover:bg-white/20 dark:hover:bg-slate-800/20 hover:scale-105 backdrop-blur-sm border border-transparent hover:border-white/20 dark:hover:border-slate-600/20 {{ request()->routeIs('unified-cars.*') ? 'bg-white/30 dark:bg-slate-800/30 shadow-lg' : '' }}">
+                            <div class="flex items-center space-x-2">
+                                <svg class="w-5 h-5 lg:w-6 lg:h-6 text-emerald-500 dark:text-emerald-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-300 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                                </svg>
+                                <span class="text-base lg:text-lg font-medium text-slate-700 dark:text-slate-200 group-hover:text-slate-900 dark:group-hover:text-white transition-colors duration-300">
+                                    {{ auth()->user()->isAdmin() ? 'لوحة الإدارة' : 'إدارة المحتوى' }}
+                                </span>
+                            </div>
+                            <div class="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-emerald-500 to-teal-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 rounded-full"></div>
+                        </a>
+                    @endif
                 @endauth
 
             </nav>
@@ -123,7 +136,7 @@
                             </div>
                             <div class="hidden md:block text-left">
                                 <div class="text-base font-bold text-slate-800 dark:text-slate-200">{{ Auth::user()->name }}</div>
-                                <div class="text-sm text-slate-600 dark:text-slate-400">Online</div>
+                                <div class="text-sm text-slate-600 dark:text-slate-400">{{ __('components.online') }}</div>
                             </div>
                             <svg class="w-5 h-5 text-slate-600 dark:text-slate-400 group-hover:text-slate-800 dark:group-hover:text-slate-200 transition-colors duration-300" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
@@ -166,10 +179,24 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <span class="font-bold text-slate-800 dark:text-slate-200 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors duration-300">Favorites</span>
-                                        <div class="text-xs text-slate-600 dark:text-slate-400">Your saved cars</div>
+                                        <span class="font-bold text-slate-800 dark:text-slate-200 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors duration-300">{{ __('components.favorites') }}</span>
+                                        <div class="text-xs text-slate-600 dark:text-slate-400">{{ __('components.your_saved_cars') }}</div>
                                     </div>
                                 </a>
+
+                                @if(auth()->user()->canManageUsers())
+                                <a href="{{ route('admin.users.index') }}" class="flex items-center space-x-3 px-3 py-2.5 rounded-full hover:bg-red-500/10 dark:hover:bg-red-400/10 group transition-all duration-300">
+                                    <div class="w-8 h-8 rounded-full bg-red-500/20 dark:bg-red-400/20 flex items-center justify-center group-hover:bg-red-500/30 dark:group-hover:bg-red-400/30 transition-colors duration-300">
+                                        <svg class="w-4 h-4 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <span class="font-bold text-slate-800 dark:text-slate-200 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors duration-300">إدارة المستخدمين</span>
+                                        <div class="text-xs text-slate-600 dark:text-slate-400">{{ __('components.manage_users_roles') }}</div>
+                                    </div>
+                                </a>
+                                @endif
 
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
@@ -181,7 +208,7 @@
                                         </div>
                                         <div>
                                             <span class="font-bold text-slate-800 dark:text-slate-200 group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors duration-300">{{ __('navigation.logout') }}</span>
-                                            <div class="text-xs text-slate-600 dark:text-slate-400">Sign out of your account</div>
+                                            <div class="text-xs text-slate-600 dark:text-slate-400">{{ __('components.sign_out') }}</div>
                                         </div>
                                     </button>
                                 </form>
@@ -224,6 +251,13 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
                     </svg>
                     <span class="text-xs font-medium text-slate-700 dark:text-slate-200">قطع الغيار</span>
+                </a>
+                
+                <a href="{{ route('shipping.index') }}" class="flex-1 flex flex-col items-center px-2 py-2.5 rounded-full transition-all duration-300 hover:bg-white/20 dark:hover:bg-slate-800/20 backdrop-blur-sm {{ request()->routeIs('shipping.*') ? 'bg-white/30 dark:bg-slate-800/30' : '' }}">
+                    <svg class="w-5 h-5 text-blue-500 dark:text-blue-400 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                    </svg>
+                    <span class="text-xs font-medium text-slate-700 dark:text-slate-200">خدمات الشحن</span>
                 </a>
                 
                 <a href="{{ route('about') }}" class="flex-1 flex flex-col items-center px-2 py-2.5 rounded-full transition-all duration-300 hover:bg-white/20 dark:hover:bg-slate-800/20 backdrop-blur-sm {{ request()->routeIs('about') ? 'bg-white/30 dark:bg-slate-800/30' : '' }}">

@@ -70,17 +70,14 @@
                             </div>
                         @endif
                         
-                        @if($car->is_featured)
-                            <div class="absolute top-4 right-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-3 py-1 text-xs font-bold rounded-full shadow-lg">
-                                FEATURED
-                            </div>
-                        @endif
-                        
-                        @if($car->isNew)
-                        <div class="absolute top-4 left-4 bg-green-600 text-white px-4 py-2 text-sm font-bold rounded-full shadow-lg border-2 border-green-500">
-                            {{ __('home.new') }}
+                        {{-- Featured Badge (keep on image) --}}
+                        <div class="absolute top-4 right-4 z-20">
+                            @if($car->is_featured)
+                                <div class="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-3 py-1 text-xs font-bold rounded-full shadow-lg">
+                                    FEATURED
+                                </div>
+                            @endif
                         </div>
-                        @endif
                         
                         {{-- Sold Overlay --}}
                         @if($car->status === 'sold')
@@ -124,7 +121,7 @@
                                     <div class="flex items-center">
                                         <div class="w-10 h-10 bg-indigo-500 rounded-lg flex items-center justify-center mr-3">
                                             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
                                             </svg>
                                         </div>
                                         <div>
@@ -152,7 +149,7 @@
                                     <div class="flex items-center">
                                         <div class="w-10 h-10 bg-emerald-500 rounded-lg flex items-center justify-center mr-3">
                                             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
                                             </svg>
                                         </div>
                                         <div>
@@ -183,6 +180,7 @@
                                         <div class="w-10 h-10 bg-pink-500 rounded-lg flex items-center justify-center mr-3">
                                             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg>
                                         </div>
                                         <div>
@@ -248,7 +246,14 @@
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 @foreach($latestCars as $car)
-                <div class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 group">
+                <div class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 group relative">
+                    {{-- New Badge (top-right corner of card) --}}
+                    @if($car->isNew)
+                        <div class="absolute top-2 right-2 bg-gray-200 text-gray-800 px-2 py-1 text-xs font-bold rounded-md shadow-sm z-10">
+                            {{ __('home.new') }}
+                        </div>
+                    @endif
+                    
                     <div class="relative h-64 rounded-t-2xl overflow-hidden">
                         @if($car->images->count() > 0)
                             <img src="{{ Storage::url($car->images->first()->image_path) }}" alt="{{ $car->title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
@@ -262,12 +267,6 @@
                             <div class="absolute top-4 right-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-3 py-1 text-xs font-bold rounded-full shadow-lg">
                                 FEATURED
                             </div>
-                        @endif
-                        
-                        @if($car->isNew)
-                        <div class="absolute top-4 left-4 bg-green-600 text-white px-4 py-2 text-sm font-bold rounded-full shadow-lg border-2 border-green-500">
-                            {{ __('home.new') }}
-                        </div>
                         @endif
                         
                         {{-- Sold Overlay --}}
@@ -312,7 +311,7 @@
                                     <div class="flex items-center">
                                         <div class="w-10 h-10 bg-indigo-500 rounded-lg flex items-center justify-center mr-3">
                                             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
                                             </svg>
                                         </div>
                                         <div>
@@ -340,7 +339,7 @@
                                     <div class="flex items-center">
                                         <div class="w-10 h-10 bg-emerald-500 rounded-lg flex items-center justify-center mr-3">
                                             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
                                             </svg>
                                         </div>
                                         <div>
@@ -371,6 +370,7 @@
                                         <div class="w-10 h-10 bg-pink-500 rounded-lg flex items-center justify-center mr-3">
                                             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg>
                                         </div>
                                         <div>

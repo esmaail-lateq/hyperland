@@ -25,7 +25,7 @@
                            id="name" 
                            name="name" 
                            value="{{ old('name', $sparePart->name) }}"
-                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                            placeholder="مثال: فرامل أمامية لسيارة تويوتا"
                            required>
                     @error('name')
@@ -42,7 +42,7 @@
                         id="description" 
                         name="description" 
                         rows="4" 
-                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="اكتب وصفاً مفصلاً لقطع الغيار..."
                     >{{ old('description', $sparePart->description) }}</textarea>
                     @error('description')
@@ -120,7 +120,7 @@
                         إلغاء
                     </a>
                     <button type="submit" 
-                            class="px-6 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-700 transition-colors duration-200">
+                            class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200">
                         حفظ التغييرات
                     </button>
                 </div>

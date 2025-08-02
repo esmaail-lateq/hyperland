@@ -225,7 +225,7 @@ class CarController extends Controller
         }
 
         return redirect()->route('cars.show', $car)
-            ->with('success', 'Your car listing has been created successfully!');
+            ->with('success', __('cars.created_successfully'));
     }
 
     /**
@@ -320,7 +320,7 @@ class CarController extends Controller
         }
 
         return redirect()->route('cars.show', $car)
-            ->with('success', 'Your car listing has been updated successfully!');
+            ->with('success', __('cars.updated_successfully'));
     }
 
     /**
@@ -338,6 +338,6 @@ class CarController extends Controller
         $car->delete();
 
         return redirect()->route('cars.index')
-            ->with('success', 'Your car listing has been deleted successfully!');
+            ->with('success', __('cars.deleted_successfully'));
     }
 }

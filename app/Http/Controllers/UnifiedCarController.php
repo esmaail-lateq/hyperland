@@ -167,8 +167,8 @@ class UnifiedCarController extends Controller
      */
     public function approve(Car $car)
     {
-        if (!Auth::user()->isAdmin()) {
-            abort(403, 'Unauthorized action.');
+        if (!auth()->user()->canApproveContent()) {
+            abort(403, 'غير مصرح لك بالموافقة على المحتوى');
         }
         
         if ($car->approval_status !== 'pending') {
@@ -185,8 +185,8 @@ class UnifiedCarController extends Controller
      */
     public function reject(Car $car)
     {
-        if (!Auth::user()->isAdmin()) {
-            abort(403, 'Unauthorized action.');
+        if (!auth()->user()->canApproveContent()) {
+            abort(403, 'غير مصرح لك بالموافقة على المحتوى');
         }
         
         if ($car->approval_status !== 'pending') {
@@ -231,8 +231,8 @@ class UnifiedCarController extends Controller
      */
     public function toggleFeatured(Car $car)
     {
-        if (!Auth::user()->isAdmin()) {
-            abort(403, 'Unauthorized action.');
+        if (!auth()->user()->canApproveContent()) {
+            abort(403, 'غير مصرح لك بالموافقة على المحتوى');
         }
         
         $car->update(['is_featured' => !$car->is_featured]);
@@ -270,8 +270,8 @@ class UnifiedCarController extends Controller
      */
     public function approveSparePart(SparePart $sparePart)
     {
-        if (!Auth::user()->isAdmin()) {
-            abort(403, 'Unauthorized action.');
+        if (!auth()->user()->canApproveContent()) {
+            abort(403, 'غير مصرح لك بالموافقة على المحتوى');
         }
         
         if ($sparePart->approval_status !== 'pending') {
@@ -288,14 +288,13 @@ class UnifiedCarController extends Controller
      */
     public function rejectSparePart(SparePart $sparePart)
     {
-        if (!Auth::user()->isAdmin()) {
-            abort(403, 'Unauthorized action.');
+        if (!auth()->user()->canApproveContent()) {
+            abort(403, 'غير مصرح لك بالموافقة على المحتوى');
         }
         
         if ($sparePart->approval_status !== 'pending') {
             return back()->with('error', 'يمكن رفض قطع الغيار في انتظار الموافقة فقط.');
         }
-        
         $sparePart->update(['approval_status' => 'rejected']);
         
         return back()->with('success', 'تم رفض قطع الغيار بنجاح!');
