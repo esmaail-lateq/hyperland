@@ -70,6 +70,16 @@ class SparePartController extends Controller
                 \Log::error('Failed to send spare part added notification: ' . $e->getMessage());
             }
         }
+        
+        // Send notification to all users when a new spare part is added
+        try {
+            $allUsers = User::where('status', 'active')->get();
+            foreach ($allUsers as $user) {
+                $user->notify(new \App\Notifications\NewSparePartAddedNotification($sparePart));
+            }
+        } catch (\Exception $e) {
+            \Log::error('Failed to send new spare part notification: ' . $e->getMessage());
+        }
 
         return redirect()->route('spare-parts.show', $sparePart)
             ->with('success', 'تم إرسال طلب قطع الغيار بنجاح! سيتم مراجعته من قبل الإدارة.');

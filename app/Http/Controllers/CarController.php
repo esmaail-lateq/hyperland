@@ -236,6 +236,16 @@ class CarController extends Controller
                 \Log::error('Failed to send car added notification: ' . $e->getMessage());
             }
         }
+        
+        // Send notification to all users when a new car is added
+        try {
+            $allUsers = User::where('status', 'active')->get();
+            foreach ($allUsers as $user) {
+                $user->notify(new \App\Notifications\NewCarAddedNotification($car));
+            }
+        } catch (\Exception $e) {
+            \Log::error('Failed to send new car notification: ' . $e->getMessage());
+        }
 
         return redirect()->route('cars.show', $car)
             ->with('success', __('cars.created_successfully'));

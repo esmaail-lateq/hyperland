@@ -180,6 +180,11 @@ class UnifiedCarController extends Controller
         // Send notification to car owner
         try {
             $car->user->notify(new \App\Notifications\CarApprovalNotification($car, auth()->user()));
+            
+            // Send notification to regular user if car owner is a regular user
+            if ($car->user->isPublicUser()) {
+                $car->user->notify(new \App\Notifications\UserCarApprovalNotification($car, auth()->user()));
+            }
         } catch (\Exception $e) {
             \Log::error('Failed to send car approval notification: ' . $e->getMessage());
         }
@@ -234,7 +239,38 @@ class UnifiedCarController extends Controller
             'status' => ['required', 'string', 'in:' . implode(',', $allowedStatuses)]
         ]);
         
+        $oldStatus = $car->status;
         $car->update(['status' => $request->status]);
+        
+        // Send notification when car is sold
+        if ($request->status === 'sold') {
+            try {
+                $car->user->notify(new \App\Notifications\CarSoldNotification($car, auth()->user()));
+                
+                // Send notification to all users
+                $allUsers = User::where('status', 'active')->get();
+                foreach ($allUsers as $user) {
+                    $user->notify(new \App\Notifications\CarSoldNotification($car, auth()->user()));
+                }
+            } catch (\Exception $e) {
+                \Log::error('Failed to send car sold notification: ' . $e->getMessage());
+            }
+        }
+        
+        // Send notification for status change (except sold which is handled above)
+        if ($request->status !== 'sold' && $oldStatus !== $request->status) {
+            try {
+                $car->user->notify(new \App\Notifications\CarStatusChangedNotification($car, $request->status, $oldStatus));
+                
+                // Send notification to all users
+                $allUsers = User::where('status', 'active')->get();
+                foreach ($allUsers as $user) {
+                    $user->notify(new \App\Notifications\CarStatusChangedNotification($car, $request->status, $oldStatus));
+                }
+            } catch (\Exception $e) {
+                \Log::error('Failed to send car status change notification: ' . $e->getMessage());
+            }
+        }
         
         $statusText = $car->status_display;
         return back()->with('success', "تم تحديث حالة السيارة إلى: {$statusText}");
@@ -297,6 +333,11 @@ class UnifiedCarController extends Controller
         // Send notification to spare part creator
         try {
             $sparePart->creator->notify(new \App\Notifications\SparePartApprovalNotification($sparePart, auth()->user()));
+            
+            // Send notification to regular user if spare part creator is a regular user
+            if ($sparePart->creator->isPublicUser()) {
+                $sparePart->creator->notify(new \App\Notifications\UserSparePartApprovalNotification($sparePart, auth()->user()));
+            }
         } catch (\Exception $e) {
             \Log::error('Failed to send spare part approval notification: ' . $e->getMessage());
         }
