@@ -1,0 +1,17 @@
+<svg width="1920" height="1080" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg2" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e40af;stop-opacity:0.8"/>
+      <stop offset="50%" style="stop-color:#3b82f6;stop-opacity:0.6"/>
+      <stop offset="100%" style="stop-color:#60a5fa;stop-opacity:0.4"/>
+    </linearGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#bg2)"/>
+  <!-- Car silhouette -->
+  <g transform="translate(200, 300)" opacity="0.1">
+    <rect x="0" y="80" width="350" height="70" rx="35" fill="white"/>
+    <rect x="40" y="30" width="270" height="60" rx="30" fill="white"/>
+    <circle cx="80" cy="150" r="25" fill="white"/>
+    <circle cx="270" cy="150" r="25" fill="white"/>
+  </g>
+</svg> 

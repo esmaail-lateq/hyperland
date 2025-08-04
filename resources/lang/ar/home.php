@@ -7,6 +7,12 @@ return [
     'search_placeholder' => 'ابحث عن السيارات...',
     'search_button' => 'بحث',
     'advanced_search' => 'بحث متقدم',
+    'browse_cars' => 'تصفح السيارات',
+    'sell_car' => 'بيع سيارتك',
+    'hero_stats_title' => 'إحصائيات سريعة',
+    'cars_available' => 'سيارة متاحة',
+    'daily_visitors' => 'زائر يومياً',
+    'successful_sales' => 'بيع ناجح',
     
     // Stats Section
     'total_cars' => 'إجمالي السيارات',

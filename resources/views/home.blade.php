@@ -2,47 +2,103 @@
 
 @section('content')
 <div class="min-h-screen bg-gray-50">
-    <!-- Hero Section -->
-    <section class="relative bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 text-white py-20">
-        <div class="absolute inset-0 bg-black opacity-20"></div>
-        <div class="relative container mx-auto px-4">
-            <div class="text-center max-w-4xl mx-auto">
-                <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">
-                    {{ __('home.hero_title') }}
+    <!-- Enhanced Hero Section -->
+    <section class="hero-section text-white py-20 hero-loading">
+        <!-- Dynamic Background Images -->
+        <div class="absolute inset-0 bg-car-slider opacity-30"></div>
+        
+        <!-- Animated Elements -->
+        <div class="absolute inset-0">
+            <div class="floating-shapes"></div>
+        </div>
+        
+        <!-- Content -->
+        <div class="relative container mx-auto px-4 z-10">
+            <div class="text-center max-w-5xl mx-auto">
+                <!-- Enhanced Title -->
+                <h1 class="text-6xl md:text-7xl font-black mb-8 leading-tight">
+                    <span class="hero-title-gradient">
+                        {{ __('home.hero_title') }}
+                    </span>
                 </h1>
-                <p class="text-xl md:text-2xl mb-8 opacity-90">
+                
+                <!-- Enhanced Subtitle -->
+                <p class="text-2xl md:text-3xl mb-12 text-blue-100 font-light">
                     {{ __('home.hero_subtitle') }}
                 </p>
                 
-
-                
-                <!-- Search Form -->
-                <div class="bg-white rounded-2xl p-6 shadow-2xl max-w-2xl mx-auto">
-                    <form action="{{ route('cars.index') }}" method="GET" class="flex flex-col sm:flex-row gap-4">
+                <!-- Enhanced Search Form -->
+                <div class="glass-card p-8 rounded-3xl shadow-2xl max-w-3xl mx-auto mb-12">
+                    <form action="{{ route('cars.index') }}" method="GET" class="search-form-enhanced">
                         <input type="text" name="search" placeholder="{{ __('home.search_placeholder') }}" 
-                               class="flex-1 px-6 py-4 text-gray-700 bg-gray-50 rounded-xl border-0 focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all duration-200">
-                        <button type="submit" class="px-8 py-4 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-colors duration-200 shadow-lg hover:shadow-xl transform hover:scale-105">
+                               class="search-input-enhanced">
+                        <button type="submit" class="search-button-enhanced">
                             {{ __('home.search_button') }}
                         </button>
                     </form>
+                </div>
+                
+                <!-- CTA Buttons -->
+                <div class="flex flex-col sm:flex-row gap-6 justify-center mb-16">
+                    <a href="{{ route('cars.index') }}" class="cta-button-primary">
+                        {{ __('home.browse_cars') }}
+                    </a>
+                    <a href="{{ route('cars.create') }}" class="cta-button-secondary">
+                        {{ __('home.sell_car') }}
+                    </a>
+                </div>
+                
+                <!-- Quick Stats -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+                    <div class="stats-card text-center">
+                        <div class="stats-number">{{ number_format($totalCarsCount) }}</div>
+                        <div class="text-blue-100 font-medium">{{ __('home.cars_available') }}</div>
+                    </div>
+                    <div class="stats-card text-center">
+                        <div class="stats-number">2,500+</div>
+                        <div class="text-blue-100 font-medium">{{ __('home.daily_visitors') }}</div>
+                    </div>
+                    <div class="stats-card text-center">
+                        <div class="stats-number">1,200+</div>
+                        <div class="text-blue-100 font-medium">{{ __('home.successful_sales') }}</div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Stats Section -->
-    <section class="py-16 bg-white">
+    <!-- Enhanced Stats Section -->
+    <section class="py-16 bg-gradient-to-br from-gray-50 to-blue-50">
         <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">{{ __('home.hero_stats_title') }}</h2>
+                <p class="text-lg text-gray-600">إحصائيات حية من منصتنا</p>
+            </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-                <div class="bg-gradient-to-br from-blue-50 to-indigo-50 p-8 rounded-2xl border border-blue-100">
+                <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
+                    <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                        </svg>
+                    </div>
                     <div class="text-4xl font-bold text-blue-600 mb-2">{{ number_format($totalCarsCount) }}</div>
                     <div class="text-gray-600 font-medium">{{ __('home.total_cars') }}</div>
                 </div>
-                <div class="bg-gradient-to-br from-green-50 to-emerald-50 p-8 rounded-2xl border border-green-100">
+                <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
+                    <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                        </svg>
+                    </div>
                     <div class="text-4xl font-bold text-green-600 mb-2">{{ $featuredCars->count() }}</div>
                     <div class="text-gray-600 font-medium">{{ __('home.featured_cars') }}</div>
                 </div>
-                <div class="bg-gradient-to-br from-purple-50 to-pink-50 p-8 rounded-2xl border border-purple-100">
+                <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
+                    <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
                     <div class="text-4xl font-bold text-purple-600 mb-2">1,500+</div>
                     <div class="text-gray-600 font-medium">{{ __('home.happy_customers') }}</div>
                 </div>
