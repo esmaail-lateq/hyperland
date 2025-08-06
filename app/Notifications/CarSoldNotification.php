@@ -89,8 +89,8 @@ class CarSoldNotification extends Notification
             'car_price' => $this->car->price,
             'sold_by' => $this->soldBy->name,
             'sold_by_id' => $this->soldBy->id,
-            'message_ar' => 'تم بيع السيارة ' . $this->car->title . '، انقر للاطلاع على مزيد من التفاصيل',
-            'message_en' => 'Car ' . $this->car->title . ' has been sold, click to view more details',
+            'message_ar' => 'تم بيع السيارة ' . $this->car->title . ' من قبل ' . $this->soldBy->name . '، انقر للاطلاع على مزيد من التفاصيل',
+            'message_en' => 'Car ' . $this->car->title . ' has been sold by ' . $this->soldBy->name . ', click to view more details',
         ];
     }
 

@@ -18,11 +18,15 @@ class CarStatusChangedNotification extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct(Car $car, string $newStatus, string $oldStatus = null)
+    /**
+     * Create a new notification instance.
+     */
+    public function __construct(Car $car, string $newStatus, string $oldStatus = null, $changedBy = null)
     {
         $this->car = $car;
         $this->newStatus = $newStatus;
         $this->oldStatus = $oldStatus;
+        $this->changedBy = $changedBy;
     }
 
     /**
@@ -41,12 +45,13 @@ class CarStatusChangedNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         $locale = app()->getLocale();
+        $changedByText = $this->changedBy ? ' من قبل ' . $this->changedBy->name : '';
         
         if ($locale === 'ar') {
             return (new MailMessage)
                 ->subject('تم تحديث حالة السيارة')
                 ->greeting('مرحباً ' . $notifiable->name)
-                ->line('تم تحديث حالة السيارة الخاصة بك.')
+                ->line('تم تحديث حالة السيارة الخاصة بك' . $changedByText . '.')
                 ->line('🚗 تفاصيل التحديث:')
                 ->line('• السيارة: ' . $this->car->title)
                 ->line('• الحالة الجديدة: ' . $this->getStatusDisplayName($this->newStatus))
@@ -57,7 +62,7 @@ class CarStatusChangedNotification extends Notification
         return (new MailMessage)
             ->subject('Car Status Updated')
             ->greeting('Hello ' . $notifiable->name)
-            ->line('Your car status has been updated.')
+            ->line('Your car status has been updated' . $changedByText . '.')
             ->line('🚗 Update Details:')
             ->line('• Car: ' . $this->car->title)
             ->line('• New Status: ' . $this->getStatusDisplayName($this->newStatus))
@@ -72,6 +77,9 @@ class CarStatusChangedNotification extends Notification
      */
     public function toArray(object $notifiable): array
     {
+        $changedByText = $this->changedBy ? ' من قبل ' . $this->changedBy->name : '';
+        $changedByTextEn = $this->changedBy ? ' by ' . $this->changedBy->name : '';
+        
         return [
             'type' => 'car_status_changed',
             'car_id' => $this->car->id,
@@ -79,8 +87,10 @@ class CarStatusChangedNotification extends Notification
             'new_status' => $this->newStatus,
             'old_status' => $this->oldStatus,
             'new_status_display' => $this->getStatusDisplayName($this->newStatus),
-            'message_ar' => 'تم تحديث حالة السيارة ' . $this->car->title . ' إلى ' . $this->getStatusDisplayName($this->newStatus) . '، انقر للاطلاع على مزيد من التفاصيل',
-            'message_en' => 'Car status for ' . $this->car->title . ' has been updated to ' . $this->getStatusDisplayName($this->newStatus) . ', click to view more details',
+            'changed_by' => $this->changedBy ? $this->changedBy->name : null,
+            'changed_by_id' => $this->changedBy ? $this->changedBy->id : null,
+            'message_ar' => 'تم تحديث حالة السيارة ' . $this->car->title . ' إلى ' . $this->getStatusDisplayName($this->newStatus) . $changedByText . '، انقر للاطلاع على مزيد من التفاصيل',
+            'message_en' => 'Car status for ' . $this->car->title . ' has been updated to ' . $this->getStatusDisplayName($this->newStatus) . $changedByTextEn . ', click to view more details',
         ];
     }
 

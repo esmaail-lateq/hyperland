@@ -225,26 +225,35 @@ class CarController extends Controller
             }
         }
 
-        // Send notification to main admin if car is added by sub-admin
-        if (auth()->user()->isSubAdmin()) {
-            try {
+        // Send notifications based on user role
+        try {
+            if (auth()->user()->isSubAdmin()) {
+                // If sub-admin adds car, notify main admins
                 $mainAdmins = User::where('role', 'admin')->where('status', 'active')->get();
                 foreach ($mainAdmins as $admin) {
                     $admin->notify(new \App\Notifications\CarAddedNotification($car, auth()->user()));
                 }
-            } catch (\Exception $e) {
-                \Log::error('Failed to send car added notification: ' . $e->getMessage());
+            } elseif (auth()->user()->isPublicUser()) {
+                // If public user adds car, notify sub-admins and main admins
+                $subAdmins = User::where('role', 'sub_admin')->where('status', 'active')->get();
+                $mainAdmins = User::where('role', 'admin')->where('status', 'active')->get();
+                
+                foreach ($subAdmins as $subAdmin) {
+                    $subAdmin->notify(new \App\Notifications\CarAddedNotification($car, auth()->user()));
+                }
+                
+                foreach ($mainAdmins as $admin) {
+                    $admin->notify(new \App\Notifications\CarAddedNotification($car, auth()->user()));
+                }
             }
-        }
-        
-        // Send notification to all users when a new car is added
-        try {
-            $allUsers = User::where('status', 'active')->get();
+            
+            // Send notification to all users when a new car is added (except the one who added it)
+            $allUsers = User::where('status', 'active')->where('id', '!=', auth()->id())->get();
             foreach ($allUsers as $user) {
                 $user->notify(new \App\Notifications\NewCarAddedNotification($car));
             }
         } catch (\Exception $e) {
-            \Log::error('Failed to send new car notification: ' . $e->getMessage());
+            \Log::error('Failed to send car notification: ' . $e->getMessage());
         }
 
         return redirect()->route('cars.show', $car)

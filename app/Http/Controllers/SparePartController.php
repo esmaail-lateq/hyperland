@@ -59,26 +59,35 @@ class SparePartController extends Controller
             'created_by' => Auth::id()
         ]);
 
-        // Send notification to main admin if spare part is added by sub-admin
-        if (Auth::user()->isSubAdmin()) {
-            try {
+        // Send notifications based on user role
+        try {
+            if (Auth::user()->isSubAdmin()) {
+                // If sub-admin adds spare part, notify main admins
                 $mainAdmins = User::where('role', 'admin')->where('status', 'active')->get();
                 foreach ($mainAdmins as $admin) {
                     $admin->notify(new \App\Notifications\SparePartAddedNotification($sparePart, Auth::user()));
                 }
-            } catch (\Exception $e) {
-                \Log::error('Failed to send spare part added notification: ' . $e->getMessage());
+            } elseif (Auth::user()->isPublicUser()) {
+                // If public user adds spare part, notify sub-admins and main admins
+                $subAdmins = User::where('role', 'sub_admin')->where('status', 'active')->get();
+                $mainAdmins = User::where('role', 'admin')->where('status', 'active')->get();
+                
+                foreach ($subAdmins as $subAdmin) {
+                    $subAdmin->notify(new \App\Notifications\SparePartAddedNotification($sparePart, Auth::user()));
+                }
+                
+                foreach ($mainAdmins as $admin) {
+                    $admin->notify(new \App\Notifications\SparePartAddedNotification($sparePart, Auth::user()));
+                }
             }
-        }
-        
-        // Send notification to all users when a new spare part is added
-        try {
-            $allUsers = User::where('status', 'active')->get();
+            
+            // Send notification to all users when a new spare part is added (except the one who added it)
+            $allUsers = User::where('status', 'active')->where('id', '!=', Auth::id())->get();
             foreach ($allUsers as $user) {
                 $user->notify(new \App\Notifications\NewSparePartAddedNotification($sparePart));
             }
         } catch (\Exception $e) {
-            \Log::error('Failed to send new spare part notification: ' . $e->getMessage());
+            \Log::error('Failed to send spare part notification: ' . $e->getMessage());
         }
 
         return redirect()->route('spare-parts.show', $sparePart)

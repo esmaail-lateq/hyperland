@@ -242,34 +242,35 @@ class UnifiedCarController extends Controller
         $oldStatus = $car->status;
         $car->update(['status' => $request->status]);
         
-        // Send notification when car is sold
-        if ($request->status === 'sold') {
-            try {
+        // Send notifications based on status change
+        try {
+            if ($request->status === 'sold') {
+                // Special notification for car sold
                 $car->user->notify(new \App\Notifications\CarSoldNotification($car, auth()->user()));
                 
-                // Send notification to all users
-                $allUsers = User::where('status', 'active')->get();
+                // Send notification to all users (except the car owner and the one who changed the status)
+                $allUsers = User::where('status', 'active')
+                    ->where('id', '!=', $car->user_id)
+                    ->where('id', '!=', auth()->id())
+                    ->get();
                 foreach ($allUsers as $user) {
                     $user->notify(new \App\Notifications\CarSoldNotification($car, auth()->user()));
                 }
-            } catch (\Exception $e) {
-                \Log::error('Failed to send car sold notification: ' . $e->getMessage());
-            }
-        }
-        
-        // Send notification for status change (except sold which is handled above)
-        if ($request->status !== 'sold' && $oldStatus !== $request->status) {
-            try {
-                $car->user->notify(new \App\Notifications\CarStatusChangedNotification($car, $request->status, $oldStatus));
+            } elseif ($oldStatus !== $request->status) {
+                // Regular status change notification
+                $car->user->notify(new \App\Notifications\CarStatusChangedNotification($car, $request->status, $oldStatus, auth()->user()));
                 
-                // Send notification to all users
-                $allUsers = User::where('status', 'active')->get();
+                // Send notification to all users (except the car owner and the one who changed the status)
+                $allUsers = User::where('status', 'active')
+                    ->where('id', '!=', $car->user_id)
+                    ->where('id', '!=', auth()->id())
+                    ->get();
                 foreach ($allUsers as $user) {
-                    $user->notify(new \App\Notifications\CarStatusChangedNotification($car, $request->status, $oldStatus));
+                    $user->notify(new \App\Notifications\CarStatusChangedNotification($car, $request->status, $oldStatus, auth()->user()));
                 }
-            } catch (\Exception $e) {
-                \Log::error('Failed to send car status change notification: ' . $e->getMessage());
             }
+        } catch (\Exception $e) {
+            \Log::error('Failed to send car status change notification: ' . $e->getMessage());
         }
         
         $statusText = $car->status_display;

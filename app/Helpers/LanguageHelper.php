@@ -170,4 +170,77 @@ class LanguageHelper
             'fonts_loaded' => self::isArabic()
         ];
     }
+
+    /**
+     * الحصول على اسم نوع الإشعار
+     */
+    public static function getNotificationTypeName(string $type): string
+    {
+        $types = [
+            'App\Notifications\CarAddedNotification' => [
+                'ar' => 'إضافة سيارة جديدة',
+                'en' => 'New Car Added'
+            ],
+            'App\Notifications\CarApprovalNotification' => [
+                'ar' => 'موافقة على السيارة',
+                'en' => 'Car Approval'
+            ],
+            'App\Notifications\CarRejectionNotification' => [
+                'ar' => 'رفض السيارة',
+                'en' => 'Car Rejection'
+            ],
+            'App\Notifications\CarSoldNotification' => [
+                'ar' => 'بيع السيارة',
+                'en' => 'Car Sold'
+            ],
+            'App\Notifications\CarStatusChangedNotification' => [
+                'ar' => 'تغيير حالة السيارة',
+                'en' => 'Car Status Changed'
+            ],
+            'App\Notifications\SparePartAddedNotification' => [
+                'ar' => 'إضافة قطع غيار',
+                'en' => 'Spare Part Added'
+            ],
+            'App\Notifications\SparePartApprovalNotification' => [
+                'ar' => 'موافقة على قطع الغيار',
+                'en' => 'Spare Part Approval'
+            ],
+            'App\Notifications\SparePartRejectionNotification' => [
+                'ar' => 'رفض قطع الغيار',
+                'en' => 'Spare Part Rejection'
+            ],
+            'App\Notifications\NewCarAddedNotification' => [
+                'ar' => 'سيارة جديدة',
+                'en' => 'New Car'
+            ],
+            'App\Notifications\NewSparePartAddedNotification' => [
+                'ar' => 'قطع غيار جديدة',
+                'en' => 'New Spare Part'
+            ],
+        ];
+
+        $locale = self::getCurrentLocale();
+        return $types[$type][$locale] ?? $types[$type]['en'] ?? 'إشعار جديد';
+    }
+
+    /**
+     * الحصول على فئة badge نوع الإشعار
+     */
+    public static function getNotificationTypeBadgeClass(string $type): string
+    {
+        $classes = [
+            'App\Notifications\CarAddedNotification' => 'bg-blue-100 text-blue-800',
+            'App\Notifications\CarApprovalNotification' => 'bg-green-100 text-green-800',
+            'App\Notifications\CarRejectionNotification' => 'bg-red-100 text-red-800',
+            'App\Notifications\CarSoldNotification' => 'bg-purple-100 text-purple-800',
+            'App\Notifications\CarStatusChangedNotification' => 'bg-yellow-100 text-yellow-800',
+            'App\Notifications\SparePartAddedNotification' => 'bg-indigo-100 text-indigo-800',
+            'App\Notifications\SparePartApprovalNotification' => 'bg-green-100 text-green-800',
+            'App\Notifications\SparePartRejectionNotification' => 'bg-red-100 text-red-800',
+            'App\Notifications\NewCarAddedNotification' => 'bg-blue-100 text-blue-800',
+            'App\Notifications\NewSparePartAddedNotification' => 'bg-indigo-100 text-indigo-800',
+        ];
+
+        return $classes[$type] ?? 'bg-gray-100 text-gray-800';
+    }
 } 
