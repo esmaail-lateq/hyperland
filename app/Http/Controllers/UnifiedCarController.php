@@ -242,35 +242,145 @@ class UnifiedCarController extends Controller
         $oldStatus = $car->status;
         $car->update(['status' => $request->status]);
         
+        // TEMPORARY: Bypass rate limiting for testing
+        $bypassRateLimit = true; // Set to false to enable rate limiting again
+        
+        // TEMPORARY: Disable aggregation for testing
+        $bypassAggregation = true; // Set to false to enable aggregation again
+        
         // Send notifications based on status change
         try {
             if ($request->status === 'sold') {
+                \Log::info("=== CAR SOLD NOTIFICATION PROCESS START ===");
+                \Log::info("Car ID: {$car->id}, Title: {$car->title}, User ID: {$car->user_id}");
+                \Log::info("Current user ID: " . auth()->id());
+                
                 // Special notification for car sold
                 $car->user->notify(new \App\Notifications\CarSoldNotification($car, auth()->user()));
+                \Log::info("Sent notification to car owner (User ID: {$car->user_id})");
                 
                 // Send notification to all users (except the car owner and the one who changed the status)
                 $allUsers = User::where('status', 'active')
                     ->where('id', '!=', $car->user_id)
-                    ->where('id', '!=', auth()->id())
+                    ->whereNotNull('email_verified_at')
                     ->get();
-                foreach ($allUsers as $user) {
-                    $user->notify(new \App\Notifications\CarSoldNotification($car, auth()->user()));
+                
+                // Only exclude the user who changed the status if they are not an admin
+                $currentUser = auth()->user();
+                if ($currentUser && !$currentUser->isAdmin()) {
+                    $allUsers = $allUsers->where('id', '!=', $currentUser->id);
                 }
+                
+                // DEBUG: Log the users found
+                \Log::info("Car sold notification - Found " . $allUsers->count() . " users to notify");
+                foreach ($allUsers as $u) {
+                    \Log::info("User to notify: ID={$u->id}, Name={$u->name}, Role={$u->role}");
+                }
+                    
+                // Apply rate limiting and aggregation for car sold notifications
+                foreach ($allUsers as $user) {
+                    \Log::info("Processing user {$user->id} ({$user->name}) for car sold notification");
+                    
+                    if (!$bypassRateLimit && !\App\Services\NotificationRateLimiter::canSendNotification($user, 'car_sold')) {
+                        \Log::info("Rate limit hit for user {$user->id} ({$user->name}) for car_sold notification");
+                        continue;
+                    }
+                    
+                    // Check if we should aggregate with existing notification
+                    $shouldAggregate = !$bypassAggregation && \App\Services\NotificationAggregator::shouldAggregate($user, 'App\Notifications\CarSoldNotification');
+                    \Log::info("Should aggregate for user {$user->id}: " . ($shouldAggregate ? 'YES' : 'NO'));
+                    
+                    if ($shouldAggregate) {
+                        \Log::info("Aggregating notification for user {$user->id} ({$user->name})");
+                        // Update existing notification
+                        $existingNotification = \App\Services\NotificationAggregator::getRecentNotification($user, 'App\Notifications\CarSoldNotification');
+                        
+                        if ($existingNotification) {
+                            \Log::info("Found existing notification ID: {$existingNotification->id} for user {$user->id}");
+                            \App\Services\NotificationAggregator::updateExistingNotification($existingNotification, [
+                                'id' => $car->id,
+                                'title' => $car->title,
+                                'type' => 'car_sold'
+                            ]);
+                            \Log::info("Updated existing notification for user {$user->id}");
+                        } else {
+                            \Log::warning("Should aggregate but no existing notification found for user {$user->id}");
+                        }
+                    } else {
+                        \Log::info("Sending new notification to user {$user->id} ({$user->name})");
+                        // Send new notification
+                        $user->notify(new \App\Notifications\CarSoldNotification($car, auth()->user()));
+                        \Log::info("Successfully sent new notification to user {$user->id}");
+                    }
+                }
+                \Log::info("=== CAR SOLD NOTIFICATION PROCESS END ===");
             } elseif ($oldStatus !== $request->status) {
+                \Log::info("=== CAR STATUS CHANGED NOTIFICATION PROCESS START ===");
+                \Log::info("Car ID: {$car->id}, Title: {$car->title}, Old Status: {$oldStatus}, New Status: {$request->status}");
+                
                 // Regular status change notification
                 $car->user->notify(new \App\Notifications\CarStatusChangedNotification($car, $request->status, $oldStatus, auth()->user()));
+                \Log::info("Sent notification to car owner (User ID: {$car->user_id})");
                 
                 // Send notification to all users (except the car owner and the one who changed the status)
                 $allUsers = User::where('status', 'active')
                     ->where('id', '!=', $car->user_id)
-                    ->where('id', '!=', auth()->id())
+                    ->whereNotNull('email_verified_at')
                     ->get();
-                foreach ($allUsers as $user) {
-                    $user->notify(new \App\Notifications\CarStatusChangedNotification($car, $request->status, $oldStatus, auth()->user()));
+                
+                // Only exclude the user who changed the status if they are not an admin
+                $currentUser = auth()->user();
+                if ($currentUser && !$currentUser->isAdmin()) {
+                    $allUsers = $allUsers->where('id', '!=', $currentUser->id);
                 }
+                
+                // DEBUG: Log the users found
+                \Log::info("Car status changed notification - Found " . $allUsers->count() . " users to notify");
+                foreach ($allUsers as $u) {
+                    \Log::info("User to notify: ID={$u->id}, Name={$u->name}, Role={$u->role}");
+                }
+                    
+                // Apply rate limiting and aggregation for status change notifications
+                foreach ($allUsers as $user) {
+                    \Log::info("Processing user {$user->id} ({$user->name}) for car status changed notification");
+                    
+                    if (!$bypassRateLimit && !\App\Services\NotificationRateLimiter::canSendNotification($user, 'car_status_changed')) {
+                        \Log::info("Rate limit hit for user {$user->id} ({$user->name}) for car_status_changed notification");
+                        continue;
+                    }
+                    
+                    // Check if we should aggregate with existing notification
+                    $shouldAggregate = !$bypassAggregation && \App\Services\NotificationAggregator::shouldAggregate($user, 'App\Notifications\CarStatusChangedNotification');
+                    \Log::info("Should aggregate for user {$user->id}: " . ($shouldAggregate ? 'YES' : 'NO'));
+                    
+                    if ($shouldAggregate) {
+                        \Log::info("Aggregating notification for user {$user->id} ({$user->name})");
+                        // Update existing notification
+                        $existingNotification = \App\Services\NotificationAggregator::getRecentNotification($user, 'App\Notifications\CarStatusChangedNotification');
+                        
+                        if ($existingNotification) {
+                            \Log::info("Found existing notification ID: {$existingNotification->id} for user {$user->id}");
+                            \App\Services\NotificationAggregator::updateExistingNotification($existingNotification, [
+                                'id' => $car->id,
+                                'title' => $car->title,
+                                'type' => 'car_status'
+                            ]);
+                            \Log::info("Updated existing notification for user {$user->id}");
+                        } else {
+                            \Log::warning("Should aggregate but no existing notification found for user {$user->id}");
+                        }
+                    } else {
+                        \Log::info("Sending new notification to user {$user->id} ({$user->name})");
+                        // Send new notification
+                        $user->notify(new \App\Notifications\CarStatusChangedNotification($car, $request->status, $oldStatus, auth()->user()));
+                        \Log::info("Successfully sent new notification to user {$user->id}");
+                    }
+                }
+                \Log::info("=== CAR STATUS CHANGED NOTIFICATION PROCESS END ===");
             }
         } catch (\Exception $e) {
             \Log::error('Failed to send car status change notification: ' . $e->getMessage());
+            \Log::error('Stack trace: ' . $e->getTraceAsString());
         }
         
         $statusText = $car->status_display;

@@ -72,26 +72,81 @@
                                     
                                     <!-- Notification Content -->
                                     <div class="flex-1 min-w-0">
-                                        <div class="flex items-center space-x-2 mb-2">
-                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ getNotificationTypeBadgeClass($notification->type) }}">
-                                                {{ getNotificationTypeName($notification->type) }}
-                                            </span>
-                                            <span class="text-sm text-slate-500 dark:text-slate-400">
-                                                {{ $notification->created_at->diffForHumans() }}
-                                            </span>
+                                        <div class="flex items-center space-x-4 mb-3">
+                                            {{-- Notification Icon --}}
+                                            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white shadow-lg">
+                                                {!! \App\Helpers\NotificationHelper::getNotificationIcon($notification->type) !!}
+                                            </div>
+                                            
+                                            <div class="flex-1">
+                                                <div class="flex items-center space-x-2 mb-1">
+                                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ \App\Helpers\NotificationHelper::getNotificationTypeBadgeClass($notification->type) }}">
+                                                        {{ \App\Helpers\NotificationHelper::getNotificationTypeName($notification->type) }}
+                                                    </span>
+                                                    @if(!$notification->read_at)
+                                                        <span class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+                                                    @endif
+                                                </div>
+                                                
+                                                <p class="text-slate-800 dark:text-slate-200 font-medium">
+                                                    {{ \App\Helpers\NotificationHelper::formatNotificationMessage($notification) }}
+                                                </p>
+                                            </div>
+                                            
+                                            <div class="text-right">
+                                                <span class="text-sm text-slate-500 dark:text-slate-400">
+                                                    {{ \App\Helpers\NotificationHelper::getNotificationTime($notification) }}
+                                                </span>
+                                            </div>
                                         </div>
                                         
-                                        <p class="text-slate-800 dark:text-slate-200 font-medium mb-2">
-                                            @if(isset($notification->data['message_ar']))
-                                                {{ $notification->data['message_ar'] }}
-                                            @elseif(isset($notification->data['message_en']))
-                                                {{ $notification->data['message_en'] }}
-                                            @elseif(isset($notification->data['message']))
-                                                {{ $notification->data['message'] }}
-                                            @else
-                                                {{ __('notifications.new_notification') }}
-                                            @endif
-                                        </p>
+                                        {{-- Show aggregated details if available --}}
+                                        @if(\App\Helpers\NotificationHelper::isAggregated($notification))
+                                            <div class="mt-3 p-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-xl border border-blue-200 dark:border-blue-800 shadow-sm">
+                                                <div class="flex items-center space-x-3 mb-3">
+                                                    <div class="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white">
+                                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                                            <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/>
+                                                        </svg>
+                                                    </div>
+                                                    <div>
+                                                        <span class="text-sm font-bold text-blue-800 dark:text-blue-200">
+                                                            {{ \App\Helpers\NotificationHelper::getAggregatedCount($notification) }} إشعارات مجمعة
+                                                        </span>
+                                                        <p class="text-xs text-blue-600 dark:text-blue-400">
+                                                            تم تجميع الإشعارات المتشابهة لتقليل spam
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                
+                                                @if(count(\App\Helpers\NotificationHelper::getAggregatedItems($notification)) > 0)
+                                                    <div class="bg-white/50 dark:bg-slate-800/50 rounded-lg p-3">
+                                                        <div class="text-xs font-medium text-blue-700 dark:text-blue-300 mb-2">
+                                                            آخر العناصر المضافة:
+                                                        </div>
+                                                        <ul class="space-y-2">
+                                                            @foreach(\App\Helpers\NotificationHelper::getAggregatedItems($notification) as $item)
+                                                                <li class="flex items-center justify-between p-2 bg-white/70 dark:bg-slate-700/70 rounded-md">
+                                                                    <div class="flex items-center space-x-2">
+                                                                        <span class="w-2 h-2 bg-blue-500 rounded-full"></span>
+                                                                        <span class="text-sm text-slate-700 dark:text-slate-300">
+                                                                            {{ $item['title'] ?? 'عنصر جديد' }}
+                                                                        </span>
+                                                                    </div>
+                                                                    <span class="text-xs text-blue-600 dark:text-blue-400">
+                                                                        {{ \Carbon\Carbon::parse($item['added_at'])->diffForHumans() }}
+                                                                    </span>
+                                                                </li>
+                                                            @endforeach
+                                                        </ul>
+                                                    </div>
+                                                @endif
+                                                
+                                                <div class="text-xs text-blue-600 dark:text-blue-400 mt-3 text-center">
+                                                    آخر تحديث: {{ \Carbon\Carbon::parse($notification->data['last_updated'])->diffForHumans() }}
+                                                </div>
+                                            </div>
+                                        @endif
                                         
                                         <!-- Additional Details -->
                                         @if(isset($notification->data['car_title']))
@@ -244,28 +299,4 @@ function deleteNotification(notificationId) {
 </script>
 @endsection
 
-@php
-function getNotificationTypeBadgeClass($type) {
-    return match($type) {
-        'App\Notifications\CarAddedNotification' => 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300',
-        'App\Notifications\SparePartAddedNotification' => 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300',
-        'App\Notifications\CarApprovalNotification' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
-        'App\Notifications\CarRejectionNotification' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300',
-        'App\Notifications\SparePartApprovalNotification' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
-        'App\Notifications\SparePartRejectionNotification' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300',
-        default => 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300'
-    };
-}
-
-function getNotificationTypeName($type) {
-    return match($type) {
-        'App\Notifications\CarAddedNotification' => __('notifications.car_added'),
-        'App\Notifications\SparePartAddedNotification' => __('notifications.spare_part_added'),
-        'App\Notifications\CarApprovalNotification' => __('notifications.car_approval'),
-        'App\Notifications\CarRejectionNotification' => __('notifications.car_rejection'),
-        'App\Notifications\SparePartApprovalNotification' => __('notifications.spare_part_approval'),
-        'App\Notifications\SparePartRejectionNotification' => __('notifications.spare_part_rejection'),
-        default => __('notifications.unknown_type')
-    };
-}
-@endphp 
+{{-- Helper functions moved to NotificationHelper class --}} 

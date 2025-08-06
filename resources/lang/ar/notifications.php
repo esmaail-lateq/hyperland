@@ -15,9 +15,13 @@ return [
     
     // Notification types
     'car_added' => 'إضافة سيارة',
+    'new_car_added' => 'سيارة جديدة',
     'spare_part_added' => 'إضافة قطعة غيار',
+    'new_spare_part_added' => 'قطعة غيار جديدة',
     'car_approval' => 'موافقة على سيارة',
     'car_rejection' => 'رفض سيارة',
+    'car_sold' => 'بيع سيارة',
+    'car_status_changed' => 'تغيير حالة سيارة',
     'spare_part_approval' => 'موافقة على قطعة غيار',
     'spare_part_rejection' => 'رفض قطعة غيار',
     'unknown_type' => 'نوع غير معروف',
@@ -85,4 +89,11 @@ return [
     'review_instructions' => 'يرجى مراجعة المحتوى والموافقة عليه أو رفضه.',
     'approval_instructions' => 'يمكنك الآن عرض المحتوى في الموقع.',
     'rejection_instructions' => 'يرجى مراجعة الأسباب والتواصل مع الإدارة إذا كان لديك أي استفسارات.',
+    
+    // Aggregation
+    'last_updated' => 'آخر تحديث',
+    'aggregated_notifications' => 'إشعارات مجمعة',
+    'aggregation_description' => 'تم تجميع الإشعارات المتشابهة لتقليل spam',
+    'latest_items' => 'آخر العناصر المضافة',
+    'new_item' => 'عنصر جديد',
 ]; 

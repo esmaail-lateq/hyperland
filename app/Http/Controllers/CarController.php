@@ -229,28 +229,75 @@ class CarController extends Controller
         try {
             if (auth()->user()->isSubAdmin()) {
                 // If sub-admin adds car, notify main admins
-                $mainAdmins = User::where('role', 'admin')->where('status', 'active')->get();
+                $mainAdmins = User::where('role', 'admin')
+                    ->where('status', 'active')
+                    ->whereNotNull('email_verified_at')
+                    ->get();
+                    
+                // Apply rate limiting for admin notifications
                 foreach ($mainAdmins as $admin) {
-                    $admin->notify(new \App\Notifications\CarAddedNotification($car, auth()->user()));
+                    if (\App\Services\NotificationRateLimiter::canSendNotification($admin, 'car_added')) {
+                        $admin->notify(new \App\Notifications\CarAddedNotification($car, auth()->user()));
+                    }
                 }
             } elseif (auth()->user()->isPublicUser()) {
                 // If public user adds car, notify sub-admins and main admins
-                $subAdmins = User::where('role', 'sub_admin')->where('status', 'active')->get();
-                $mainAdmins = User::where('role', 'admin')->where('status', 'active')->get();
+                $subAdmins = User::where('role', 'sub_admin')
+                    ->where('status', 'active')
+                    ->whereNotNull('email_verified_at')
+                    ->get();
+                $mainAdmins = User::where('role', 'admin')
+                    ->where('status', 'active')
+                    ->whereNotNull('email_verified_at')
+                    ->get();
                 
+                // Apply rate limiting for admin notifications
                 foreach ($subAdmins as $subAdmin) {
-                    $subAdmin->notify(new \App\Notifications\CarAddedNotification($car, auth()->user()));
+                    if (\App\Services\NotificationRateLimiter::canSendNotification($subAdmin, 'car_added')) {
+                        $subAdmin->notify(new \App\Notifications\CarAddedNotification($car, auth()->user()));
+                    }
                 }
                 
                 foreach ($mainAdmins as $admin) {
-                    $admin->notify(new \App\Notifications\CarAddedNotification($car, auth()->user()));
+                    if (\App\Services\NotificationRateLimiter::canSendNotification($admin, 'car_added')) {
+                        $admin->notify(new \App\Notifications\CarAddedNotification($car, auth()->user()));
+                    }
                 }
             }
             
             // Send notification to all users when a new car is added (except the one who added it)
-            $allUsers = User::where('status', 'active')->where('id', '!=', auth()->id())->get();
+            $allUsers = User::where('status', 'active')
+                ->whereNotNull('email_verified_at')
+                ->get();
+                
+            // Only exclude the user who added the car if they are not an admin
+            $currentUser = auth()->user();
+            if ($currentUser && !$currentUser->isAdmin()) {
+                $allUsers = $allUsers->where('id', '!=', $currentUser->id);
+            }
+                
+            // Apply rate limiting and aggregation for user notifications
             foreach ($allUsers as $user) {
-                $user->notify(new \App\Notifications\NewCarAddedNotification($car));
+                if (!\App\Services\NotificationRateLimiter::canSendNotification($user, 'new_car_added')) {
+                    continue;
+                }
+                
+                // Check if we should aggregate with existing notification
+                if (\App\Services\NotificationAggregator::shouldAggregate($user, 'App\Notifications\NewCarAddedNotification')) {
+                    // Update existing notification
+                    $existingNotification = \App\Services\NotificationAggregator::getRecentNotification($user, 'App\Notifications\NewCarAddedNotification');
+                    
+                    if ($existingNotification) {
+                        \App\Services\NotificationAggregator::updateExistingNotification($existingNotification, [
+                            'id' => $car->id,
+                            'title' => $car->title,
+                            'type' => 'car'
+                        ]);
+                    }
+                } else {
+                    // Send new notification
+                    $user->notify(new \App\Notifications\NewCarAddedNotification($car));
+                }
             }
         } catch (\Exception $e) {
             \Log::error('Failed to send car notification: ' . $e->getMessage());

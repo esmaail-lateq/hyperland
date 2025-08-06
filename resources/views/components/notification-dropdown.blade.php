@@ -29,20 +29,45 @@
                 @foreach($notifications as $notification)
                     <div class="p-3 border-b border-white/10 dark:border-slate-600/10 hover:bg-white/20 dark:hover:bg-slate-700/20 transition-colors duration-200">
                         <div class="flex items-start space-x-3">
-                            <div class="w-2 h-2 mt-2 rounded-full {{ $notification->read_at ? 'bg-gray-400' : 'bg-blue-500' }}"></div>
-                            <div class="flex-1">
-                                <p class="text-sm font-medium text-slate-800 dark:text-slate-200">
-                                    @if(isset($notification->data['message_ar']))
-                                        {{ $notification->data['message_ar'] }}
-                                    @elseif(isset($notification->data['message_en']))
-                                        {{ $notification->data['message_en'] }}
-                                    @elseif(isset($notification->data['message']))
-                                        {{ $notification->data['message'] }}
-                                    @else
-                                        إشعار جديد
+                            {{-- Notification Icon --}}
+                            <div class="flex-shrink-0 mt-1">
+                                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white">
+                                    {!! \App\Helpers\NotificationHelper::getNotificationIcon($notification->type) !!}
+                                </div>
+                            </div>
+                            
+                            <div class="flex-1 min-w-0">
+                                {{-- Notification Type Badge --}}
+                                <div class="flex items-center space-x-2 mb-1">
+                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium {{ \App\Helpers\NotificationHelper::getNotificationTypeBadgeClass($notification->type) }}">
+                                        {{ \App\Helpers\NotificationHelper::getNotificationTypeName($notification->type) }}
+                                    </span>
+                                    @if(!$notification->read_at)
+                                        <span class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
                                     @endif
+                                </div>
+                                
+                                {{-- Notification Message --}}
+                                <p class="text-sm font-medium text-slate-800 dark:text-slate-200 mb-1">
+                                    {{ \App\Helpers\NotificationHelper::formatNotificationMessage($notification) }}
                                 </p>
-                                <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">{{ $notification->created_at->diffForHumans() }}</p>
+                                
+                                {{-- Show aggregated details if available --}}
+                                @if(\App\Helpers\NotificationHelper::isAggregated($notification))
+                                    <div class="mt-2">
+                                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-sm">
+                                            <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/>
+                                            </svg>
+                                            {{ \App\Helpers\NotificationHelper::getAggregatedCount($notification) }} إشعارات مجمعة
+                                        </span>
+                                    </div>
+                                @endif
+                                
+                                {{-- Notification Time --}}
+                                <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                                    {{ \App\Helpers\NotificationHelper::getNotificationTime($notification) }}
+                                </p>
                             </div>
                         </div>
                     </div>

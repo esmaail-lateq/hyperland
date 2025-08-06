@@ -63,28 +63,70 @@ class SparePartController extends Controller
         try {
             if (Auth::user()->isSubAdmin()) {
                 // If sub-admin adds spare part, notify main admins
-                $mainAdmins = User::where('role', 'admin')->where('status', 'active')->get();
+                $mainAdmins = User::where('role', 'admin')
+                    ->where('status', 'active')
+                    ->whereNotNull('email_verified_at')
+                    ->get();
+                    
+                // Apply rate limiting for admin notifications
                 foreach ($mainAdmins as $admin) {
-                    $admin->notify(new \App\Notifications\SparePartAddedNotification($sparePart, Auth::user()));
+                    if (\App\Services\NotificationRateLimiter::canSendNotification($admin, 'spare_part_added')) {
+                        $admin->notify(new \App\Notifications\SparePartAddedNotification($sparePart, Auth::user()));
+                    }
                 }
             } elseif (Auth::user()->isPublicUser()) {
                 // If public user adds spare part, notify sub-admins and main admins
-                $subAdmins = User::where('role', 'sub_admin')->where('status', 'active')->get();
-                $mainAdmins = User::where('role', 'admin')->where('status', 'active')->get();
+                $subAdmins = User::where('role', 'sub_admin')
+                    ->where('status', 'active')
+                    ->whereNotNull('email_verified_at')
+                    ->get();
+                $mainAdmins = User::where('role', 'admin')
+                    ->where('status', 'active')
+                    ->whereNotNull('email_verified_at')
+                    ->get();
                 
+                // Apply rate limiting for admin notifications
                 foreach ($subAdmins as $subAdmin) {
-                    $subAdmin->notify(new \App\Notifications\SparePartAddedNotification($sparePart, Auth::user()));
+                    if (\App\Services\NotificationRateLimiter::canSendNotification($subAdmin, 'spare_part_added')) {
+                        $subAdmin->notify(new \App\Notifications\SparePartAddedNotification($sparePart, Auth::user()));
+                    }
                 }
                 
                 foreach ($mainAdmins as $admin) {
-                    $admin->notify(new \App\Notifications\SparePartAddedNotification($sparePart, Auth::user()));
+                    if (\App\Services\NotificationRateLimiter::canSendNotification($admin, 'spare_part_added')) {
+                        $admin->notify(new \App\Notifications\SparePartAddedNotification($sparePart, Auth::user()));
+                    }
                 }
             }
             
             // Send notification to all users when a new spare part is added (except the one who added it)
-            $allUsers = User::where('status', 'active')->where('id', '!=', Auth::id())->get();
+            $allUsers = User::where('status', 'active')
+                ->where('id', '!=', Auth::id())
+                ->whereNotNull('email_verified_at')
+                ->get();
+                
+            // Apply rate limiting and aggregation for user notifications
             foreach ($allUsers as $user) {
-                $user->notify(new \App\Notifications\NewSparePartAddedNotification($sparePart));
+                if (!\App\Services\NotificationRateLimiter::canSendNotification($user, 'new_spare_part')) {
+                    continue;
+                }
+                
+                // Check if we should aggregate with existing notification
+                if (\App\Services\NotificationAggregator::shouldAggregate($user, 'App\Notifications\NewSparePartAddedNotification')) {
+                    // Update existing notification
+                    $existingNotification = \App\Services\NotificationAggregator::getRecentNotification($user, 'App\Notifications\NewSparePartAddedNotification');
+                    
+                    if ($existingNotification) {
+                        \App\Services\NotificationAggregator::updateExistingNotification($existingNotification, [
+                            'id' => $sparePart->id,
+                            'title' => $sparePart->name,
+                            'type' => 'spare_part'
+                        ]);
+                    }
+                } else {
+                    // Send new notification
+                    $user->notify(new \App\Notifications\NewSparePartAddedNotification($sparePart));
+                }
             }
         } catch (\Exception $e) {
             \Log::error('Failed to send spare part notification: ' . $e->getMessage());

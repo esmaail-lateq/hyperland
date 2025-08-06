@@ -34,7 +34,11 @@ class NotificationController extends Controller
             $query->where('type', $request->type);
         }
         
-        $notifications = $query->latest()->paginate(20);
+        // Optimize query with eager loading and ordering by priority
+        $notifications = $query
+            ->orderByRaw('CASE WHEN read_at IS NULL THEN 0 ELSE 1 END') // Unread first
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
         
         return view('notifications.index', compact('notifications'));
     }

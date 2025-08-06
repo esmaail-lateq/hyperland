@@ -15,9 +15,13 @@ return [
     
     // Notification types
     'car_added' => 'Car Added',
+    'new_car_added' => 'New Car',
     'spare_part_added' => 'Spare Part Added',
+    'new_spare_part_added' => 'New Spare Part',
     'car_approval' => 'Car Approval',
     'car_rejection' => 'Car Rejection',
+    'car_sold' => 'Car Sold',
+    'car_status_changed' => 'Car Status Changed',
     'spare_part_approval' => 'Spare Part Approval',
     'spare_part_rejection' => 'Spare Part Rejection',
     'unknown_type' => 'Unknown Type',
@@ -85,4 +89,11 @@ return [
     'review_instructions' => 'Please review the content and approve or reject it.',
     'approval_instructions' => 'You can now view the content on the website.',
     'rejection_instructions' => 'Please review the reasons and contact the administration if you have any questions.',
+    
+    // Aggregation
+    'last_updated' => 'Last updated',
+    'aggregated_notifications' => 'Aggregated notifications',
+    'aggregation_description' => 'Similar notifications have been aggregated to reduce spam',
+    'latest_items' => 'Latest added items',
+    'new_item' => 'New item',
 ]; 
