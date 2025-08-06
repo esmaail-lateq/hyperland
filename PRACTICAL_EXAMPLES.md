@@ -837,7 +837,7 @@ public function up()
         </button>
       </div>
     </div>
-  </div>
+</div>
 </template>
 
 <script>
@@ -898,7 +898,7 @@ export default {
                x-model="filters.search"
                placeholder="{{ __('cars.fields.title') }}"
                class="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white">
-      </div>
+                </div>
       
       <!-- Make Select -->
       <div>
@@ -913,7 +913,7 @@ export default {
             <option value="{{ $make }}">{{ $make }}</option>
           @endforeach
         </select>
-      </div>
+            </div>
       
       <!-- Price Range -->
       <div>
@@ -940,7 +940,7 @@ export default {
                 class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition-colors">
           {{ __('common.search') }}
         </button>
-      </div>
+        </div>
     </div>
   </form>
 </div>

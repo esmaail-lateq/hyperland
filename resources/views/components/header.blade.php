@@ -66,7 +66,7 @@
                 <a href="{{ route('shipping.index') }}" class="group relative px-4 py-3 rounded-full transition-all duration-300 hover:bg-white/20 dark:hover:bg-slate-800/20 hover:scale-105 backdrop-blur-sm border border-transparent hover:border-white/20 dark:hover:border-slate-600/20 {{ request()->routeIs('shipping.*') ? 'bg-white/30 dark:bg-slate-800/30 shadow-lg' : '' }}">
                     <div class="flex items-center space-x-2">
                         <svg class="w-5 h-5 lg:w-6 lg:h-6 text-blue-500 dark:text-blue-400 group-hover:text-blue-600 dark:group-hover:text-blue-300 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m6-5v6a2 2 0 01-2 2H9a2 2 0 01-2-2v-6m8 0V9a2 2 0 00-2-2H9a2 2 0 00-2 2v4.01"/>
                         </svg>
                         <span class="text-base lg:text-lg font-medium text-slate-700 dark:text-slate-200 group-hover:text-slate-900 dark:group-hover:text-white transition-colors duration-300">{{ __('navigation.shipping_services') }}</span>
                     </div>
@@ -177,7 +177,7 @@
                                     </div>
                                     <div>
                                         <span class="font-bold text-slate-800 dark:text-slate-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">{{ __('navigation.profile') }}</span>
-                                        <div class="text-xs text-slate-600 dark:text-slate-400">Manage your account</div>
+                                        <div class="text-xs text-slate-600 dark:text-slate-400">{{ __('navigation.manage_account') }}</div>
                                     </div>
                                 </a>
 
