@@ -1,1 +1,66 @@
- 
+# Exclude vendor directory to avoid permission issues
+vendor/
+
+# Exclude storage directory completely
+storage/
+public/storage
+
+# Exclude node_modules
+node_modules/
+
+# Exclude git directory
+.git/
+
+# Exclude IDE files
+.vscode/
+.idea/
+
+# Exclude OS generated files
+.DS_Store
+Thumbs.db
+
+# Exclude log files
+*.log
+
+# Exclude cache files
+bootstrap/cache/
+storage/framework/cache/
+storage/framework/sessions/
+storage/framework/views/
+
+# Exclude test files
+tests/
+phpunit.xml
+
+# Exclude documentation
+*.md
+docs/
+
+# Exclude compiled views
+storage/framework/views/
+
+# Exclude any files with special characters or permissions
+**/.*
+**/*~
+**/#*#
+**/Thumbs.db
+**/.DS_Store
+
+# Exclude large files that might cause issues
+*.zip
+*.tar.gz
+*.rar
+
+# Exclude temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+
+# Exclude backup files
+*.bak
+*.backup
+
+# Exclude any potential symlinks or problematic files
+**/storage
+**/public/storage 

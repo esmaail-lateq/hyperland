@@ -4,7 +4,6 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.bunny.net;">
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
@@ -30,45 +29,14 @@
         <!-- Additional styles -->
         @stack('styles')
         
-        <style>
-            /* x-cloak styles for Alpine.js */
-            [x-cloak] { 
-                display: none !important; 
-            }
-            
-            /* Добавяме временни стилове за примерни изображения (докато не качим истински) */
-            .placeholder-image {
-                position: relative;
-                overflow: hidden;
-                background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
-            }
-            
-            .placeholder-image::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: -100%;
-                width: 50%;
-                height: 100%;
-                background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
-                animation: shimmer 2s infinite;
-            }
-            
-            @keyframes shimmer {
-                100% { left: 150%; }
-            }
-
-            @if(app()->getLocale() === 'ar')
-                body {
-                    font-family: 'Cairo', sans-serif;
-                }
-            @endif
-        </style>
+        <!-- External component styles -->
+        <link rel="stylesheet" href="{{ asset('css/components.css') }}">
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
-            @include('layouts.navigation')
-
+            <!-- Enhanced Header -->
+            <x-header />
+            
             <!-- Page Heading -->
             @if (isset($header))
                 <header class="bg-white shadow">

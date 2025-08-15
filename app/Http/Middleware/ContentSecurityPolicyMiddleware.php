@@ -20,11 +20,11 @@ class ContentSecurityPolicyMiddleware
         // Add Content Security Policy headers
         $csp = [
             "default-src 'self'",
-            "script-src 'self' 'unsafe-inline' 'unsafe-eval' https: http:",
-            "style-src 'self' 'unsafe-inline' https: http:",
-            "img-src 'self' data: https: http:",
-            "font-src 'self' https: http:",
-            "connect-src 'self' https: http:",
+            "script-src 'self' 'unsafe-eval' https://cdn.jsdelivr.net",
+            "style-src 'self' https://fonts.googleapis.com https://fonts.bunny.net",
+            "font-src 'self' https://fonts.gstatic.com https://fonts.bunny.net data:",
+            "img-src 'self' data: blob:",
+            "connect-src 'self'",
             "frame-src 'self'",
             "object-src 'none'",
             "base-uri 'self'",
