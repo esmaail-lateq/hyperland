@@ -15,6 +15,7 @@ return [
     'admin_dashboard' => 'Admin Dashboard',
     'content_management' => 'Content Management',
     'user_management' => 'User Management',
+    'manage_account' => 'Manage your account',
     'favorites' => 'Favorites',
     'your_saved_cars' => 'Your Saved Cars',
     'manage_users_and_roles' => 'Manage users and roles',
@@ -24,6 +25,8 @@ return [
     'login' => 'Login',
     'register' => 'Register',
     'logout' => 'Logout',
+    'menu' => 'Menu',
+    'account' => 'Account',
     
     // Actions
     'add_new_car' => 'Add New Car',

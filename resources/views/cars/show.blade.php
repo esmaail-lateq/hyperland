@@ -393,37 +393,5 @@
         </div>
     </div>
 
-    @push('scripts')
-    <style>
-        /* Custom scrollbar for thumbnail navigation */
-        .custom-scrollbar::-webkit-scrollbar {
-            height: 6px;
-        }
 
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 10px;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #cbd5e0;
-            border-radius: 10px;
-            border: 2px solid #f1f1f1;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #a0aec0;
-        }
-
-        /* Custom shake-x animation for delete button */
-        @keyframes shakeX {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-            20%, 40%, 60%, 80% { transform: translateX(5px); }
-        }
-        .group:hover .group-hover\:shake-x {
-            animation: shakeX 0.8s cubic-bezier(.36,.07,.19,.97) both;
-        }
-    </style>
-    @endpush
 </x-app-layout>

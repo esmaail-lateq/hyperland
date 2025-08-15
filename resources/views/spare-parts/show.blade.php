@@ -85,8 +85,8 @@
                             @if(count($sparePart->images) > 1)
                             <div class="grid grid-cols-4 gap-2">
                                 @foreach($sparePart->image_urls as $index => $imageUrl)
-                                <button onclick="changeMainImage('{{ $imageUrl }}')" 
-                                        class="aspect-w-1 aspect-h-1">
+                                <button data-image-url="{{ $imageUrl }}" 
+                                        class="aspect-w-1 aspect-h-1 thumbnail-btn">
                                     <img src="{{ $imageUrl }}" 
                                          alt="{{ $sparePart->name }}" 
                                          class="w-full h-20 object-cover rounded-md hover:opacity-75 transition-opacity duration-200">
@@ -181,8 +181,16 @@
 </div>
 
 <script>
-function changeMainImage(imageUrl) {
-    document.getElementById('main-image').src = imageUrl;
-}
+document.addEventListener('DOMContentLoaded', function() {
+    const thumbnailButtons = document.querySelectorAll('.thumbnail-btn');
+    const mainImage = document.getElementById('main-image');
+
+    thumbnailButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const imageUrl = this.dataset.imageUrl;
+            mainImage.src = imageUrl;
+        });
+    });
+});
 </script>
 @endsection 

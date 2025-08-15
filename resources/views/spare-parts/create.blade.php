@@ -73,7 +73,7 @@
                                    multiple 
                                    accept="image/*"
                                    class="sr-only"
-                                   onchange="previewImages(this)">
+                                   data-action="preview-images">
                         </div>
                     </div>
                     
@@ -103,41 +103,14 @@
 </div>
 
 <script>
-function previewImages(input) {
-    const preview = document.getElementById('image-preview');
-    preview.innerHTML = '';
+document.addEventListener('DOMContentLoaded', function() {
+    const imageInput = document.getElementById('images');
     
-    if (input.files && input.files.length > 0) {
-        preview.classList.remove('hidden');
-        
-        for (let i = 0; i < input.files.length; i++) {
-            const file = input.files[i];
-            const reader = new FileReader();
-            
-            reader.onload = function(e) {
-                const div = document.createElement('div');
-                div.className = 'relative';
-                div.innerHTML = `
-                    <img src="${e.target.result}" class="w-full h-24 object-cover rounded-md">
-                    <button type="button" onclick="removeImage(this)" class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600">
-                        ×
-                    </button>
-                `;
-                preview.appendChild(div);
-            };
-            
-            reader.readAsDataURL(file);
-        }
-    } else {
-        preview.classList.add('hidden');
+    if (imageInput) {
+        imageInput.addEventListener('change', function() {
+            previewImages(this);
+        });
     }
-}
-
-function removeImage(button) {
-    button.parentElement.remove();
-    if (document.getElementById('image-preview').children.length === 0) {
-        document.getElementById('image-preview').classList.add('hidden');
-    }
-}
+});
 </script>
 @endsection 

@@ -12,14 +12,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            // Remove dealer-related fields
-            $table->dropColumn([
-                'type',
-                'dealer_name',
-                'dealer_description',
-                'dealer_address',
-                'slug'
-            ]);
+            // Remove dealer-related fields (only if they exist)
+            if (Schema::hasColumn('users', 'dealer_name')) {
+                $table->dropColumn('dealer_name');
+            }
+            if (Schema::hasColumn('users', 'dealer_description')) {
+                $table->dropColumn('dealer_description');
+            }
+            if (Schema::hasColumn('users', 'dealer_address')) {
+                $table->dropColumn('dealer_address');
+            }
+            if (Schema::hasColumn('users', 'slug')) {
+                $table->dropColumn('slug');
+            }
         });
     }
 

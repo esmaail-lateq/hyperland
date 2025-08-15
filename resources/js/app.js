@@ -4,33 +4,21 @@ import { createApp } from 'vue';
 import CarsList from './components/CarsList.vue';
 import Pagination from './components/Pagination.vue';
 
+// Initialize Alpine.js
 window.Alpine = Alpine;
 Alpine.start();
 
 // Initialize Vue 3
-const carsElement = document.getElementById('cars-component');
-if (carsElement) {
-    // Parse data attributes
-    const initialCars = JSON.parse(carsElement.dataset.cars || '[]');
-    const pagination = JSON.parse(carsElement.dataset.pagination || 'null');
-    const isAuthenticated = JSON.parse(carsElement.dataset.isAuthenticated || 'false');
-    const csrfToken = carsElement.dataset.csrfToken || '';
-    
-    // Create app instance
-    const app = createApp({
-        components: {
-            'cars-list': CarsList,
-            'pagination': Pagination,
-        },
-        provide: {
-            initialCars,
-            pagination,
-            isAuthenticated,
-            csrfToken
-        }
-    });
-    
-    app.component('cars-list', CarsList);
-    app.component('pagination', Pagination);
-    app.mount('#cars-component');
-}
+const app = createApp({});
+app.component('cars-list', CarsList);
+app.component('pagination', Pagination);
+app.mount('#app');
+
+// Import utility functions and page-specific scripts
+import '../public/js/utils.js';
+import '../public/js/cars.js';
+import '../public/js/notifications.js';
+import '../public/js/spare-parts.js';
+import '../public/js/cars-index.js';
+import '../public/js/cars-create.js';
+import '../public/css/components.css';
