@@ -40,7 +40,7 @@
                                 {{-- Notification Type Badge --}}
                                 <div class="flex items-center space-x-2 mb-1">
                                     <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium {{ \App\Helpers\NotificationHelper::getNotificationTypeBadgeClass($notification->type) }}">
-                                        {{ \App\Helpers\NotificationHelper::getNotificationTypeName($notification->type) }}
+                                      {{ \App\Helpers\NotificationHelper::getNotificationTypeName($notification->type) }}
                                     </span>
                                     @if(!$notification->read_at)
                                         <span class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
