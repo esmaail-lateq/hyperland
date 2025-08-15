@@ -25,6 +25,8 @@ return [
     'login' => 'Login',
     'register' => 'Register',
     'logout' => 'Logout',
+    'menu' => 'Menu',
+    'account' => 'Account',
     
     // Actions
     'add_new_car' => 'Add New Car',

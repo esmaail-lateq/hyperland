@@ -25,6 +25,8 @@ return [
     'login' => 'تسجيل الدخول',
     'register' => 'التسجيل',
     'logout' => 'تسجيل الخروج',
+    'menu' => 'القائمة',
+    'account' => 'الحساب',
     
     // Actions
     'add_new_car' => 'إضافة سيارة جديدة',

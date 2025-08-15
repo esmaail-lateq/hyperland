@@ -62,7 +62,7 @@ class NotificationHelper
     {
         return match($type) {
             'App\Notifications\CarAddedNotification',
-            'App\Notifications\NewCarAddedNotification' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>',
+            'App\Notifications\NewCarAddedNotification' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 01-16.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>',
             
             'App\Notifications\SparePartAddedNotification',
             'App\Notifications\NewSparePartAddedNotification' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>',
@@ -91,15 +91,20 @@ class NotificationHelper
     {
         $data = $notification->data;
         
-        if (isset($data['message_ar'])) {
+        // Validate data structure
+        if (!is_array($data)) {
+            return __('notifications.new_notification');
+        }
+        
+        if (isset($data['message_ar']) && !empty($data['message_ar'])) {
             return $data['message_ar'];
         }
         
-        if (isset($data['message_en'])) {
+        if (isset($data['message_en']) && !empty($data['message_en'])) {
             return $data['message_en'];
         }
         
-        if (isset($data['message'])) {
+        if (isset($data['message']) && !empty($data['message'])) {
             return $data['message'];
         }
         
@@ -116,8 +121,13 @@ class NotificationHelper
     {
         $data = $notification->data;
         
-        if (isset($data['last_updated'])) {
-            return __('notifications.last_updated') . ': ' . \Carbon\Carbon::parse($data['last_updated'])->diffForHumans();
+        // Validate data structure
+        if (is_array($data) && isset($data['last_updated']) && !empty($data['last_updated'])) {
+            try {
+                return __('notifications.last_updated') . ': ' . \Carbon\Carbon::parse($data['last_updated'])->diffForHumans();
+            } catch (\Exception $e) {
+                // Fallback to created_at if parsing fails
+            }
         }
         
         return $notification->created_at->diffForHumans();
@@ -132,7 +142,7 @@ class NotificationHelper
     public static function isAggregated(DatabaseNotification $notification): bool
     {
         $data = $notification->data;
-        return isset($data['aggregated_count']) && $data['aggregated_count'] > 1;
+        return is_array($data) && isset($data['aggregated_count']) && is_numeric($data['aggregated_count']) && $data['aggregated_count'] > 1;
     }
 
     /**
@@ -144,7 +154,10 @@ class NotificationHelper
     public static function getAggregatedCount(DatabaseNotification $notification): ?int
     {
         $data = $notification->data;
-        return $data['aggregated_count'] ?? null;
+        if (is_array($data) && isset($data['aggregated_count']) && is_numeric($data['aggregated_count'])) {
+            return (int) $data['aggregated_count'];
+        }
+        return null;
     }
 
     /**
@@ -157,8 +170,11 @@ class NotificationHelper
     public static function getAggregatedItems(DatabaseNotification $notification, int $limit = 3): array
     {
         $data = $notification->data;
-        $items = $data['aggregated_items'] ?? [];
+        if (!is_array($data) || !isset($data['aggregated_items']) || !is_array($data['aggregated_items'])) {
+            return [];
+        }
         
+        $items = $data['aggregated_items'];
         return array_slice($items, -$limit);
     }
 

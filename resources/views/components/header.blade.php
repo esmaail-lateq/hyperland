@@ -124,6 +124,19 @@
                     @endforeach
                 </div>
 
+                <!-- Hamburger Button for Mobile -->
+                @auth
+                    <div class="lg:hidden">
+                        <button @click="$dispatch('toggle-mobile-menu')" 
+                                @click.away="$dispatch('close-mobile-menu')"
+                                class="flex items-center justify-center w-10 h-10 bg-white/20 dark:bg-slate-800/20 backdrop-blur-xl rounded-full border border-white/30 dark:border-slate-600/30 hover:bg-white/30 dark:hover:bg-slate-700/30 transition-all duration-300">
+                            <svg class="w-6 h-6 text-slate-700 dark:text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                            </svg>
+                        </button>
+                    </div>
+                @endauth
+
                 <!-- Glassmorphism Notification Dropdown - Fully Rounded -->
                 @auth
                     @php
@@ -132,13 +145,17 @@
                         $unreadCount = $user->unreadNotifications()->count();
                     @endphp
                     
-                    <x-notification-dropdown :notifications="$recentNotifications" :unreadCount="$unreadCount" />
+                    <div class="hidden lg:block">
+                        <x-notification-dropdown :notifications="$recentNotifications" :unreadCount="$unreadCount" />
+                    </div>
                 @endauth
 
                 <!-- Glassmorphism User Menu - Fully Rounded -->
                 @auth
-                    <div class="relative group" x-data="{ open: false }">
-                        <button @click="open = !open" class="flex items-center space-x-3 bg-white/20 dark:bg-slate-800/20 backdrop-blur-xl rounded-full px-4 py-2.5 lg:px-5 lg:py-3 border border-white/30 dark:border-slate-600/30 hover:bg-white/30 dark:hover:bg-slate-700/30 transition-all duration-300 hover:scale-105 shadow-lg shadow-black/10 dark:shadow-black/20">
+                    <div class="hidden lg:block relative" x-data="{ open: false }">
+                        <button @click="open = !open" 
+                                @click.away="open = false"
+                                class="flex items-center space-x-3 bg-white/20 dark:bg-slate-800/20 backdrop-blur-xl rounded-full px-4 py-2.5 lg:px-5 lg:py-3 border border-white/30 dark:border-slate-600/30 hover:bg-white/30 dark:hover:bg-slate-700/30 transition-all duration-300 hover:scale-105 shadow-lg shadow-black/10 dark:shadow-black/20">
                             <div class="relative">
                                 <div class="w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-gradient-to-r from-blue-500/80 to-purple-600/80 flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-blue-500/25">
                                     {{ substr(Auth::user()->name, 0, 1) }}
@@ -155,7 +172,17 @@
                         </button>
 
                         <!-- Glassmorphism Dropdown Menu - Fully Rounded -->
-                        <div x-show="open" @click.away="open = false" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="absolute right-0 mt-2 w-64 bg-white/90 dark:bg-slate-800/90 backdrop-blur-xl rounded-2xl shadow-2xl shadow-black/20 dark:shadow-black/40 border border-white/30 dark:border-slate-600/30 origin-top-right">
+                        <div x-show="open" 
+                             x-cloak 
+                             @click.away="open = false" 
+                             @keydown.escape="open = false"
+                             x-transition:enter="transition ease-out duration-200" 
+                             x-transition:enter-start="transform opacity-0 scale-95" 
+                             x-transition:enter-end="transform opacity-100 scale-100" 
+                             x-transition:leave="transition ease-in duration-75" 
+                             x-transition:leave-start="transform opacity-100 scale-100" 
+                             x-transition:leave-end="transform opacity-0 scale-95" 
+                             class="absolute right-0 top-full mt-2 w-64 bg-white/90 dark:bg-slate-800/90 backdrop-blur-xl rounded-2xl shadow-2xl shadow-black/20 dark:shadow-black/40 border border-white/30 dark:border-slate-600/30 origin-top-right z-50">
                             <div class="p-4 border-b border-white/20 dark:border-slate-600/20">
                                 <div class="flex items-center space-x-3">
                                     <div class="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500/80 to-purple-600/80 flex items-center justify-center text-white font-bold shadow-lg shadow-blue-500/25">
@@ -184,7 +211,7 @@
 
 
                                 <a href="{{ route('favorites.index') }}" class="flex items-center space-x-3 px-3 py-2.5 rounded-full hover:bg-purple-500/10 dark:hover:bg-purple-400/10 group transition-all duration-300">
-                                    <div class="w-8 h-8 rounded-full bg-purple-500/20 dark:bg-purple-400/20 flex items-center justify-center group-hover:bg-purple-500/30 dark:group-hover:bg-purple-400/30 transition-colors duration-300">
+                                    <div class="w-8 h-8 rounded-full bg-purple-500/20 dark:bg-purple-400/20 flex items-center justify-center group-hover:bg-purple-500/30 dark:group-hover:text-purple-400/30 transition-colors duration-300">
                                         <svg class="w-4 h-4 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
                                         </svg>
@@ -282,4 +309,9 @@
             </div>
         </div>
     </div>
-</header> 
+</header>
+
+<!-- Mobile Menu Component -->
+@auth
+    <x-mobile-menu :notifications="$recentNotifications" :unreadCount="$unreadCount" />
+@endauth 

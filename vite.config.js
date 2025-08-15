@@ -25,4 +25,24 @@ export default defineConfig({
             vue: 'vue/dist/vue.esm-bundler.js',
         },
     },
+    build: {
+        target: 'es2015',
+        rollupOptions: {
+            output: {
+                manualChunks: {
+                    vendor: ['alpinejs', 'vue'],
+                },
+            },
+        },
+        minify: 'terser',
+        terserOptions: {
+            compress: {
+                drop_console: true,
+                drop_debugger: true,
+            },
+        },
+    },
+    esbuild: {
+        target: 'es2015',
+    },
 });

@@ -4,6 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
+        <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.bunny.net;">
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
@@ -30,6 +31,11 @@
         @stack('styles')
         
         <style>
+            /* x-cloak styles for Alpine.js */
+            [x-cloak] { 
+                display: none !important; 
+            }
+            
             /* Добавяме временни стилове за примерни изображения (докато не качим истински) */
             .placeholder-image {
                 position: relative;
