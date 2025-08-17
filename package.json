@@ -8,7 +8,7 @@
     "devDependencies": {
         "@tailwindcss/forms": "^0.5.2",
         "@vitejs/plugin-vue": "^6.0.0",
-        "alpinejs": "^3.4.2",
+        "alpinejs": "^3.14.9",
         "autoprefixer": "^10.4.2",
         "axios": "^1.6.4",
         "laravel-vite-plugin": "^1.2.0",
@@ -17,6 +17,7 @@
         "vite": "^6.0.0"
     },
     "dependencies": {
+        "@alpinejs/csp": "^3.14.9",
         "gsap": "^3.12.0",
         "swiper": "^10.3.1",
         "vue": "^3.5.13"

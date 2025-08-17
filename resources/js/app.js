@@ -1,22 +1,43 @@
+// resources/js/app.js
+
 import './bootstrap';
+
+// --- Alpine (CSP-safe) ---
 import Alpine from 'alpinejs';
+import AlpineCSP from '@alpinejs/csp';
+
+// فعّل وضع CSP لـ Alpine لتجنّب أي استخدام لـ eval
+Alpine.plugin(AlpineCSP);
+
+// اجعل Alpine متاحًا في الـ window (اختياري لكنه مفيد للتصحيح)
+window.Alpine = Alpine;
+
+// ابدأ Alpine بعد تحميل السكربتات
+Alpine.start();
+
+
+// --- Vue 3 App (Cars) ---
 import { createApp } from 'vue';
 import CarsList from './components/CarsList.vue';
 import Pagination from './components/Pagination.vue';
 
-window.Alpine = Alpine;
-Alpine.start();
+// دالة مساعدة لقراءة JSON بأمان من data-attributes
+function safeJSON(value, fallback) {
+    if (value === undefined || value === null || value === '') return fallback;
+    try { return JSON.parse(value); } catch { return fallback; }
+}
 
-// Initialize Vue 3
-const carsElement = document.getElementById('cars-component');
-if (carsElement) {
-    // Parse data attributes
-    const initialCars = JSON.parse(carsElement.dataset.cars || '[]');
-    const pagination = JSON.parse(carsElement.dataset.pagination || 'null');
-    const isAuthenticated = JSON.parse(carsElement.dataset.isAuthenticated || 'false');
-    const csrfToken = carsElement.dataset.csrfToken || '';
-    
-    // Create app instance
+document.addEventListener('DOMContentLoaded', () => {
+    const el = document.getElementById('cars-component');
+    if (!el) return;
+
+    // اقرأ القيم من data-attributes بأمان
+    const initialCars     = safeJSON(el.dataset.cars, []);
+    const pagination      = safeJSON(el.dataset.pagination, null);
+    const isAuthenticated = safeJSON(el.dataset.isAuthenticated, false);
+    const csrfToken       = el.dataset.csrfToken || '';
+
+    // أنشئ تطبيق Vue
     const app = createApp({
         components: {
             'cars-list': CarsList,
@@ -26,11 +47,11 @@ if (carsElement) {
             initialCars,
             pagination,
             isAuthenticated,
-            csrfToken
-        }
+            csrfToken,
+        },
     });
-    
+
     app.component('cars-list', CarsList);
     app.component('pagination', Pagination);
     app.mount('#cars-component');
-}
+});
