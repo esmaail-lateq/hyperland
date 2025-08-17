@@ -2,6 +2,7 @@
 
 return [
     // Page titles and descriptions
+    'title' => 'الإشعارات',
     'page_title' => 'الإشعارات',
     'page_description' => 'إدارة جميع إشعاراتك ومراجعة التحديثات المهمة',
     

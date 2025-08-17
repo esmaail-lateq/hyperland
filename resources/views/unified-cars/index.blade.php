@@ -75,62 +75,45 @@
                         </div>
 
                         <!-- Car Status Filter -->
-                        <div>
-                            <label for="status" class="block text-sm font-medium text-gray-700 mb-1">حالة السيارة</label>
-                            <select name="status" id="status" 
-                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                                <option value="all" {{ request('status') == 'all' ? 'selected' : '' }}>جميع حالات السيارة</option>
-                                <option value="available" {{ request('status') == 'available' ? 'selected' : '' }}>
-                                    متوفرة للبيع في اليمن ({{ $statusCounts['available'] ?? 0 }})
-                                </option>
-                                <option value="at_customs" {{ request('status') == 'at_customs' ? 'selected' : '' }}>
-                                    متوفرة في المنافذ الجمركية ({{ $statusCounts['at_customs'] ?? 0 }})
-                                </option>
-                                <option value="in_transit" {{ request('status') == 'in_transit' ? 'selected' : '' }}>
-                                    قيد الشحن إلى اليمن ({{ $statusCounts['in_transit'] ?? 0 }})
-                                </option>
-                                <option value="purchased" {{ request('status') == 'purchased' ? 'selected' : '' }}>
-                                    تم شراؤها مؤخراً ({{ $statusCounts['purchased'] ?? 0 }})
-                                </option>
-                                <option value="sold" {{ request('status') == 'sold' ? 'selected' : '' }}>
-                                    تم البيع ({{ $statusCounts['sold'] ?? 0 }})
-                                </option>
-                            </select>
-                        </div>
-
-                        <!-- Year Filter -->
-                        <div>
-                            <label for="year" class="block text-sm font-medium text-gray-700 mb-1">السنة</label>
-                            <select name="year" id="year" 
-                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                                <option value="">جميع السنوات</option>
-                                @if(isset($years))
-                                    @foreach($years as $year)
-                                        <option value="{{ $year }}" {{ request('year') == $year ? 'selected' : '' }}>
-                                            {{ $year }}
-                                        </option>
-                                    @endforeach
-                                @endif
-                            </select>
-                        </div>
-
-                        <!-- Advertiser Filter (Admin Only) -->
-                        @if($isAdmin)
-                        <div>
-                            <label for="advertiser" class="block text-sm font-medium text-gray-700 mb-1">صاحب الإعلان</label>
-                            <select name="advertiser" id="advertiser" 
-                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                                <option value="">جميع البائعين</option>
-                                @if(isset($advertisers))
+                        <div class="flex items-center space-x-4">
+                            <div class="flex-1">
+                                <label for="status" class="block text-sm font-medium text-gray-700 mb-2">
+                                    حالة السيارة
+                                </label>
+                                <select id="status" name="status" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="">جميع الحالات</option>
+                                    <option value="available" {{ request('status') === 'available' ? 'selected' : '' }}>متاحة</option>
+                                    <option value="sold" {{ request('status') === 'sold' ? 'selected' : '' }}>مباعة</option>
+                                    <option value="reserved" {{ request('status') === 'reserved' ? 'selected' : '' }}>محجوزة</option>
+                                </select>
+                            </div>
+                            
+                            <div class="flex-1">
+                                <label for="year" class="block text-sm font-medium text-gray-700 mb-2">
+                                    سنة الصنع
+                                </label>
+                                <select id="year" name="year" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="">جميع السنوات</option>
+                                    @for($year = date('Y'); $year >= 1990; $year--)
+                                        <option value="{{ $year }}" {{ request('year') == $year ? 'selected' : '' }}>{{ $year }}</option>
+                                    @endfor
+                                </select>
+                            </div>
+                            
+                            <div class="flex-1">
+                                <label for="advertiser" class="block text-sm font-medium text-gray-700 mb-2">
+                                    المعلن
+                                </label>
+                                <select id="advertiser" name="advertiser" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="">جميع المعلنين</option>
                                     @foreach($advertisers as $advertiser)
                                         <option value="{{ $advertiser->id }}" {{ request('advertiser') == $advertiser->id ? 'selected' : '' }}>
                                             {{ $advertiser->name }}
                                         </option>
                                     @endforeach
-                                @endif
-                            </select>
+                                </select>
+                            </div>
                         </div>
-                        @endif
                     </div>
 
                     <!-- Filter Buttons -->
@@ -386,11 +369,11 @@
                                                             تعديل
                                                         </a>
                                                         @if($isAdmin || $car->user_id == auth()->id())
-                                                        <form action="{{ route('cars.destroy', $car) }}" method="POST" class="inline">
+                                                        <form action="{{ route('unified-cars.cars.destroy', $car) }}" method="POST" class="inline">
                                                             @csrf
                                                             @method('DELETE')
                                                             <button type="submit" 
-                                                                    onclick="return confirm('هل أنت متأكد من حذف هذه السيارة؟')"
+                                                                    data-confirm="هل أنت متأكد من حذف هذه السيارة؟"
                                                                     class="text-red-600 hover:text-red-900 transition-colors duration-200">
                                                                 حذف
                                                             </button>
@@ -535,7 +518,7 @@
                                                 <form action="{{ route('spare-parts.destroy', $sparePart) }}" method="POST" class="inline">
                                                     @csrf @method('DELETE')
                                                     <button type="submit" 
-                                                            onclick="return confirm('{{ __('spare_parts.delete_confirmation') }}')"
+                                                            data-confirm="{{ __('spare_parts.delete_confirmation') }}"
                                                             class="text-red-600 hover:text-red-900 transition-colors duration-200">
                                                         حذف
                                                     </button>
@@ -578,11 +561,28 @@
     </div>
 </x-app-layout>
 
-<style>
-.line-clamp-2 {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-</style> 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle confirmation dialogs
+    const confirmButtons = document.querySelectorAll('[data-confirm]');
+    confirmButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            const message = this.dataset.confirm;
+            if (!confirm(message)) {
+                e.preventDefault();
+                return false;
+            }
+        });
+    });
+    
+    // Handle auto-submit forms
+    const autoSubmitSelects = document.querySelectorAll('select[name="status"], select[name="year"], select[name="advertiser"]');
+    autoSubmitSelects.forEach(select => {
+        select.addEventListener('change', function() {
+            this.form.submit();
+        });
+    });
+});
+</script>
+
+ 

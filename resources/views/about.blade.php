@@ -352,36 +352,5 @@
         </div>
     </div>
 
-    @push('scripts')
-    <style>
-        /* Animations for About page */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .animate-fade-in {
-            animation: fadeIn 1s ease-out forwards;
-        }
-
-        .animate-fade-in-up {
-            animation: fadeInUp 1s ease-out forwards;
-        }
-
-        .animate-fade-in-up.delay-100 {
-            animation-delay: 0.1s;
-        }
-    </style>
-    @endpush
 </x-app-layout> 

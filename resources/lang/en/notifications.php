@@ -2,6 +2,7 @@
 
 return [
     // Page titles and descriptions
+    'title' => 'Notifications',
     'page_title' => 'Notifications',
     'page_description' => 'Manage all your notifications and review important updates',
     

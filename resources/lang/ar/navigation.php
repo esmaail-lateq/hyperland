@@ -15,6 +15,7 @@ return [
     'admin_dashboard' => 'لوحة الإدارة',
     'content_management' => 'إدارة المحتوى',
     'user_management' => 'إدارة المستخدمين',
+    'manage_account' => 'إدارة حسابك',
     'favorites' => 'المفضلة',
     'your_saved_cars' => 'سياراتك المحفوظة',
     'manage_users_and_roles' => 'إدارة المستخدمين والأدوار',
@@ -24,6 +25,8 @@ return [
     'login' => 'تسجيل الدخول',
     'register' => 'التسجيل',
     'logout' => 'تسجيل الخروج',
+    'menu' => 'القائمة',
+    'account' => 'الحساب',
     
     // Actions
     'add_new_car' => 'إضافة سيارة جديدة',

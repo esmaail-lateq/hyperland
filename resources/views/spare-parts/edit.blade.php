@@ -99,8 +99,7 @@
                                    type="file" 
                                    multiple 
                                    accept="image/*"
-                                   class="sr-only"
-                                   onchange="previewImages(this)">
+                                   class="sr-only">
                         </div>
                     </div>
                     
@@ -130,6 +129,16 @@
 </div>
 
 <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const imageInput = document.getElementById('images');
+    
+    if (imageInput) {
+        imageInput.addEventListener('change', function() {
+            previewImages(this);
+        });
+    }
+});
+
 function previewImages(input) {
     const preview = document.getElementById('image-preview');
     preview.innerHTML = '';
